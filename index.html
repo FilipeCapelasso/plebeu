@@ -294,11 +294,11 @@ const DET=x=>({cc_rejected_insufficient_amount:'Saldo insuficiente no cartão.',
 async function startPay(num,tok,email){
  try{
   const{data,error}=await sb.functions.invoke('mercadopago',{body:{action:'create',order_number:num,token:tok,email:email||'',return_url:location.origin+location.pathname}});
-  if(error||!data||!data.ok){console.warn('Mercado Pago:',error||data?.error);return false}
+  if(error||!data||!data.ok){console.warn('Mercado Pago:',error||data?.error);S.perr=data?.error||'serviço de pagamento sem resposta (função não publicada, erro interno ou configuração pendente)';return false}
   ls.set('pay',{num,tok});
   if(data.kind==='checkout'){S.cart=[];save();location.href=data.url;return true}
   openPay(num,tok);return true;
- }catch(e){return false}
+ }catch(e){S.perr='sem conexão com o serviço de pagamento';return false}
 }
 async function openPay(num,tok,fast,quiet){
  const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;clearInterval(pt);let n=0;
@@ -319,7 +319,7 @@ function payFail(num,tok,s){
  const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;ls.set('pay',{num,tok});
  const B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
  const wa=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${s.name}! Meu pedido #${num} foi registrado, mas não consegui gerar o pagamento no site. Podem me ajudar?`)}`;
- $('#payc').innerHTML=`<p class="text-5xl">⚠️</p><h2 class="mt-2 font-display text-3xl font-bold">Não conseguimos gerar o pagamento</h2><p class="mt-1 text-sm text-mut">Seu pedido #${num} está reservado. Tente novamente; se continuar, fale com a gente.</p><button data-a="payretry" class="${B} glow bg-pri text-white">Tentar de novo</button><a href="${wa}" target="_blank" rel="noopener" class="${B} border border-bd">Falar com a loja no WhatsApp</a><button data-a="payclose" class="${B} border border-bd">Fechar</button>`;
+ $('#payc').innerHTML=`<p class="text-5xl">⚠️</p><h2 class="mt-2 font-display text-3xl font-bold">Não conseguimos gerar o pagamento</h2><p class="mt-1 text-sm text-mut">Seu pedido #${num} está reservado. Tente novamente; se continuar, fale com a gente.</p>${S.perr?`<p class="mt-2 text-xs text-red-400">Motivo: ${esc(S.perr)}</p>`:''}<button data-a="payretry" class="${B} glow bg-pri text-white">Tentar de novo</button><a href="${wa}" target="_blank" rel="noopener" class="${B} border border-bd">Falar com a loja no WhatsApp</a><button data-a="payclose" class="${B} border border-bd">Fechar</button>`;
  o.classList.remove('hidden');
 }
 function renderPay(d,ok,dead){
@@ -380,7 +380,7 @@ document.addEventListener('click',e=>{
  else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
  else if(a==='copy')navigator.clipboard.writeText(t.dataset.u).then(()=>toast('Código Pix copiado!'),()=>toast('Não foi possível copiar. Selecione o código e copie.'));
  else if(a==='payclose')closePay();
- else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'').then(ok=>{if(!ok)toast('Ainda não foi possível gerar o pagamento. Tente de novo ou fale com a loja.')})}
+ else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'').then(ok=>{if(!ok)toast(S.perr||'Ainda não foi possível gerar o pagamento. Tente de novo ou fale com a loja.')})}
  else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
 });
 document.addEventListener('change',e=>{if(e.target.name==='pay'){S.pay=e.target.value;renderCart()}if(e.target.name==='ship'){S.ship=e.target.value;renderCart()}});
