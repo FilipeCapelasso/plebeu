@@ -151,9 +151,14 @@ const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('sto
 const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
 async function load(){
  if(sb)try{
-  const[a,b,c,d,r]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12)]);
+  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
   if(a.error||b.error||c.error)throw 0;
-  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);return;
+  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
+  if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
+  sb.channel('stock').on('postgres_changes',{event:'*',schema:'public',table:'product_stock'},({new:n})=>{
+   if(!n||!n.product_id||!S.stores.length)return;S.stock[n.product_id+'|'+n.store_id]=n.qty;render();
+   const m=location.hash.match(/^#\/p\/(.+)$/);if(m)pdp(decodeURIComponent(m[1]))}).subscribe();
+  return;
  }catch(e){console.warn('Supabase indisponível: modo demonstração')}
  S.demo=true;
  S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];
@@ -163,7 +168,7 @@ async function load(){
 }
 const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0];
 const qty=p=>{const k=p.id+'|'+st().id;return k in S.stock?S.stock[k]:(S.demo?9:0)};
-const pix=p=>p.price*(1-(p.pix_discount||0)/100);
+const pix=p=>Math.round(p.price*(1-(p.pix_discount||0)/100)*100)/100;
 const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
 const off=p=>p.old_price?Math.round((1-p.price/p.old_price)*100):0;
 
@@ -252,14 +257,25 @@ async function coupon(){
  toast(S.cp?`Cupom ${c} aplicado: ${S.cp.pct}% off`:'Cupom inválido ou valor mínimo não atingido');renderCart();
 }
 async function order(){
+ if(S.busy)return;
  const L=S.cart.map(line).filter(Boolean),F=S.f,ph=F.ph.replace(/\D/g,'');
  if(F.nm.trim().length<2||ph.length<10)return toast('Informe seu nome e WhatsApp com DDD.');
  if(S.ship==='entrega'&&F.ad.trim().length<8)return toast('Informe o endereço de entrega.');
  const s=st(),k=calc(),items=L.map(({p,n})=>({id:p.id,name:p.name,qty:n,unit:+(S.pay==='pix'?pix(p):p.price).toFixed(2)}));
- if(sb)try{await sb.from('orders').insert({store_id:s.id,customer_name:F.nm.trim(),customer_phone:ph,payment:S.pay,items,total:+k.t.toFixed(2),coupon_code:S.cp?.code||null,delivery_type:S.ship,address:S.ship==='entrega'?F.ad.trim():null})}catch(e){}
- const m=`Olá, Plebeu Games ${s.name}! Quero finalizar meu pedido:\n`+items.map(i=>`• ${i.qty}x ${i.name} — ${R(i.unit)}`).join('\n')+`\n\nPagamento: ${S.pay==='pix'?'Pix':'Cartão'}\n${S.cp?`Cupom: ${S.cp.code}\n`:''}${S.ship==='entrega'?`Entrega: ${F.ad.trim()}`:'Retirada na loja'}\nTotal: ${R(k.t)}\nNome: ${F.nm.trim()}\nWhatsApp: ${ph}`;
- window.open(`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(m)}`,'_blank');
- S.cart=[];S.cp=null;save();renderCart();cart(false);toast('Pedido enviado! Continue a conversa no WhatsApp.');
+ S.busy=true;const b=$('[data-a="order"]');if(b){b.disabled=true;b.textContent='Enviando pedido…'}
+ const w=window.open('','_blank');            /* abre já: evita bloqueio de pop-up após o await */
+ let num=null,total=k.t;
+ if(sb)try{
+  const{data,error}=await sb.rpc('place_order',{p_store:s.id,p_name:F.nm.trim(),p_phone:ph,p_payment:S.pay,p_delivery:S.ship,
+   p_address:S.ship==='entrega'?F.ad.trim():null,p_items:items.map(({id,qty})=>({id,qty})),p_coupon:S.cp?.code||null});
+  if(error&&error.code==='P0001'){S.busy=false;w&&w.close();renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
+  if(data){num=data.order_number;total=+data.total}
+ }catch(e){}                                   /* falha de rede: não perde a venda, segue pro WhatsApp */
+ S.busy=false;
+ const m=`Olá, Plebeu Games ${s.name}! Quero finalizar meu pedido${num?' #'+num:''}:\n`+items.map(i=>`• ${i.qty}x ${i.name} — ${R(i.unit)}`).join('\n')+`\n\nPagamento: ${S.pay==='pix'?'Pix':'Cartão'}\n${S.cp?`Cupom: ${S.cp.code}\n`:''}${S.ship==='entrega'?`Entrega: ${F.ad.trim()}`:'Retirada na loja'}\nTotal: ${R(total)}\nNome: ${F.nm.trim()}\nWhatsApp: ${ph}`;
+ const u=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(m)}`;
+ if(w)w.location.href=u;else window.open(u,'_blank')||location.assign(u);
+ S.cart=[];S.cp=null;save();renderCart();cart(false);toast(num?`Pedido #${num} registrado! Continue no WhatsApp.`:'Pedido enviado! Continue a conversa no WhatsApp.');
 }
 function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
  if(cur+n>m){toast(m?`Só temos ${m} em estoque.`:'Sem estoque nesta loja.');return false}
