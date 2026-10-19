@@ -139,7 +139,7 @@ details[open] summary span{transform:rotate(45deg)}
 
 <script>
 /* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
-const SB_URL='',SB_KEY='';
+const SB_URL='https://mkzkasgaxzpynrhrgmrt.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1remthc2dheHpweW5yaHJnbXJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2NDQxNDYsImV4cCI6MjEwNjIyMDE0Nn0.Aax_OwDl4HZHMbN0LAqmGQvd9OqA_simRLWxBmINJCk';
 const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
 /* ====================================================================================== */
 const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):null;
@@ -156,7 +156,7 @@ async function load(){
   Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);return;
  }catch(e){console.warn('Supabase indisponível: modo demonstração')}
  S.demo=true;
- S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568999999999'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999999999'}];
+ S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];
  S.cats=[['consoles','Consoles','🎮'],['jogos','Jogos','💿'],['perifericos','Periféricos','🎧'],['informatica','Informática','💻']].map(([slug,name,emoji])=>({slug,name,emoji}));
  S.prods=[D(1,'PlayStation 4 Slim 1TB desbloqueado + 7 jogos','consoles','🎮',1756.14,0,5,1,42),D(2,'Call of Duty Modern Warfare – PS4','jogos','💿',155.56,0,9,1,18),D(3,'Base para notebook com cooler','informatica','❄️',48.89,0,9,1,31),D(4,'Headset gamer RGB com microfone','perifericos','🎧',189.9,229.9,8,1,12),D(5,'Controle PS4 sem fio','consoles','🕹️',169.9,0,8,1,27),D(6,'SSD 480GB SATA III','informatica','💾',229.9,0,8,0,15)];
  S.rev=[{customer_name:'Cliente exemplo',rating:5,body:'Texto de exemplo. As avaliações reais vêm da tabela reviews.'}];
