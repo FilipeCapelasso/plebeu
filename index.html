@@ -147,6 +147,7 @@ const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):
 const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const VID=(()=>{let v=ls.get('vid',null);if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).replace(/[^\w-]/g,'');ls.set('vid',v)}return v})();
 const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:{nm:'',ph:'',ad:'',em:''}};
 
 const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
@@ -200,6 +201,7 @@ function render(){
 /* ---------- página do produto ---------- */
 let gi=0;
 function pdp(slug){
+ {const _p=S.prods.find(x=>x.slug===slug);if(sb&&!S.demo&&_p&&S.vw!==slug){S.vw=slug;sb.rpc('track_view',{p_product:_p.id,p_visitor:VID}).then(()=>{},()=>{})}}
  const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
  const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,4);
  document.title=p.name+' | Plebeu Games';
@@ -270,7 +272,7 @@ async function order(){
    p_address:S.ship==='entrega'?F.ad.trim():null,p_items:items.map(({id,qty})=>({id,qty})),p_coupon:S.cp?.code||null});
   if(error&&error.code==='P0001'){S.busy=false;renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
   if(error)console.warn('place_order:',error);
-  if(data){num=data.order_number;tok=data.token;total=+data.total}
+  if(data){num=data.order_number;tok=data.token;total=+data.total;sb.rpc('link_visitor',{p_order:num,p_token:tok,p_visitor:VID}).then(()=>{},()=>{})}
  }catch(e){console.warn('place_order:',e)}
  if(num&&tok&&await startPay(num,tok,F.em)){S.busy=false;S.cart=[];S.cp=null;save();renderCart();cart(false);return}
  S.busy=false;
