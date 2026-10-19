@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plebeu Games | Sua loja gamer no Acre e Rondônia</title>
+<meta name="description" content="Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho. Pix com desconto e até 5x sem juros.">
+<meta name="theme-color" content="#000000">
+<script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m==='light')d.classList.add('light');if(a)d.dataset.ac=a}catch(e){}</script>
+<link rel="preconnect" href="https://hlanjhafrhebmheozkmt.supabase.co" crossorigin><link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
+<meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>const tc=n=>`rgb(var(--${n}) / <alpha-value>)`;tailwind.config={theme:{extend:{colors:{bg:tc('bg'),s2:tc('s2'),s3:tc('s3'),bd:tc('bd'),pri:tc('pr'),acc:tc('ac'),mut:tc('mut'),fg:tc('fg')},fontFamily:{display:["Rajdhani","system-ui","sans-serif"],sans:["Inter","system-ui","sans-serif"]}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--bg:0 0 0;--s2:7 7 7;--s3:12 12 16;--bd:28 28 36;--mut:139 143 163;--fg:241 242 246;--pr:124 92 255;--ac:0 230 168;--acl:0 140 100;color-scheme:dark}
+html.light{--bg:244 245 250;--s2:234 237 246;--s3:255 255 255;--bd:214 219 232;--mut:92 99 124;--fg:18 20 32;color-scheme:light}
+html[data-ac=verde]{--pr:5 150 105;--ac:163 230 53;--acl:77 124 15}
+html[data-ac=fogo]{--pr:225 29 72;--ac:251 191 36;--acl:180 83 9}
+html[data-ac=oceano]{--pr:37 99 235;--ac:34 211 238;--acl:14 116 144}
+html.light{--ac:var(--acl)}
+body{background:rgb(var(--bg));color:rgb(var(--fg));font-family:Inter,system-ui,sans-serif;padding-bottom:64px;transition:background-color .3s,color .3s}
+@media(min-width:768px){body{padding-bottom:0}}
+.max-w-\[1920px\]{padding-inline:max(1rem,2vw)!important}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgb(var(--bd));border-radius:8px}
+.glass{background:rgb(var(--bg)/.82);backdrop-filter:blur(14px)}
+.gt{background:linear-gradient(90deg,rgb(var(--pr)),rgb(var(--ac)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ch{transition:transform .25s,border-color .25s,box-shadow .25s;content-visibility:auto;contain-intrinsic-size:auto 400px}
+.ch:hover{transform:translateY(-4px);border-color:rgb(var(--pr)/.6);box-shadow:0 16px 44px -14px rgb(var(--pr)/.45)}
+.ch img{transition:transform .45s}.ch:hover img{transform:scale(1.07)}
+.rg{background:radial-gradient(circle at 50% 40%,rgb(var(--pr)/.25),transparent 65%)}
+.hs{box-shadow:0 0 60px -15px rgb(var(--pr)/.6)}
+.hbg{background:radial-gradient(60% 80% at 85% 0,rgb(var(--pr)/.22),transparent 60%),radial-gradient(45% 60% at 0 100%,rgb(var(--ac)/.12),transparent 60%)}
+.hgrid{background-image:linear-gradient(rgb(var(--bd)/.55) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--bd)/.55) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at 60% 40%,#000 20%,transparent 72%);mask-image:radial-gradient(ellipse at 60% 40%,#000 20%,transparent 72%)}
+.glow{position:relative;isolation:isolate}.glow::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 32px 6px rgb(var(--pr)/.75);opacity:.45;z-index:-1;pointer-events:none;animation:gl 2.4s ease-in-out infinite}.glow:disabled::after{display:none}
+@keyframes gl{50%{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.rv{animation:up .5s cubic-bezier(.2,.7,.2,1) backwards}
+.hin>*{animation:up .8s cubic-bezier(.2,.7,.2,1) backwards}.hin>:nth-child(2){animation-delay:.08s}.hin>:nth-child(3){animation-delay:.16s}.hin>:nth-child(4){animation-delay:.24s}
+@keyframes bump{40%{transform:scale(1.25) rotate(-8deg)}}.bump{animation:bump .4s}
+button:active{transform:scale(.97)}
+@keyframes sh{0%{background-position:-120% 0}100%{background-position:220% 0}}
+.b1,.b2{background-size:220% 100%;animation:sh 2.8s linear infinite;color:#000}
+.b1{background-image:linear-gradient(110deg,#ff5c5c,#ff8a5c 35%,#ff5c5c 60%,#ff8a5c);color:#fff}
+.b2{background-image:linear-gradient(110deg,#ffb020,#ffd76a 35%,#ffb020 60%,#ffd76a)}
+@keyframes fl{50%{transform:translateY(-10px)}}.fl{animation:fl 4.5s ease-in-out infinite}
+@keyframes mq{to{transform:translateX(-50%)}}.mq{animation:mq 40s linear infinite;width:max-content}.mq:hover{animation-play-state:paused}
+@keyframes sk{to{background-position:-200% 0}}
+.sk{background:linear-gradient(90deg,rgb(var(--s3)) 25%,rgb(var(--bd)/.6) 50%,rgb(var(--s3)) 75%);background-size:200% 100%;animation:sk 1.2s infinite}
+input,select{background:rgb(var(--s3));border:1px solid rgb(var(--bd));border-radius:12px;color:rgb(var(--fg))}
+input:focus,select:focus{outline:2px solid rgb(var(--pr));border-color:transparent}
+:focus-visible{outline:2px solid rgb(var(--ac));outline-offset:2px}
+details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-marker{display:none}
+details[open] summary span{transform:rotate(45deg)}
+html.light .text-white,html.light .hover\:text-white:hover{color:rgb(var(--fg))}
+html.light .bg-pri.text-white,html.light .bg-pri .text-white{color:#fff}
+html.light .bg-acc.text-black{color:#fff}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- cabeçalho recolhível no celular ---------- */
+@media(max-width:767px){
+ #hdr{transition:clip-path .42s cubic-bezier(.4,0,.2,1)}
+ #hdr.clip{clip-path:inset(0 0 0 0)}
+ #hdr.mini{clip-path:inset(0 0 calc(100% - var(--hl,75px)) 0)}
+ #hdr::after{content:"";position:absolute;left:0;right:0;top:calc(var(--hl,75px) - 1px);height:1px;background:rgb(var(--bd));opacity:0;transition:opacity .3s;pointer-events:none}
+ #hdr.mini::after{opacity:1}
+ #hrow>:not(.logo),#hdr>nav{transition:opacity .32s ease .08s,translate .4s cubic-bezier(.4,0,.2,1),visibility 0s}
+ #hdr.mini #hrow>:not(.logo),#hdr.mini>nav{opacity:0;translate:0 -18px;visibility:hidden;pointer-events:none;transition:opacity .2s ease,translate .4s cubic-bezier(.4,0,.2,1),visibility 0s .4s}
+ #home>section.hbg{margin-top:calc(var(--hd,0px)*-1)}
+ #home>section.hbg>div.relative{padding-top:calc(3.5rem + var(--hd,0px))}
+ #vitrine{scroll-margin-top:calc(var(--hl,75px) + 8px)}
+}
+</style>
+</head>
+<body>
+<div id="top" class="bg-s3 border-b border-bd py-2 text-center text-xs text-mut px-3"></div>
+
+<header id="hdr" class="glass sticky top-0 z-30 border-b border-bd">
+ <div id="hrow" class="mx-auto flex max-w-[1920px] flex-wrap items-center gap-3 px-4 py-3">
+  <a href="#/" class="logo font-display text-3xl font-bold leading-none gt">Plebeu<span class="block text-sm tracking-[.35em] text-white">GAMES</span></a>
+  <div class="relative order-last w-full md:order-none md:w-auto md:flex-1">
+   <input id="q" type="search" autocomplete="off" placeholder="Busque console, jogo, headset…" aria-label="Buscar" class="h-11 w-full pl-4 pr-4">
+   <div id="sug" class="absolute inset-x-0 top-12 z-40 hidden overflow-hidden rounded-xl border border-bd bg-s3 shadow-2xl"></div>
+  </div>
+  <select id="store" class="h-11 px-3 text-sm font-semibold" aria-label="Escolher loja"></select>
+  <button id="favb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Favoritos">♥</button>
+  <div class="relative"><button id="thb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Tema do site">🎨</button>
+  <div id="thm" class="absolute right-0 top-14 z-50 hidden w-60 rounded-2xl border border-bd bg-s3 p-4 shadow-2xl">
+   <p class="mb-2 text-xs font-semibold text-mut">Aparência</p>
+   <div class="grid grid-cols-2 gap-2"><button data-th="dark" class="rounded-xl border border-bd py-2 text-sm font-semibold">🌙 Escuro</button><button data-th="light" class="rounded-xl border border-bd py-2 text-sm font-semibold">☀️ Claro</button></div>
+   <p class="mb-2 mt-4 text-xs font-semibold text-mut">Cor de destaque</p>
+   <div class="flex gap-2.5"><button data-ac="roxo" aria-label="Roxo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(124 92 255),rgb(0 230 168))"></button><button data-ac="verde" aria-label="Verde" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(5 150 105),rgb(163 230 53))"></button><button data-ac="fogo" aria-label="Fogo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(225 29 72),rgb(251 191 36))"></button><button data-ac="oceano" aria-label="Oceano" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(37 99 235),rgb(34 211 238))"></button></div>
+  </div></div>
+ <button id="cartb" class="relative h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Carrinho">🛒<b id="cn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-xs leading-5 text-black"></b></button>
+  <a id="prb" href="#/perfil" class="relative grid h-11 w-11 place-items-center rounded-xl border border-bd bg-s3 text-lg" aria-label="Meu perfil">👤<b id="pfn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-center text-xs leading-5 text-black"></b></a>
+ </div>
+ <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-[1920px] gap-2 overflow-x-auto px-4 py-2"></div></nav>
+</header>
+
+<main id="home">
+ <section class="hbg relative overflow-hidden border-b border-bd"><div class="hgrid absolute inset-0"></div>
+  <canvas id="pc" class="absolute inset-0 h-full w-full"></canvas>
+  <div class="relative mx-auto grid max-w-[1920px] items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_.85fr] md:py-20">
+   <div class="hin">
+    <span class="inline-block rounded-full border border-bd bg-s3 px-3 py-1 text-xs font-semibold text-acc">Rio Branco (AC) e Porto Velho (RO)</span>
+    <h1 class="mt-4 font-display text-5xl font-bold leading-[.95] md:text-7xl 2xl:text-8xl">Sua loja <span class="gt">gamer</span> no Acre e em Rondônia</h1>
+    <p class="mt-5 max-w-xl text-lg text-mut">Consoles, jogos, periféricos e informática com garantia da loja. Escolha, pague no Pix e receba no mesmo dia.</p>
+    <div class="mt-7 flex flex-wrap gap-3">
+     <a href="#vitrine" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Ver produtos</a>
+     <a id="herowa" target="_blank" rel="noopener" class="rounded-xl border border-bd bg-s3 px-7 py-3.5 font-bold hover:border-pri">Falar com a loja</a>
+    </div>
+   </div>
+   <div class="fl rounded-3xl border border-bd bg-s3/90 p-7 hs">
+    <p id="cl" class="text-sm font-semibold text-mut"></p>
+    <p id="ct" class="my-2 font-display text-6xl font-bold tabular-nums gt">15h</p>
+    <p class="text-sm text-mut">Pedidos até as 15h saem no mesmo dia, no horário da sua cidade.</p>
+    <div class="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-mut">
+     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">Pix</b>desconto</div>
+     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">5x</b>sem juros</div>
+     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">2</b>lojas físicas</div>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="border-b border-bd bg-s2"><div class="mx-auto grid max-w-[1920px] grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
+  <div class="text-sm text-mut"><b class="block text-white">⚡ Entrega no mesmo dia</b>Rio Branco e Porto Velho</div>
+  <div class="text-sm text-mut"><b class="block text-white">💠 Desconto no Pix</b>Preço menor, na hora</div>
+  <div class="text-sm text-mut"><b class="block text-white">🛡️ Garantia da loja</b>Suporte direto no WhatsApp</div>
+  <div class="text-sm text-mut"><b class="block text-white">🏬 Retire na loja</b>Sem pagar frete</div>
+ </div></section>
+
+ <section id="vitrine" class="mx-auto max-w-[1920px] px-4 py-12">
+  <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+   <h2 id="gt" class="font-display text-4xl font-bold">Destaques da semana</h2>
+   <div class="flex items-center gap-3 text-sm">
+    <label class="flex items-center gap-2 text-mut"><input id="onlys" type="checkbox" class="h-4 w-4 accent-pri">Só com estoque</label>
+    <select id="sort" class="h-10 px-3" aria-label="Ordenar"><option value="rel">Relevância</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option><option value="az">A–Z</option></select>
+   </div>
+  </div>
+  <div id="grid" class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5 min-[1700px]:grid-cols-6"></div>
+ </section>
+
+ <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2 py-12">
+  <h2 class="mb-6 text-center font-display text-4xl font-bold">Quem comprou <span class="gt">aprova</span></h2>
+  <div id="mq" class="mq flex gap-4"></div>
+ </section>
+
+ <section class="mx-auto max-w-5xl px-4 py-14">
+  <h2 class="mb-6 text-center font-display text-4xl font-bold">Dúvidas frequentes</h2>
+  <div id="faq" class="grid gap-3 lg:grid-cols-2 lg:items-start"></div>
+ </section>
+
+ <section class="mx-auto max-w-[1920px] px-4 pb-14"><div class="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-bd bg-s3 p-8 hs">
+  <div><h2 class="font-display text-3xl font-bold">Não achou o que procura?</h2><p class="text-mut">Conseguimos consoles, peças e acessórios sob encomenda.</p></div>
+  <a id="bandwa" target="_blank" rel="noopener" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Pedir pelo WhatsApp</a>
+ </div></section>
+</main>
+
+<main id="pdp" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
+<main id="prf" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
+<main id="crt" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
+
+<footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-[1920px] flex-wrap justify-between gap-6 px-4">
+ <div><b class="font-display text-2xl gt">Plebeu Games</b><p class="mt-1">Loja gamer em Rio Branco (AC) e Porto Velho (RO).</p></div>
+ <div id="fst" class="space-y-1"></div>
+</div>
+<p class="mx-auto mt-8 max-w-[1920px] border-t border-bd px-4 pt-6 text-center text-xs">R. O. Lima - CNPJ: 28.668.658/0001-95 © Todos os direitos reservados. 2026</p></footer>
+
+<nav class="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-bd text-xs md:hidden">
+ <a href="#/" class="py-3 text-center">🏠<br>Início</a><a href="#vitrine" class="py-3 text-center">🕹️<br>Produtos</a>
+ <button id="mfav" class="py-3">♥<br>Favoritos</button><button id="mcart" class="py-3">🛒<br>Carrinho</button><a href="#/perfil" class="py-3 text-center">👤<br>Perfil</a>
+</nav>
+<a id="wa" target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-20 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-2xl shadow-lg md:bottom-5">💬</a>
+
+<div id="pay" class="fixed inset-0 z-[70] hidden grid place-items-center overflow-auto bg-black/80 p-4" role="dialog" aria-modal="true" aria-label="Pagamento"><div id="payc" class="w-full max-w-md rounded-3xl border border-bd bg-s3 p-6 text-center shadow-2xl"></div></div>
+<div id="toast" class="fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 translate-y-40 rounded-xl border border-bd bg-s3 px-5 py-3 text-sm shadow-2xl transition-transform md:bottom-6" role="status"></div>
+
+<script>
+/* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
+const SB_URL='https://hlanjhafrhebmheozkmt.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsYW5qaGFmcmhlYm1oZW96a210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNzQyNjksImV4cCI6MjEwNzk1MDI2OX0.KlVSEGBdhgQ7OPnNsajb7CrYjCrCrR-kQipSchpmCeE';
+const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
+/* ====================================================================================== */
+const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):null;
+const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const VID=(()=>{let v=ls.get('vid',null);if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).replace(/[^\w-]/g,'');ls.set('vid',v)}return v})();
+const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,pt:'pg',ords:[],cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:Object.assign({nm:'',ph:'',ad:'',em:''},ls.get('prof',{}))};
+
+const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
+async function load(){
+ if(sb)try{
+  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
+  if(a.error||b.error||c.error)throw 0;
+  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
+  if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
+  sb.channel('stock').on('postgres_changes',{event:'*',schema:'public',table:'product_stock'},({new:n})=>{
+   if(!n||!n.product_id||!S.stores.length)return;S.stock[n.product_id+'|'+n.store_id]=n.qty;clearTimeout(S.rt);S.rt=setTimeout(render,200);
+   const m=location.hash.match(/^#\/p\/(.+)$/);if(m)pdp(decodeURIComponent(m[1]))}).subscribe();
+  return;
+ }catch(e){console.warn('Supabase indisponível');if(S.stores.length)return}
+ S.demo=true;
+ S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];
+ S.cats=[['consoles','Consoles','🎮'],['jogos','Jogos','💿'],['perifericos','Periféricos','🎧'],['informatica','Informática','💻']].map(([slug,name,emoji])=>({slug,name,emoji}));
+ S.prods=[D(1,'PlayStation 4 Slim 1TB desbloqueado + 7 jogos','consoles','🎮',1756.14,0,5,1,42),D(2,'Call of Duty Modern Warfare – PS4','jogos','💿',155.56,0,9,1,18),D(3,'Base para notebook com cooler','informatica','❄️',48.89,0,9,1,31),D(4,'Headset gamer RGB com microfone','perifericos','🎧',189.9,229.9,8,1,12),D(5,'Controle PS4 sem fio','consoles','🕹️',169.9,0,8,1,27),D(6,'SSD 480GB SATA III','informatica','💾',229.9,0,8,0,15)];
+ S.rev=[{customer_name:'Cliente exemplo',rating:5,body:'Texto de exemplo. As avaliações reais vêm da tabela reviews.'}];
+}
+const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0];
+const qty=p=>{const k=p.id+'|'+st().id;return k in S.stock?S.stock[k]:(S.demo?9:0)};
+const pix=p=>p.pix_price!=null&&p.pix_price!==''?Math.round(+p.pix_price*100)/100:Math.round(p.price*(1-(p.pix_discount||0)/100)*100)/100;   /* preço no Pix: valor exato do admin (pix_price); sem ele, usa o desconto % antigo */
+const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" decoding="async" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
+const off=p=>p.old_price?Math.round((1-p.price/p.old_price)*100):0;
+
+function list(){
+ let l=S.prods.filter(p=>(!S.cat||p.category_slug===S.cat)&&(!S.fav||S.favs.includes(p.id))&&(!S.only||qty(p)>0)&&(!S.q||(p.name+' '+(p.brand||'')).toLowerCase().includes(S.q)));
+ const o={lo:(a,b)=>pix(a)-pix(b),hi:(a,b)=>pix(b)-pix(a),az:(a,b)=>a.name.localeCompare(b.name)}[S.sort];
+ return o?l.sort(o):l.sort((a,b)=>(b.featured?1:0)-(a.featured?1:0)||(b.sold_count||0)-(a.sold_count||0));
+}
+const card=p=>{const n=qty(p),o=off(p);
+ return `<article class="ch relative flex flex-col overflow-hidden rounded-2xl border border-bd bg-s3">
+ <a href="#/p/${esc(p.slug)}" class="relative grid aspect-square place-items-center overflow-hidden rg text-7xl">
+ ${o?`<span class="b1 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">-${o}%</span>`:n&&n<4?`<span class="b2 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">Últimas ${n}</span>`:''}${pic(p)}</a>
+ <button data-a="fav" data-id="${p.id}" class="absolute right-3 top-3 h-9 w-9 rounded-full bg-bg/70 ${S.favs.includes(p.id)?'text-red-500':'text-mut'}" aria-label="Favoritar">♥</button>
+ <div class="flex flex-1 flex-col gap-1.5 p-4"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 min-h-[2.6rem] text-sm font-semibold">${esc(p.name)}</a>
+ ${p.sold_count>9?`<span class="text-xs text-mut">🔥 ${p.sold_count} vendidos</span>`:''}
+ <p class="font-display text-3xl font-bold leading-none text-acc">${R(pix(p))}<small class="ml-1 font-sans text-xs font-medium text-mut">no Pix</small></p>
+ <p class="text-xs text-mut">${p.old_price?`<s>${R(p.old_price)}</s> `:''}ou ${R(p.price)} em ${p.max_installments}x sem juros</p>
+ <p class="text-xs font-bold ${n?'text-acc':'text-red-400'}">${n?'Em estoque em '+esc(st().name):'Sem estoque em '+esc(st().name)}</p>
+ <button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="mt-auto h-11 rounded-xl bg-pri text-sm font-bold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:bg-bd disabled:text-mut">${n?'Adicionar ao carrinho':'Indisponível'}</button></div></article>`};
+
+function render(){
+ const l=list(),c=S.cats.find(x=>x.slug===S.cat);
+ $('#grid').innerHTML=l.length?l.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
+ {const sg=[S.cat,S.q,S.sort,S.only,S.fav,S.store].join('|');if(sg!==S.sg){S.sg=sg;[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'})}}
+ $('#nav').innerHTML=[['','Tudo','🔥']].concat(S.cats.map(x=>[x.slug,x.name,x.emoji])).map(([s,n,e])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)}</button>`).join('');
+ $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:c?c.name:'Destaques da semana';
+ renderCart();
+}
+/* ---------- página do produto ---------- */
+let gi=0;
+function pdp(slug){
+ {const _p=S.prods.find(x=>x.slug===slug);if(sb&&!S.demo&&_p&&S.vw!==slug){S.vw=slug;sb.rpc('track_view',{p_product:_p.id,p_visitor:VID}).then(()=>{},()=>{})}}
+ const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
+ const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,6);
+ document.title=p.name+' | Plebeu Games';
+ $('#pdp').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-white">← Voltar para a loja</a>
+ <div class="mt-5 grid gap-8 lg:grid-cols-[minmax(0,680px)_minmax(0,1fr)] lg:gap-12">
+  <div class="lg:sticky lg:top-40 lg:self-start"><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd rg text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
+  ${imgs.length>1?`<div class="mt-3 flex gap-2">${imgs.map(u=>`<button data-a="img" data-u="${esc(u)}" class="h-16 w-16 overflow-hidden rounded-xl border border-bd"><img src="${esc(u)}" alt="" class="h-full w-full object-cover"></button>`).join('')}</div>`:''}</div>
+  <div class="space-y-4"><p class="text-sm text-mut">${esc(p.brand||'')}</p><h1 class="font-display text-4xl font-bold leading-tight">${esc(p.name)}</h1>
+   ${p.sold_count>9?`<p class="text-sm text-mut">🔥 ${p.sold_count} vendidos</p>`:''}
+   <div class="rounded-2xl border border-bd bg-s3 p-5"><p class="font-display text-5xl font-bold text-acc">${R(pix(p))}<small class="ml-2 font-sans text-sm text-mut">no Pix ${pix(p)<p.price?`(-${Math.round((1-pix(p)/p.price)*100)}%)`:''}</small></p>
+   <p class="mt-1 text-sm text-mut">${o?`<s>${R(p.old_price)}</s> · `:''}ou ${R(p.price)} em até ${p.max_installments}x de ${R(p.price/p.max_installments)} sem juros</p></div>
+   <div class="space-y-1.5 rounded-2xl border border-bd p-4 text-sm">${S.stores.map(s=>{const k=p.id+'|'+s.id,q=k in S.stock?S.stock[k]:(S.demo?9:0);return `<p>${q?'✅':'⛔'} <b>${esc(s.name)}</b> <span class="text-mut">— ${q?(q<4?'últimas '+q+' unidades':'disponível'):'sem estoque'}</span></p>`}).join('')}</div>
+   <div class="flex gap-3"><button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="h-12 flex-1 rounded-xl border border-pri font-bold hover:bg-pri/20 disabled:opacity-40">Adicionar</button>
+   <button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-12 flex-1 rounded-xl bg-pri font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível em '+esc(st().name)}</button></div>
+   <div class="rounded-2xl border border-bd p-4"><p class="mb-2 text-sm font-semibold">Calcular entrega</p><div class="flex gap-2"><input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite seu CEP" class="h-11 min-w-0 flex-1 px-3"><button data-a="cep" class="h-11 rounded-xl bg-s2 px-5 text-sm font-bold ring-1 ring-bd hover:ring-pri">Calcular</button></div><p id="cepr" class="mt-2 text-sm text-mut"></p></div>
+  </div></div>
+  <div class="mt-10 grid gap-8 md:grid-cols-2"><div><h2 class="mb-3 font-display text-3xl font-bold">Descrição</h2><p class="text-mut">${esc(p.description)}</p></div>
+  ${(p.features||[]).length?`<div><h2 class="mb-3 font-display text-3xl font-bold">Destaques</h2><ul class="space-y-2 text-mut">${p.features.map(f=>`<li>✔ ${esc(f)}</li>`).join('')}</ul></div>`:''}</div>
+  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rel.map(card).join('')}</div>`:''}`;
+}
+async function cep(){
+ const v=$('#cep').value.replace(/\D/g,''),o=$('#cepr');if(v.length!==8)return o.textContent='Digite os 8 números do CEP.';
+ o.textContent='Calculando…';
+ try{const d=await(await fetch(`https://viacep.com.br/ws/${v}/json/`)).json();if(d.erro)throw 0;
+  const loc=['Rio Branco','Porto Velho'].includes(d.localidade);
+  o.innerHTML=loc?`<b class="text-acc">${esc(d.localidade)}/${esc(d.uf)}:</b> entrega por motoboy por ${R(FRETE.taxa)} (grátis acima de ${R(FRETE.gratis)}). Pedido até as ${FRETE.corte}h sai hoje.`
+  :`${esc(d.localidade)}/${esc(d.uf)}: <a class="text-acc underline" target="_blank" rel="noopener" href="https://wa.me/${st().whatsapp}?text=${encodeURIComponent('Olá! Quero saber o frete para o CEP '+v)}">consulte o frete pelo WhatsApp</a>.`;
+ }catch{o.textContent='Não encontramos esse CEP. Confira e tente de novo.'}
+}
+/* ---------- carrinho ---------- */
+const line=i=>{const p=S.prods.find(x=>x.id===i.id);return p&&{p,n:i.n}};
+const sub=()=>S.cart.map(line).filter(Boolean).reduce((t,{p,n})=>t+n*(S.pay==='pix'?pix(p):p.price),0);
+const calc=()=>{const s=sub(),d=S.cp?s*S.cp.pct/100:0,f=S.ship==='entrega'&&s-d<FRETE.gratis&&s>0?FRETE.taxa:0;return{s,d,f,t:s-d+f}};
+const save=()=>{ls.set('cart',S.cart);ls.set('favs',S.favs)};
+function recs(L){
+ const ids=new Set(L.map(x=>x.p.id)),cats=new Set(L.map(x=>x.p.category_slug)),sc=p=>(cats.has(p.category_slug)?2:0)+(p.featured?1:0);
+ return S.prods.filter(p=>!ids.has(p.id)&&qty(p)>0).sort((a,b)=>sc(b)-sc(a)||(b.sold_count||0)-(a.sold_count||0)).slice(0,6);
+}
+function renderCart(force){
+ const L=S.cart.map(line).filter(Boolean),c=L.reduce((t,x)=>t+x.n,0);
+ $('#cn').textContent=c;$('#cn').classList.toggle('hidden',!c);
+ const pg=$('#crt'),ae=document.activeElement;
+ if(!force&&ae&&ae.tagName==='INPUT'&&pg.contains(ae))return;   /* não apaga o que o cliente está digitando */
+ const k=calc(),F=S.f,rec=S.stores.length?recs(L):[],sn=(st()||{}).name||'',
+ back='<a href="#/" class="text-sm text-mut hover:text-white">← Continuar comprando</a>',
+ recH=rec.length?`<section class="mt-12"><h2 class="mb-4 font-display text-3xl font-bold">${L.length?'Você também pode gostar':'Sugestões para você'}</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rec.map(card).join('')}</div></section>`:'';
+ if(!L.length){
+  pg.innerHTML=`${back}<div class="mt-5 rounded-3xl border border-bd bg-s3 px-6 py-16 text-center"><p class="text-6xl">🛒</p><h1 class="mt-3 font-display text-4xl font-bold">Seu carrinho está vazio</h1><p class="mt-1 text-mut">Escolha seus produtos e volte aqui para finalizar.</p><div class="mt-6 flex flex-wrap justify-center gap-3"><a href="#/" class="glow rounded-xl bg-pri px-7 py-3 font-bold text-white">Ver produtos</a><a href="#/perfil" class="rounded-xl border border-bd px-7 py-3 font-bold hover:border-pri">Meus pedidos</a></div></div>${recH}`;
+  return;
+ }
+ const opt=(n,v,t,cur)=>`<label class="cursor-pointer rounded-xl border p-3 text-center text-sm font-semibold ${cur===v?'border-pri bg-pri/15':'border-bd'}"><input type="radio" name="${n}" value="${v}" class="hidden" ${cur===v?'checked':''}>${t}</label>`,
+ row=({p,n})=>{const u=S.pay==='pix'?pix(p):p.price,m=qty(p);
+  return `<div class="flex items-center gap-4 border-b border-bd py-5 last:border-0">
+  <a href="#/p/${esc(p.slug)}" class="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-s2 text-4xl sm:h-28 sm:w-28">${p.image_url?`<img src="${esc(p.image_url)}" alt="" class="h-full w-full object-contain p-1">`:esc(p.emoji||'🎮')}</a>
+  <div class="min-w-0 flex-1"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 font-semibold">${esc(p.name)}</a>
+   <p class="mt-1 text-sm text-mut">${R(u)} cada${m>0&&m<4?` · últimas ${m} un.`:''}</p>
+   <div class="mt-2 flex flex-wrap items-center gap-3"><div class="inline-flex items-center rounded-lg border border-bd"><button data-a="dec" data-id="${p.id}" class="h-9 w-9" aria-label="Diminuir">−</button><span class="w-8 text-center font-bold">${n}</span><button data-a="inc" data-id="${p.id}" class="h-9 w-9" aria-label="Aumentar">+</button></div>
+   <button data-a="rm" data-id="${p.id}" class="text-sm text-mut hover:text-red-400" aria-label="Remover">🗑️ Remover</button></div></div>
+  <p class="font-display text-2xl font-bold text-acc">${R(Math.round(u*n*100)/100)}</p></div>`};
+ pg.innerHTML=`${back}<h1 class="mt-3 font-display text-4xl font-bold">Seu carrinho <small class="font-sans text-base font-medium text-mut">(${c} ${c>1?'itens':'item'})</small></h1>
+ <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px]">
+  <div class="space-y-6">
+   <section class="rounded-2xl border border-bd bg-s3 px-5">${L.map(row).join('')}</section>
+   <section class="rounded-2xl border border-bd bg-s3 p-5"><h2 class="font-display text-2xl font-bold">Seus dados</h2>
+    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+     <label class="text-xs font-semibold text-mut">Nome<input id="nm" placeholder="Seu nome completo" autocomplete="name" value="${esc(F.nm)}" class="mt-1 h-11 w-full px-3"></label>
+     <label class="text-xs font-semibold text-mut">WhatsApp<input id="ph" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" value="${esc(F.ph)}" class="mt-1 h-11 w-full px-3"></label>
+     <label class="text-xs font-semibold text-mut sm:col-span-2">E-mail (opcional, para o recibo)<input id="em" type="email" placeholder="voce@email.com" autocomplete="email" value="${esc(F.em)}" class="mt-1 h-11 w-full px-3"></label>
+     ${S.ship==='entrega'?`<label class="text-xs font-semibold text-mut sm:col-span-2">Endereço de entrega<input id="ad" placeholder="Rua, número, bairro" autocomplete="street-address" value="${esc(F.ad)}" class="mt-1 h-11 w-full px-3"></label>`:`<p class="text-sm text-mut sm:col-span-2">🏬 Você vai retirar na loja ${esc(sn)}. Combine o horário pelo WhatsApp.</p>`}
+    </div></section>
+  </div>
+  <aside class="space-y-4 rounded-2xl border border-bd bg-s3 p-5 lg:sticky lg:top-40 lg:self-start"><h2 class="font-display text-2xl font-bold">Resumo do pedido</h2>
+   <div class="flex gap-2"><input id="cp" placeholder="Cupom de desconto" class="h-10 min-w-0 flex-1 px-3 text-sm uppercase" value="${S.cp?esc(S.cp.code):''}"><button data-a="coupon" class="rounded-xl px-4 text-sm font-bold ring-1 ring-bd hover:ring-pri">Aplicar</button></div>
+   <div><p class="mb-2 text-xs font-semibold text-mut">Pagamento</p><div class="grid grid-cols-2 gap-2">${opt('pay','pix','💠 Pix (desconto)',S.pay)}${opt('pay','cartao','💳 Cartão',S.pay)}</div></div>
+   <div><p class="mb-2 text-xs font-semibold text-mut">Entrega</p><div class="grid grid-cols-2 gap-2">${opt('ship','entrega','🛵 Entrega',S.ship)}${opt('ship','retirada','🏬 Retirar na loja',S.ship)}</div></div>
+   <div class="space-y-1 border-t border-bd pt-4 text-sm text-mut"><p class="flex justify-between"><span>Subtotal</span><span>${R(k.s)}</span></p>${k.d?`<p class="flex justify-between text-acc"><span>Cupom ${esc(S.cp.code)}</span><span>-${R(k.d)}</span></p>`:''}<p class="flex justify-between"><span>Entrega</span><span>${S.ship==='retirada'?'Retirada':k.f?R(k.f):'Grátis'}</span></p>${S.ship==='entrega'&&k.f?`<p class="text-xs">Entrega grátis acima de ${R(FRETE.gratis)}.</p>`:''}</div>
+   <p class="flex justify-between font-display text-3xl font-bold"><span>Total</span><span class="text-acc">${R(k.t)}</span></p>
+   <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">${sb?'Pagar agora':'Finalizar pelo WhatsApp'}</button>${sb?'<p class="text-center text-xs text-mut">Pagamento seguro pelo Mercado Pago. O Pix confirma na hora.</p>':''}
+  </aside>
+ </div>${recH}`;
+}
+async function coupon(){
+ const c=$('#cp').value.trim().toUpperCase();S.cp=null;if(!c)return renderCart();
+ if(sb){const{data}=await sb.rpc('validate_coupon',{p_code:c,p_subtotal:sub()});if(data&&data.length)S.cp={code:c,pct:+data[0].percent}}
+ else if(c==='PLEBEU10')S.cp={code:c,pct:10};
+ toast(S.cp?`Cupom ${c} aplicado: ${S.cp.pct}% off`:'Cupom inválido ou valor mínimo não atingido');renderCart();
+}
+async function order(){
+ if(S.busy)return;
+ const L=S.cart.map(line).filter(Boolean),F=S.f,ph=F.ph.replace(/\D/g,'');
+ if(F.nm.trim().length<2||ph.length<10)return toast('Informe seu nome e WhatsApp com DDD.');
+ if(S.ship==='entrega'&&F.ad.trim().length<8)return toast('Informe o endereço de entrega.');
+ const s=st(),k=calc(),items=L.map(({p,n})=>({id:p.id,name:p.name,qty:n,unit:+(S.pay==='pix'?pix(p):p.price).toFixed(2)}));
+ S.busy=true;const b=$('[data-a="order"]');if(b){b.disabled=true;b.textContent='Registrando pedido…'}
+ let num=null,tok=null,total=k.t;
+ if(sb)try{
+  const{data,error}=await sb.rpc('place_order',{p_store:s.id,p_name:F.nm.trim(),p_phone:ph,p_payment:S.pay,p_delivery:S.ship,
+   p_address:S.ship==='entrega'?F.ad.trim():null,p_items:items.map(({id,qty})=>({id,qty})),p_coupon:S.cp?.code||null});
+  if(error&&error.code==='P0001'){S.busy=false;renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
+  if(error)console.warn('place_order:',error);
+  if(data){num=data.order_number;tok=data.token;total=+data.total;addRef(num,tok);sb.rpc('link_visitor',{p_order:num,p_token:tok,p_visitor:VID}).then(()=>{},()=>{})}
+ }catch(e){console.warn('place_order:',e)}
+ if(num&&tok&&await startPay(num,tok,F.em)){S.busy=false;S.cart=[];S.cp=null;save();renderCart();cart(false);return}
+ S.busy=false;
+ if(sb&&!S.demo){
+  /* pagamento online é o fluxo oficial: não manda mais o cliente ao WhatsApp sozinho */
+  if(num&&tok){S.cart=[];S.cp=null;save();renderCart();cart(false);payFail(num,tok,s)}
+  else{renderCart();toast('Não foi possível registrar o pedido agora. Tente novamente em instantes.')}
+  return;
+ }
+ /* modo demonstração (sem Supabase): segue pelo WhatsApp */
+ const m=`Olá, Plebeu Games ${s.name}! Quero finalizar meu pedido${num?' #'+num:''}:\n`+items.map(i=>`• ${i.qty}x ${i.name} — ${R(i.unit)}`).join('\n')+`\n\nPagamento: ${S.pay==='pix'?'Pix':'Cartão'}\n${S.cp?`Cupom: ${S.cp.code}\n`:''}${S.ship==='entrega'?`Entrega: ${F.ad.trim()}`:'Retirada na loja'}\nTotal: ${R(total)}\nNome: ${F.nm.trim()}\nWhatsApp: ${ph}`;
+ const u=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(m)}`;
+ window.open(u,'_blank')||location.assign(u);
+ S.cart=[];S.cp=null;save();renderCart();cart(false);toast(num?`Pedido #${num} registrado! Continue no WhatsApp.`:'Pedido enviado! Continue a conversa no WhatsApp.');
+}
+/* ---------- pagamento (Mercado Pago) ---------- */
+let pt=null;
+const DET=x=>({cc_rejected_insufficient_amount:'Saldo insuficiente no cartão.',cc_rejected_bad_filled_security_code:'Código de segurança inválido.',cc_rejected_bad_filled_date:'Data de validade inválida.',cc_rejected_call_for_authorize:'Autorize o pagamento com o seu banco e tente de novo.',cc_rejected_high_risk:'Recusado por segurança. Tente outro cartão ou pague no Pix.'}[x]||'O banco não aprovou. Tente outro cartão ou pague no Pix.');
+async function startPay(num,tok,email){
+ try{
+  const{data,error}=await sb.functions.invoke('mercadopago',{body:{action:'create',order_number:num,token:tok,email:email||'',return_url:location.origin+location.pathname}});
+  if(error||!data||!data.ok){console.warn('Mercado Pago:',error||data?.error);S.perr=data?.error||'serviço de pagamento sem resposta (função não publicada, erro interno ou configuração pendente)';return false}
+  ls.set('pay',{num,tok});
+  if(data.kind==='checkout'){S.cart=[];save();location.href=data.url;return true}
+  openPay(num,tok);return true;
+ }catch(e){S.perr='sem conexão com o serviço de pagamento';return false}
+}
+async function openPay(num,tok,fast,quiet){
+ const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;clearInterval(pt);let n=0;o.dataset.c='';
+ const step=async()=>{
+  const{data:d}=await sb.rpc('get_order_payment',{p_order_number:num,p_token:tok});
+  if(o.dataset.c)return;
+  if(!d){ls.set('pay',null);return closePay()}
+  const ok=d.payment_status==='approved',dead=d.status==='cancelado'&&!ok;
+  const k=n++;
+  if(!ok&&!dead&&((fast&&k===0)||(k>0&&k%5===0)))sb.functions.invoke('mercadopago',{body:{action:'sync',order_number:num,token:tok}}).catch(()=>{});
+  const exp=!d.expires_at||new Date(d.expires_at)>new Date(),
+   live=!ok&&!dead&&d.payment_status!=='rejected'&&((d.pix_qr_code&&exp)||(d.checkout_url&&d.payment_status==='pending'&&exp));
+  if(quiet&&!ok&&!live){ls.set('pay',null);return closePay()}   /* ao recarregar a página, não reabre telas sem ação possível */
+  o.classList.remove('hidden');renderPay(d,ok,dead);
+  if(ok||dead){clearInterval(pt);ls.set('pay',null)}
+ };
+ await step();if(!o.classList.contains('hidden'))pt=setInterval(step,4000);
+}
+function closePay(){clearInterval(pt);const o=$('#pay');o.dataset.c='1';o.classList.add('hidden')}
+function payFail(num,tok,s){
+ const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;ls.set('pay',null);
+ const B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
+ const wa=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${s.name}! Meu pedido #${num} foi registrado, mas não consegui gerar o pagamento no site. Podem me ajudar?`)}`;
+ $('#payc').innerHTML=`<p class="text-5xl">⚠️</p><h2 class="mt-2 font-display text-3xl font-bold">Não conseguimos gerar o pagamento</h2><p class="mt-1 text-sm text-mut">Seu pedido #${num} está reservado. Tente novamente; se continuar, fale com a gente.</p>${S.perr?`<p class="mt-2 text-xs text-red-400">Motivo: ${esc(S.perr)}</p>`:''}<button data-a="payretry" class="${B} glow bg-pri text-white">Tentar de novo</button><a href="${wa}" target="_blank" rel="noopener" class="${B} border border-bd">Falar com a loja no WhatsApp</a><button data-a="payclose" class="${B} border border-bd">Fechar</button>`;
+ o.classList.remove('hidden');
+}
+function renderPay(d,ok,dead){
+ S.live=!ok&&!dead&&d.payment_status!=='rejected'&&!!d.pix_qr_code;
+ const T=R(d.total),B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
+ const H=(i,t,x)=>`<p class="text-5xl">${i}</p><h2 class="mt-2 font-display text-3xl font-bold">${t}</h2><p class="mt-1 text-sm text-mut">${x}</p>`;
+ const close=`<button data-a="payclose" class="${B} border border-bd">${ok?'Continuar comprando':'Fechar'}</button>`;
+ const wa=`https://wa.me/${d.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${d.store_name}! Tenho uma dúvida sobre o meu pedido #${d.order_number} (${T}).`)}`;
+ const itens=(d.items||[]).map(i=>`<li>${+i.qty}x ${esc(i.name)}</li>`).join(''),
+  ent=d.delivery_type==='entrega'?`Entrega em: ${esc(d.address)}`:`Retirada na loja ${esc(d.store_name)}`;
+ $('#payc').innerHTML=ok?H('🎉','Parabéns pela sua compra!',`Pagamento confirmado · Pedido #${d.order_number} · ${T}`)+`<div class="mt-4 rounded-xl border border-bd p-3 text-left text-sm text-mut"><ul class="list-disc pl-5">${itens}</ul><p class="mt-2">${ent}</p></div><p class="mt-4 text-sm">Obrigado por comprar na <b>Plebeu Games</b>, ${esc(String(d.customer_name).split(' ')[0])}! Já estamos separando o seu pedido e avisaremos você pelo WhatsApp.</p><p class="mt-2 text-xs text-mut">Ficou com alguma dúvida? É só falar com a gente.</p><a href="${wa}" target="_blank" rel="noopener" class="${B} glow bg-pri text-white">Falar com a loja no WhatsApp</a>`+close
+ :dead?H('⌛','Pedido cancelado','O pagamento não foi concluído a tempo e o estoque foi liberado. Faça um novo pedido quando quiser.')+`<button data-a="payclose" class="${B} bg-pri text-white">Voltar à loja</button>`
+ :d.payment_status==='rejected'?H('❌','Pagamento recusado',esc(DET(d.status_detail)))+`<button data-a="payretry" class="${B} bg-pri text-white">Tentar de novo</button>`+close
+ :d.pix_qr_code?H('💠',`Pague ${T} no Pix`,`Pedido #${d.order_number} · expira em <b id="pxt" data-e="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b>`)+`<img alt="QR Code Pix" class="mx-auto mt-4 h-52 w-52 rounded-xl bg-white p-2" src="data:image/png;base64,${d.pix_qr_base64}"><button data-a="copy" data-u="${esc(d.pix_qr_code)}" class="${B} glow bg-pri text-white">Copiar código Pix</button><p class="mt-3 text-xs text-mut">No app do seu banco, escolha Pix copia e cola. A confirmação aparece aqui sozinha.</p>`+close
+ :H('⏳','Aguardando confirmação',`Pedido #${d.order_number} · ${T}. Assim que o Mercado Pago confirmar, avisamos aqui.`)+(d.checkout_url?`<a href="${esc(d.checkout_url)}" class="${B} bg-pri text-white">Abrir pagamento</a>`:'')+close;
+}
+function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
+ if(cur+n>m){toast(m?`Só temos ${m} em estoque.`:'Sem estoque nesta loja.');return false}
+ it?it.n+=n:S.cart.push({id,n});save();renderCart();{const b=$('#cartb');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}return true}
+const cart=o=>{if(o)location.hash='#/carrinho'};   /* o carrinho agora é uma página (#/carrinho) */
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('translate-y-40');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('translate-y-40'),2600)}
+/* ---------- extras ---------- */
+function tick(){
+ const s=st(),d=new Date(Date.now()+(s.id==='pv'?-4:-5)*36e5),x=d.getUTCHours()*3600+d.getUTCMinutes()*60+d.getUTCSeconds(),cut=FRETE.corte*3600,open=x<cut,r=open?cut-x:86400-x+cut,f=v=>String(v).padStart(2,'0');
+ $('#ct').textContent=`${FRETE.corte}h`;
+ const px=$('#pxt');if(px&&px.dataset.e){const q=Math.max(0,(+px.dataset.e-Date.now())/1e3|0);px.textContent=`${f(q/60|0)}:${f(q%60)}`}
+ document.querySelectorAll('[data-cd]').forEach(e=>{if(e.dataset.cd){const q=Math.max(0,(+e.dataset.cd-Date.now())/1e3|0);e.textContent=`${f(q/60|0)}:${f(q%60)}`}});
+ $('#cl').textContent=open?`Receba hoje em ${s.name} se pedir até as`:`Pedidos em ${s.name} saem amanhã. Peça hoje até as`;
+}
+function shell(){
+ const s=st();if(!s)return;
+ $('#store').innerHTML=S.stores.map(x=>`<option value="${x.id}" ${x.id===s.id?'selected':''}>📍 ${esc(x.name)}</option>`).join('');
+ $('#top').textContent=`Loja: ${s.name} (${s.kind||'loja'}) • Compre até as ${FRETE.corte}h e receba no mesmo dia`;
+ const w=`https://wa.me/${s.whatsapp}`;['#wa','#herowa','#bandwa'].forEach(i=>$(i).href=w);
+ $('#fst').innerHTML=S.stores.map(x=>`<p><b class="text-white">${esc(x.name)}</b> — ${esc(x.kind||'')}</p>`).join('');
+ $('#dep').classList.toggle('hidden',!S.rev.length);
+ const rv=S.rev.map(r=>`<figure class="w-80 shrink-0 rounded-2xl border border-bd bg-s3 p-5"><p class="text-yellow-400">${'★'.repeat(r.rating)}</p><blockquote class="my-2 text-sm text-mut">${esc(r.body)}</blockquote><figcaption class="text-sm font-semibold">${esc(r.customer_name)}</figcaption></figure>`).join('');
+ $('#mq').innerHTML=rv+rv;tick();
+}
+$('#faq').innerHTML=[['Como funciona a entrega no mesmo dia?','Pedidos feitos até as 15h (horário da sua cidade) em Rio Branco e Porto Velho saem no mesmo dia por motoboy. Depois desse horário, saem no dia seguinte.'],['Posso retirar na loja?','Pode. Escolha “Retirar na loja” no carrinho e combine o horário pelo WhatsApp. Não há taxa de entrega.'],['Quais são as formas de pagamento?','Pix com desconto ou cartão em até 5x sem juros. No Pix, o QR Code é gerado na hora e a confirmação é automática. No cartão, você paga no ambiente seguro do Mercado Pago.'],['Os produtos têm garantia?','Sim, todos têm garantia da loja. Os detalhes de cada produto você confirma com o atendimento.'],['E se o produto não estiver na minha loja?','O estoque muda conforme a loja escolhida no topo. Fale com a gente e verificamos a transferência ou a encomenda.']].map(([q,a])=>`<details class="rounded-2xl border border-bd bg-s3 p-5"><summary class="flex items-center justify-between font-semibold">${q}<span class="text-2xl text-pri transition-transform">+</span></summary><p class="mt-3 text-mut">${a}</p></details>`).join('');
+const TH={m:ls.get('mode','dark'),a:ls.get('ac','roxo')};
+function theme(){const h=document.documentElement,on=['ring-2','ring-fg','ring-offset-2','ring-offset-s3'];h.classList.toggle('light',TH.m==='light');h.dataset.ac=TH.a;
+ $('meta[name=theme-color]').content=TH.m==='light'?'#f4f5fa':'#000000';
+ document.querySelectorAll('[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
+ document.querySelectorAll('[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
+ window.PC=`rgb(${getComputedStyle(h).getPropertyValue('--pr').trim()} / .7)`}
+theme();
+document.addEventListener('click',e=>{const t=e.target.closest('[data-th],[data-ac],#thb'),p=$('#thm');
+ if(t&&t.id==='thb')p.classList.toggle('hidden');
+ else if(t){if(t.dataset.th)TH.m=t.dataset.th;else TH.a=t.dataset.ac;ls.set('mode',TH.m);ls.set('ac',TH.a);theme()}
+ else if(!e.target.closest('#thm'))p.classList.add('hidden')});
+/* fecha o painel de tema ao tocar/clicar fora (pointerdown funciona também no celular) e com Esc */
+document.addEventListener('pointerdown',e=>{const p=$('#thm');if(p&&!p.classList.contains('hidden')&&!e.target.closest('#thm,#thb'))p.classList.add('hidden')},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#thm').classList.add('hidden')});
+(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w,h,P,on=1,raf;
+ const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(90,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
+ const f=()=>{if(!on)return;x.clearRect(0,0,w,h);x.fillStyle=window.PC;P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});raf=requestAnimationFrame(f)};
+ new IntersectionObserver(([e])=>{if(e.isIntersecting&&!on){on=1;f()}else if(!e.isIntersecting){on=0;cancelAnimationFrame(raf)}}).observe(c);f()})();
+/* ---------- perfil do cliente ---------- */
+const refs=()=>ls.get('orders',[]);
+function addRef(n,t){ls.set('orders',[{n,t,at:Date.now()},...refs().filter(x=>x.n!==n)].slice(0,30))}
+const isLive=d=>{const exp=!d.expires_at||new Date(d.expires_at)>new Date();return d.payment_status!=='approved'&&d.status!=='cancelado'&&d.payment_status!=='rejected'&&((d.pix_qr_code&&exp)||(d.checkout_url&&d.payment_status==='pending'&&exp))};
+const cls=d=>d.payment_status==='approved'?'ok':isLive(d)?'pg':'cc';
+const LBL=d=>d.status==='cancelado'?'Cancelado':d.payment_status==='approved'?({enviado:'Enviado',entregue:'Entregue'}[d.status]||'Pago'):d.payment_status==='rejected'?'Pagamento recusado':isLive(d)?'Aguardando pagamento':'Não concluído';
+async function loadOrders(){
+ if(!sb||S.demo)return S.ords=[];
+ const fin=ls.get('oc',{});
+ S.ords=(await Promise.all(refs().map(async r=>{
+  let d=fin[r.n];
+  if(!d)try{d=(await sb.rpc('get_order_payment',{p_order_number:r.n,p_token:r.t})).data;if(d&&(d.status==='cancelado'||d.status==='entregue'))fin[r.n]={...d,pix_qr_base64:null,pix_qr_code:null}}catch{}
+  return d&&{...r,d}}))).filter(Boolean);
+ ls.set('oc',fin);return S.ords}
+function bdg(){const n=(S.ords||[]).filter(o=>cls(o.d)==='pg').length,b=$('#pfn');b.textContent=n;b.classList.toggle('hidden',!n)}
+function ocard({n,at,d}){const k=cls(d),it=(d.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join(', '),c={ok:'border-acc text-acc',pg:'border-yellow-500 text-yellow-500',cc:'border-red-400 text-red-400'}[k];
+ return `<article class="rounded-2xl border border-bd bg-s3 p-4"><div class="flex items-start justify-between gap-3"><div><p class="font-semibold">Pedido #${d.order_number}</p><p class="text-xs text-mut">${at?new Date(at).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})+' · ':''}${esc(d.store_name)}</p></div><span class="whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-bold ${c}">${LBL(d)}</span></div>
+ <p class="mt-2 line-clamp-2 text-sm text-mut">${it}</p>
+ <div class="mt-3 flex items-center justify-between gap-3"><p class="font-display text-2xl font-bold">${R(d.total)}</p>${k==='pg'?`<p class="text-xs text-mut">expira em <b data-cd="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b></p>`:''}</div>
+ ${k==='pg'?`<button data-a="ppay" data-id="${n}" class="glow mt-3 h-11 w-full rounded-xl bg-pri font-bold text-white">Pagar agora</button>`:''}</article>`}
+function plist(){
+ const g={pg:[],ok:[],cc:[]};(S.ords||[]).forEach(o=>g[cls(o.d)].push(o));
+ $('#ptabs').innerHTML=[['pg','A pagar'],['ok','Compras realizadas'],['cc','Canceladas']].map(([k,n])=>`<button data-a="ptab" data-id="${k}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.pt===k?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${n} (${g[k].length})</button>`).join('');
+ $('#plist').innerHTML=g[S.pt].length?g[S.pt].map(ocard).join(''):`<p class="col-span-full py-12 text-center text-mut">${{pg:'Nenhum pagamento em aberto.',ok:'Você ainda não tem compras realizadas.',cc:'Nenhuma compra cancelada.'}[S.pt]}</p>`;
+ bdg();tick()}
+function prof(){
+ const F=S.f,inp=(i,l,v,t,a)=>`<label class="block text-sm"><span class="mb-1 block text-mut">${l}</span><input id="${i}" type="${t}" autocomplete="${a}" value="${esc(v)}" class="h-11 w-full px-3"></label>`;
+ $('#prf').innerHTML=`<h1 class="font-display text-4xl font-bold">Meu perfil</h1>
+ <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
+  <section class="h-fit space-y-4 rounded-2xl border border-bd bg-s3 p-5"><h2 class="font-display text-2xl font-bold">Meus dados</h2>${inp('pnm','Nome',F.nm,'text','name')}${inp('pph','WhatsApp com DDD',F.ph,'tel','tel')}${inp('pem','E-mail',F.em,'email','email')}${inp('pad','Endereço de entrega',F.ad,'text','street-address')}<p class="text-xs text-mut">Salvo automaticamente neste aparelho e já preenchido no carrinho.</p></section>
+  <section><div id="ptabs" class="flex gap-2 overflow-x-auto"></div><div id="plist" class="mt-4 grid gap-3 xl:grid-cols-2"></div></section></div>`;
+ $('#plist').innerHTML='<div class="sk h-28 rounded-2xl"></div>'.repeat(2);
+ loadOrders().then(plist)}
+/* ---------- rotas e eventos ---------- */
+function route(){
+ const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil',ct=location.hash==='#/carrinho';
+ $('#home').classList.toggle('hidden',!!m||pf||ct);pd.classList.toggle('hidden',!m);$('#prf').classList.toggle('hidden',!pf);$('#crt').classList.toggle('hidden',!ct);
+ if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else if(pf){document.title='Meu perfil | Plebeu Games';prof();scrollTo(0,0)}else if(ct){document.title='Carrinho | Plebeu Games';renderCart(1);scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
+}
+document.addEventListener('click',e=>{
+ if(!e.target.closest('#sug,#q'))$('#sug').classList.add('hidden');
+ const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,id=t.dataset.id;
+ if(a==='add'){if(add(id))toast('Adicionado ao carrinho')}
+ else if(a==='buy'){if(add(id))cart(true)}
+ else if(a==='fav'){S.favs=S.favs.includes(id)?S.favs.filter(x=>x!==id):S.favs.concat(id);save();render()}
+ else if(a==='cat'){S.cat=id;S.fav=false;if(location.hash)location.hash='#/';render();$('#vitrine').scrollIntoView()}
+ else if(a==='inc')add(id);
+ else if(a==='dec'){const it=S.cart.find(x=>x.id===id);it.n--;if(it.n<1)S.cart=S.cart.filter(x=>x!==it);save();renderCart()}
+ else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
+ else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
+ else if(a==='copy')navigator.clipboard.writeText(t.dataset.u).then(()=>toast('Código Pix copiado!'),()=>toast('Não foi possível copiar. Selecione o código e copie.'));
+ else if(a==='payclose'){ls.set('pay',null);closePay();loadOrders().then(()=>{bdg();if(location.hash==='#/perfil')plist()})}
+ else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'').then(ok=>{if(!ok)toast(S.perr||'Ainda não foi possível gerar o pagamento. Tente de novo ou fale com a loja.')})}
+ else if(a==='ptab'){S.pt=id;plist()}
+ else if(a==='ppay'){const o=S.ords.find(x=>x.n==id);if(o)openPay(o.n,o.t)}
+ else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
+});
+document.addEventListener('change',e=>{if(e.target.name==='pay'){S.pay=e.target.value;renderCart(1)}if(e.target.name==='ship'){S.ship=e.target.value;renderCart(1)}});
+document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em',pnm:'nm',pph:'ph',pad:'ad',pem:'em'}[e.target.id];if(m){S.f[m]=e.target.value;ls.set('prof',S.f)}});
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const r=S.q?S.prods.filter(p=>p.name.toLowerCase().includes(S.q)).slice(0,5):[];
+ $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-bd"><span class="truncate">${esc(p.emoji||'🎮')} ${esc(p.name)}</span><b class="text-acc">${R(pix(p))}</b></a>`).join('');
+ $('#sug').classList.toggle('hidden',!r.length);if(!location.hash.startsWith('#/p/'))render()});
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){location.hash='#/';$('#sug').classList.add('hidden');render();$('#vitrine').scrollIntoView()}});
+$('#sort').onchange=e=>{S.sort=e.target.value;render()};$('#onlys').onchange=e=>{S.only=e.target.checked;render()};
+$('#store').onchange=e=>{S.store=e.target.value;ls.set('store',S.store);shell();render();route();toast('Estoque de '+st().name)};
+$('#cartb').onclick=$('#mcart').onclick=()=>{location.hash='#/carrinho'};
+$('#favb').onclick=$('#mfav').onclick=()=>{S.fav=!S.fav;S.cat='';location.hash='#/';render();$('#vitrine').scrollIntoView()};
+addEventListener('hashchange',route);
+$('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(12);
+const CA=sb?ls.get('cache',null):null;
+if(CA&&CA.stores&&CA.stores.length){Object.assign(S,CA);S.store=st().id;shell();render();route()}
+load().then(()=>{if(refs().length)loadOrders().then(bdg);if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods,stock:S.stock,rev:S.rev});
+ S.store=st().id;shell();render();CA?(location.hash.startsWith('#/p/')&&pdp(decodeURIComponent(location.hash.slice(4)))):route();setInterval(tick,1000);
+ const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:null;
+ if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);addRef(r.num,r.tok);openPay(r.num,r.tok,true,false)}
+});
+</script>
+<script>
+/* ---------- cabeçalho recolhível no celular: rolar pra baixo recolhe (fica só a logo), rolar pra cima volta ---------- */
+(()=>{
+ const h=document.getElementById('hdr'),row=document.getElementById('hrow'),lg=row&&row.querySelector('.logo');
+ if(!h||!row||!lg)return;
+ const mq=matchMedia('(max-width:767px)'),R=document.documentElement,tb=document.getElementById('top'),home=document.getElementById('home'),
+  q=document.getElementById('q'),thm=document.getElementById('thm'),sug=document.getElementById('sug');
+ let mini=false,lastY=scrollY,acc=0,lock=0,tm=0,tk=0,hl=75,hd='';
+ const measure=()=>{
+  if(!mq.matches){R.style.removeProperty('--hl');R.style.removeProperty('--hd');hd='';return}
+  const hr=h.getBoundingClientRect(),lr=lg.getBoundingClientRect();
+  hl=Math.round(lr.bottom-hr.top+(parseFloat(getComputedStyle(row).paddingBottom)||0));
+  const nd=Math.max(0,Math.round(hr.height-hl))+'px';
+  R.style.setProperty('--hl',hl+'px');
+  if(nd!==hd){hd=nd;R.style.setProperty('--hd',nd);dispatchEvent(new Event('resize'))}
+ };
+ const collapse=()=>{if(mini)return;mini=true;clearTimeout(tm);h.classList.add('clip');void h.offsetWidth;h.classList.add('mini');lock=Date.now()+350};
+ const expand=()=>{if(!mini)return;mini=false;h.classList.remove('mini');clearTimeout(tm);tm=setTimeout(()=>{if(!mini)h.classList.remove('clip')},500);lock=Date.now()+350};
+ const limit=()=>home&&home.offsetHeight>0?40:(tb?tb.offsetHeight:0)+h.offsetHeight-hl;
+ const tick=()=>{
+  tk=0;if(!mq.matches)return;
+  const y=Math.max(0,scrollY),dy=y-lastY;lastY=y;
+  if(Date.now()<lock)return;
+  if(y<=8){acc=0;expand();return}
+  if(!dy)return;
+  acc=(dy>0)===(acc>0)?acc+dy:dy;
+  if(acc>12&&y>limit()){
+   if(document.activeElement===q||(thm&&!thm.classList.contains('hidden'))||(sug&&!sug.classList.contains('hidden')))return;
+   collapse();acc=0;
+  }else if(acc<-10){expand();acc=0}
+ };
+ addEventListener('scroll',()=>{if(!tk)tk=requestAnimationFrame(tick)},{passive:true});
+ const onMq=()=>{mini=false;clearTimeout(tm);h.classList.remove('mini','clip');measure()};
+ mq.addEventListener?mq.addEventListener('change',onMq):mq.addListener(onMq);
+ addEventListener('resize',measure);addEventListener('load',measure);
+ if('ResizeObserver' in window)new ResizeObserver(measure).observe(h);
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measure);
+ measure();
+})();
+</script>
+</body>
+</html>
