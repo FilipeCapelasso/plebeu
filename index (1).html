@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plebeu Games | Sua loja gamer no Acre e Rondônia</title>
+<meta name="description" content="Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho. Pix com desconto e até 5x sem juros.">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
+<meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>tailwind.config={theme:{extend:{colors:{bg:"#000",s2:"#070707",s3:"#0c0c10",bd:"#1c1c24",pri:"var(--p,#7c5cff)",acc:"var(--a,#00e6a8)",mut:"#8b8fa3"},fontFamily:{display:["Rajdhani","system-ui","sans-serif"],sans:["Inter","system-ui","sans-serif"]}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--p:#7c5cff;--a:#00e6a8}
+body{background:#000;color:#f1f2f6;font-family:Inter,system-ui,sans-serif;padding-bottom:64px}
+@media(min-width:768px){body{padding-bottom:0}}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#2a2d38;border-radius:8px}
+.glass{background:rgba(0,0,0,.82);backdrop-filter:blur(14px)}
+.gt{background:linear-gradient(90deg,#a78bfa,#7c5cff 45%,#c9b6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ch{transition:.25s}.ch:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.6);box-shadow:0 16px 44px -14px rgba(124,92,255,.45)}
+@keyframes gl{0%,100%{box-shadow:0 0 22px 2px rgba(124,92,255,.5)}50%{box-shadow:0 0 34px 8px rgba(124,92,255,.8)}}
+.glow{animation:gl 2.2s ease-in-out infinite}
+@keyframes sh{0%{background-position:-120% 0}100%{background-position:220% 0}}
+.b1,.b2{background-size:220% 100%;animation:sh 2.8s linear infinite;color:#000}
+.b1{background-image:linear-gradient(110deg,#ff5c5c,#ff8a5c 35%,#ff5c5c 60%,#ff8a5c);color:#fff}
+.b2{background-image:linear-gradient(110deg,#ffb020,#ffd76a 35%,#ffb020 60%,#ffd76a)}
+@keyframes fl{50%{transform:translateY(-10px)}}.fl{animation:fl 4.5s ease-in-out infinite}
+@keyframes mq{to{transform:translateX(-50%)}}.mq{animation:mq 40s linear infinite;width:max-content}.mq:hover{animation-play-state:paused}
+@keyframes sk{to{background-position:-200% 0}}
+.sk{background:linear-gradient(90deg,#0c0c10 25%,#16161d 50%,#0c0c10 75%);background-size:200% 100%;animation:sk 1.2s infinite}
+input,select{background:#0c0c10;border:1px solid #1c1c24;border-radius:12px;color:#f1f2f6}
+input:focus,select:focus{outline:2px solid var(--p);border-color:transparent}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-marker{display:none}
+details[open] summary span{transform:rotate(45deg)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="top" class="bg-s3 border-b border-bd py-2 text-center text-xs text-mut px-3"></div>
+
+<header class="glass sticky top-0 z-30 border-b border-bd">
+ <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3">
+  <a href="#/" class="font-display text-3xl font-bold leading-none gt">Plebeu<span class="block text-sm tracking-[.35em] text-white">GAMES</span></a>
+  <div class="relative order-last w-full md:order-none md:w-auto md:flex-1">
+   <input id="q" type="search" autocomplete="off" placeholder="Busque console, jogo, headset…" aria-label="Buscar" class="h-11 w-full pl-4 pr-4">
+   <div id="sug" class="absolute inset-x-0 top-12 z-40 hidden overflow-hidden rounded-xl border border-bd bg-s3 shadow-2xl"></div>
+  </div>
+  <select id="store" class="h-11 px-3 text-sm font-semibold" aria-label="Escolher loja"></select>
+  <button id="favb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Favoritos">♥</button>
+  <button id="cartb" class="relative h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Carrinho">🛒<b id="cn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-xs leading-5 text-black"></b></button>
+ </div>
+ <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2"></div></nav>
+</header>
+
+<main id="home">
+ <section class="relative overflow-hidden border-b border-bd">
+  <canvas id="pc" class="absolute inset-0 h-full w-full"></canvas>
+  <div class="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_.85fr] md:py-20">
+   <div>
+    <span class="inline-block rounded-full border border-bd bg-s3 px-3 py-1 text-xs font-semibold text-acc">Rio Branco (AC) e Porto Velho (RO)</span>
+    <h1 class="mt-4 font-display text-5xl font-bold leading-[.95] md:text-7xl">Sua loja <span class="gt">gamer</span> no Acre e em Rondônia</h1>
+    <p class="mt-5 max-w-xl text-lg text-mut">Consoles, jogos, periféricos e informática com garantia da loja. Escolha, finalize no WhatsApp e receba no mesmo dia.</p>
+    <div class="mt-7 flex flex-wrap gap-3">
+     <a href="#vitrine" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Ver produtos</a>
+     <a id="herowa" target="_blank" rel="noopener" class="rounded-xl border border-bd bg-s3 px-7 py-3.5 font-bold hover:border-pri">Falar com a loja</a>
+    </div>
+   </div>
+   <div class="fl rounded-3xl border border-bd bg-s3/90 p-7 shadow-[0_0_60px_-15px_rgba(124,92,255,.6)]">
+    <p id="cl" class="text-sm font-semibold text-mut"></p>
+    <p id="ct" class="my-2 font-display text-6xl font-bold tabular-nums gt">--:--:--</p>
+    <p class="text-sm text-mut">Pedidos até as 15h saem no mesmo dia, no horário da sua cidade.</p>
+    <div class="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-mut">
+     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">Pix</b>desconto</div>
+     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">5x</b>sem juros</div>
+     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">2</b>lojas físicas</div>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="border-b border-bd bg-s2"><div class="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
+  <div class="text-sm text-mut"><b class="block text-white">⚡ Entrega no mesmo dia</b>Rio Branco e Porto Velho</div>
+  <div class="text-sm text-mut"><b class="block text-white">💠 Desconto no Pix</b>Preço menor, na hora</div>
+  <div class="text-sm text-mut"><b class="block text-white">🛡️ Garantia da loja</b>Suporte direto no WhatsApp</div>
+  <div class="text-sm text-mut"><b class="block text-white">🏬 Retire na loja</b>Sem pagar frete</div>
+ </div></section>
+
+ <section id="vitrine" class="mx-auto max-w-7xl px-4 py-12">
+  <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+   <h2 id="gt" class="font-display text-4xl font-bold">Destaques da semana</h2>
+   <div class="flex items-center gap-3 text-sm">
+    <label class="flex items-center gap-2 text-mut"><input id="onlys" type="checkbox" class="h-4 w-4 accent-violet-500">Só com estoque</label>
+    <select id="sort" class="h-10 px-3" aria-label="Ordenar"><option value="rel">Relevância</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option><option value="az">A–Z</option></select>
+   </div>
+  </div>
+  <div id="grid" class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4"></div>
+ </section>
+
+ <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2 py-12">
+  <h2 class="mb-6 text-center font-display text-4xl font-bold">Quem comprou <span class="gt">aprova</span></h2>
+  <div id="mq" class="mq flex gap-4"></div>
+ </section>
+
+ <section class="mx-auto max-w-3xl px-4 py-14">
+  <h2 class="mb-6 text-center font-display text-4xl font-bold">Dúvidas frequentes</h2>
+  <div id="faq" class="space-y-3"></div>
+ </section>
+
+ <section class="mx-auto max-w-7xl px-4 pb-14"><div class="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-bd bg-s3 p-8 shadow-[0_0_60px_-20px_rgba(124,92,255,.7)]">
+  <div><h2 class="font-display text-3xl font-bold">Não achou o que procura?</h2><p class="text-mut">Conseguimos consoles, peças e acessórios sob encomenda.</p></div>
+  <a id="bandwa" target="_blank" rel="noopener" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold">Pedir pelo WhatsApp</a>
+ </div></section>
+</main>
+
+<main id="pdp" class="mx-auto hidden max-w-7xl px-4 py-8"></main>
+
+<footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-6 px-4">
+ <div><b class="font-display text-2xl gt">Plebeu Games</b><p class="mt-1">Loja gamer em Rio Branco (AC) e Porto Velho (RO).</p></div>
+ <div id="fst" class="space-y-1"></div>
+</div></footer>
+
+<nav class="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-bd text-xs md:hidden">
+ <a href="#/" class="py-3 text-center">🏠<br>Início</a><a href="#vitrine" class="py-3 text-center">🕹️<br>Produtos</a>
+ <button id="mfav" class="py-3">♥<br>Favoritos</button><button id="mcart" class="py-3">🛒<br>Carrinho</button>
+</nav>
+<a id="wa" target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-20 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-2xl shadow-lg md:bottom-5">💬</a>
+
+<div id="sc" class="fixed inset-0 z-40 hidden bg-black/70"></div>
+<aside id="cart" class="fixed inset-y-0 right-0 z-50 flex w-full max-w-md translate-x-full flex-col border-l border-bd bg-s3 transition-transform" aria-label="Carrinho">
+ <div class="flex items-center justify-between border-b border-bd p-5"><h2 class="font-display text-3xl font-bold">Seu carrinho</h2><button id="cx" class="h-10 w-10 rounded-xl border border-bd" aria-label="Fechar">✕</button></div>
+ <div id="lines" class="flex-1 overflow-auto px-5"></div>
+ <div id="ck" class="space-y-3 border-t border-bd bg-s2 p-5"></div>
+</aside>
+<div id="toast" class="fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 translate-y-40 rounded-xl border border-bd bg-s3 px-5 py-3 text-sm shadow-2xl transition-transform md:bottom-6" role="status"></div>
+
+<script>
+/* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
+const SB_URL='',SB_KEY='';
+const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
+/* ====================================================================================== */
+const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):null;
+const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:{nm:'',ph:'',ad:''}};
+
+const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
+async function load(){
+ if(sb)try{
+  const[a,b,c,d,r]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12)]);
+  if(a.error||b.error||c.error)throw 0;
+  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);return;
+ }catch(e){console.warn('Supabase indisponível: modo demonstração')}
+ S.demo=true;
+ S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568999999999'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999999999'}];
+ S.cats=[['consoles','Consoles','🎮'],['jogos','Jogos','💿'],['perifericos','Periféricos','🎧'],['informatica','Informática','💻']].map(([slug,name,emoji])=>({slug,name,emoji}));
+ S.prods=[D(1,'PlayStation 4 Slim 1TB desbloqueado + 7 jogos','consoles','🎮',1756.14,0,5,1,42),D(2,'Call of Duty Modern Warfare – PS4','jogos','💿',155.56,0,9,1,18),D(3,'Base para notebook com cooler','informatica','❄️',48.89,0,9,1,31),D(4,'Headset gamer RGB com microfone','perifericos','🎧',189.9,229.9,8,1,12),D(5,'Controle PS4 sem fio','consoles','🕹️',169.9,0,8,1,27),D(6,'SSD 480GB SATA III','informatica','💾',229.9,0,8,0,15)];
+ S.rev=[{customer_name:'Cliente exemplo',rating:5,body:'Texto de exemplo. As avaliações reais vêm da tabela reviews.'}];
+}
+const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0];
+const qty=p=>{const k=p.id+'|'+st().id;return k in S.stock?S.stock[k]:(S.demo?9:0)};
+const pix=p=>p.price*(1-(p.pix_discount||0)/100);
+const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
+const off=p=>p.old_price?Math.round((1-p.price/p.old_price)*100):0;
+
+function list(){
+ let l=S.prods.filter(p=>(!S.cat||p.category_slug===S.cat)&&(!S.fav||S.favs.includes(p.id))&&(!S.only||qty(p)>0)&&(!S.q||(p.name+' '+(p.brand||'')).toLowerCase().includes(S.q)));
+ const o={lo:(a,b)=>pix(a)-pix(b),hi:(a,b)=>pix(b)-pix(a),az:(a,b)=>a.name.localeCompare(b.name)}[S.sort];
+ return o?l.sort(o):l.sort((a,b)=>(b.featured?1:0)-(a.featured?1:0)||(b.sold_count||0)-(a.sold_count||0));
+}
+const card=p=>{const n=qty(p),o=off(p);
+ return `<article class="ch relative flex flex-col overflow-hidden rounded-2xl border border-bd bg-s3">
+ <a href="#/p/${esc(p.slug)}" class="relative grid aspect-square place-items-center overflow-hidden bg-[radial-gradient(circle_at_50%_40%,rgba(124,92,255,.25),transparent_65%)] text-7xl">
+ ${o?`<span class="b1 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">-${o}%</span>`:n&&n<4?`<span class="b2 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">Últimas ${n}</span>`:''}${pic(p)}</a>
+ <button data-a="fav" data-id="${p.id}" class="absolute right-3 top-3 h-9 w-9 rounded-full bg-black/70 ${S.favs.includes(p.id)?'text-red-500':'text-mut'}" aria-label="Favoritar">♥</button>
+ <div class="flex flex-1 flex-col gap-1.5 p-4"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 min-h-[2.6rem] text-sm font-semibold">${esc(p.name)}</a>
+ ${p.sold_count>9?`<span class="text-xs text-mut">🔥 ${p.sold_count} vendidos</span>`:''}
+ <p class="font-display text-3xl font-bold leading-none text-acc">${R(pix(p))}<small class="ml-1 font-sans text-xs font-medium text-mut">no Pix</small></p>
+ <p class="text-xs text-mut">${p.old_price?`<s>${R(p.old_price)}</s> `:''}ou ${R(p.price)} em ${p.max_installments}x sem juros</p>
+ <p class="text-xs font-bold ${n?'text-acc':'text-red-400'}">${n?'Em estoque em '+esc(st().name):'Sem estoque em '+esc(st().name)}</p>
+ <button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="mt-auto h-11 rounded-xl bg-pri text-sm font-bold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:bg-bd disabled:text-mut">${n?'Adicionar ao carrinho':'Indisponível'}</button></div></article>`};
+
+function render(){
+ const l=list(),c=S.cats.find(x=>x.slug===S.cat);
+ $('#grid').innerHTML=l.length?l.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
+ $('#nav').innerHTML=[['','Tudo','🔥']].concat(S.cats.map(x=>[x.slug,x.name,x.emoji])).map(([s,n,e])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)}</button>`).join('');
+ $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:c?c.name:'Destaques da semana';
+ renderCart();
+}
+/* ---------- página do produto ---------- */
+let gi=0;
+function pdp(slug){
+ const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
+ const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,4);
+ document.title=p.name+' | Plebeu Games';
+ $('#pdp').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-white">← Voltar para a loja</a>
+ <div class="mt-5 grid gap-8 md:grid-cols-2">
+  <div><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd bg-[radial-gradient(circle_at_50%_40%,rgba(124,92,255,.3),transparent_65%)] text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
+  ${imgs.length>1?`<div class="mt-3 flex gap-2">${imgs.map(u=>`<button data-a="img" data-u="${esc(u)}" class="h-16 w-16 overflow-hidden rounded-xl border border-bd"><img src="${esc(u)}" alt="" class="h-full w-full object-cover"></button>`).join('')}</div>`:''}</div>
+  <div class="space-y-4"><p class="text-sm text-mut">${esc(p.brand||'')}</p><h1 class="font-display text-4xl font-bold leading-tight">${esc(p.name)}</h1>
+   ${p.sold_count>9?`<p class="text-sm text-mut">🔥 ${p.sold_count} vendidos</p>`:''}
+   <div class="rounded-2xl border border-bd bg-s3 p-5"><p class="font-display text-5xl font-bold text-acc">${R(pix(p))}<small class="ml-2 font-sans text-sm text-mut">no Pix ${p.pix_discount?`(-${+p.pix_discount}%)`:''}</small></p>
+   <p class="mt-1 text-sm text-mut">${o?`<s>${R(p.old_price)}</s> · `:''}ou ${R(p.price)} em até ${p.max_installments}x de ${R(p.price/p.max_installments)} sem juros</p></div>
+   <div class="space-y-1.5 rounded-2xl border border-bd p-4 text-sm">${S.stores.map(s=>{const k=p.id+'|'+s.id,q=k in S.stock?S.stock[k]:(S.demo?9:0);return `<p>${q?'✅':'⛔'} <b>${esc(s.name)}</b> <span class="text-mut">— ${q?(q<4?'últimas '+q+' unidades':'disponível'):'sem estoque'}</span></p>`}).join('')}</div>
+   <div class="flex gap-3"><button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="h-12 flex-1 rounded-xl border border-pri font-bold hover:bg-pri/20 disabled:opacity-40">Adicionar</button>
+   <button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-12 flex-1 rounded-xl bg-pri font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível em '+esc(st().name)}</button></div>
+   <div class="rounded-2xl border border-bd p-4"><p class="mb-2 text-sm font-semibold">Calcular entrega</p><div class="flex gap-2"><input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite seu CEP" class="h-11 min-w-0 flex-1 px-3"><button data-a="cep" class="h-11 rounded-xl bg-s2 px-5 text-sm font-bold ring-1 ring-bd hover:ring-pri">Calcular</button></div><p id="cepr" class="mt-2 text-sm text-mut"></p></div>
+  </div></div>
+  <div class="mt-10 grid gap-8 md:grid-cols-2"><div><h2 class="mb-3 font-display text-3xl font-bold">Descrição</h2><p class="text-mut">${esc(p.description)}</p></div>
+  ${(p.features||[]).length?`<div><h2 class="mb-3 font-display text-3xl font-bold">Destaques</h2><ul class="space-y-2 text-mut">${p.features.map(f=>`<li>✔ ${esc(f)}</li>`).join('')}</ul></div>`:''}</div>
+  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">${rel.map(card).join('')}</div>`:''}`;
+}
+async function cep(){
+ const v=$('#cep').value.replace(/\D/g,''),o=$('#cepr');if(v.length!==8)return o.textContent='Digite os 8 números do CEP.';
+ o.textContent='Calculando…';
+ try{const d=await(await fetch(`https://viacep.com.br/ws/${v}/json/`)).json();if(d.erro)throw 0;
+  const loc=['Rio Branco','Porto Velho'].includes(d.localidade);
+  o.innerHTML=loc?`<b class="text-acc">${esc(d.localidade)}/${esc(d.uf)}:</b> entrega por motoboy por ${R(FRETE.taxa)} (grátis acima de ${R(FRETE.gratis)}). Pedido até as ${FRETE.corte}h sai hoje.`
+  :`${esc(d.localidade)}/${esc(d.uf)}: <a class="text-acc underline" target="_blank" rel="noopener" href="https://wa.me/${st().whatsapp}?text=${encodeURIComponent('Olá! Quero saber o frete para o CEP '+v)}">consulte o frete pelo WhatsApp</a>.`;
+ }catch{o.textContent='Não encontramos esse CEP. Confira e tente de novo.'}
+}
+/* ---------- carrinho ---------- */
+const line=i=>{const p=S.prods.find(x=>x.id===i.id);return p&&{p,n:i.n}};
+const sub=()=>S.cart.map(line).filter(Boolean).reduce((t,{p,n})=>t+n*(S.pay==='pix'?pix(p):p.price),0);
+const calc=()=>{const s=sub(),d=S.cp?s*S.cp.pct/100:0,f=S.ship==='entrega'&&s-d<FRETE.gratis&&s>0?FRETE.taxa:0;return{s,d,f,t:s-d+f}};
+const save=()=>{ls.set('cart',S.cart);ls.set('favs',S.favs)};
+function renderCart(){
+ const L=S.cart.map(line).filter(Boolean),c=L.reduce((t,x)=>t+x.n,0),k=calc(),F=S.f;
+ $('#cn').textContent=c;$('#cn').classList.toggle('hidden',!c);
+ $('#lines').innerHTML=L.length?L.map(({p,n})=>`<div class="flex items-center gap-3 border-b border-bd py-4"><div class="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-s2 text-3xl">${p.image_url?`<img src="${esc(p.image_url)}" alt="" class="h-full w-full object-contain">`:esc(p.emoji||'🎮')}</div>
+ <div class="min-w-0 flex-1 text-sm"><p class="font-semibold">${esc(p.name)}</p><p class="text-acc">${R(S.pay==='pix'?pix(p):p.price)}</p>
+ <div class="mt-1 inline-flex items-center rounded-lg border border-bd"><button data-a="dec" data-id="${p.id}" class="h-8 w-8" aria-label="Diminuir">−</button><span class="w-6 text-center font-bold">${n}</span><button data-a="inc" data-id="${p.id}" class="h-8 w-8" aria-label="Aumentar">+</button></div></div>
+ <button data-a="rm" data-id="${p.id}" aria-label="Remover">🗑️</button></div>`).join(''):'<p class="py-16 text-center text-mut">Seu carrinho está vazio.</p>';
+ const opt=(n,v,t,cur)=>`<label class="cursor-pointer rounded-xl border p-2.5 text-center text-xs font-semibold ${cur===v?'border-pri bg-pri/15':'border-bd'}"><input type="radio" name="${n}" value="${v}" class="hidden" ${cur===v?'checked':''}>${t}</label>`;
+ $('#ck').innerHTML=L.length?`<div class="flex gap-2"><input id="cp" placeholder="Cupom de desconto" class="h-10 min-w-0 flex-1 px-3 text-sm uppercase" value="${S.cp?esc(S.cp.code):''}"><button data-a="coupon" class="rounded-xl px-4 text-sm font-bold ring-1 ring-bd hover:ring-pri">Aplicar</button></div>
+ <div class="grid grid-cols-2 gap-2">${opt('pay','pix','💠 Pix (desconto)',S.pay)}${opt('pay','cartao','💳 Cartão',S.pay)}</div>
+ <div class="grid grid-cols-2 gap-2">${opt('ship','entrega','🛵 Entrega',S.ship)}${opt('ship','retirada','🏬 Retirar na loja',S.ship)}</div>
+ <input id="nm" placeholder="Seu nome" autocomplete="name" value="${esc(F.nm)}" class="h-11 w-full px-3"><input id="ph" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" value="${esc(F.ph)}" class="h-11 w-full px-3">
+ ${S.ship==='entrega'?`<input id="ad" placeholder="Endereço completo (rua, número, bairro)" autocomplete="street-address" value="${esc(F.ad)}" class="h-11 w-full px-3">`:''}
+ <div class="space-y-1 text-sm text-mut"><p class="flex justify-between"><span>Subtotal</span><span>${R(k.s)}</span></p>${k.d?`<p class="flex justify-between text-acc"><span>Cupom ${esc(S.cp.code)}</span><span>-${R(k.d)}</span></p>`:''}<p class="flex justify-between"><span>Entrega</span><span>${S.ship==='retirada'?'Retirada':k.f?R(k.f):'Grátis'}</span></p></div>
+ <p class="flex justify-between font-display text-3xl font-bold"><span>Total</span><span class="text-acc">${R(k.t)}</span></p>
+ <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">Finalizar pelo WhatsApp</button>`:'';
+}
+async function coupon(){
+ const c=$('#cp').value.trim().toUpperCase();S.cp=null;if(!c)return renderCart();
+ if(sb){const{data}=await sb.rpc('validate_coupon',{p_code:c,p_subtotal:sub()});if(data&&data.length)S.cp={code:c,pct:+data[0].percent}}
+ else if(c==='PLEBEU10')S.cp={code:c,pct:10};
+ toast(S.cp?`Cupom ${c} aplicado: ${S.cp.pct}% off`:'Cupom inválido ou valor mínimo não atingido');renderCart();
+}
+async function order(){
+ const L=S.cart.map(line).filter(Boolean),F=S.f,ph=F.ph.replace(/\D/g,'');
+ if(F.nm.trim().length<2||ph.length<10)return toast('Informe seu nome e WhatsApp com DDD.');
+ if(S.ship==='entrega'&&F.ad.trim().length<8)return toast('Informe o endereço de entrega.');
+ const s=st(),k=calc(),items=L.map(({p,n})=>({id:p.id,name:p.name,qty:n,unit:+(S.pay==='pix'?pix(p):p.price).toFixed(2)}));
+ if(sb)try{await sb.from('orders').insert({store_id:s.id,customer_name:F.nm.trim(),customer_phone:ph,payment:S.pay,items,total:+k.t.toFixed(2),coupon_code:S.cp?.code||null,delivery_type:S.ship,address:S.ship==='entrega'?F.ad.trim():null})}catch(e){}
+ const m=`Olá, Plebeu Games ${s.name}! Quero finalizar meu pedido:\n`+items.map(i=>`• ${i.qty}x ${i.name} — ${R(i.unit)}`).join('\n')+`\n\nPagamento: ${S.pay==='pix'?'Pix':'Cartão'}\n${S.cp?`Cupom: ${S.cp.code}\n`:''}${S.ship==='entrega'?`Entrega: ${F.ad.trim()}`:'Retirada na loja'}\nTotal: ${R(k.t)}\nNome: ${F.nm.trim()}\nWhatsApp: ${ph}`;
+ window.open(`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(m)}`,'_blank');
+ S.cart=[];S.cp=null;save();renderCart();cart(false);toast('Pedido enviado! Continue a conversa no WhatsApp.');
+}
+function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
+ if(cur+n>m){toast(m?`Só temos ${m} em estoque.`:'Sem estoque nesta loja.');return false}
+ it?it.n+=n:S.cart.push({id,n});save();renderCart();return true}
+const cart=o=>{$('#cart').classList.toggle('translate-x-full',!o);$('#sc').classList.toggle('hidden',!o)};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('translate-y-40');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('translate-y-40'),2600)}
+/* ---------- extras ---------- */
+function tick(){
+ const s=st(),d=new Date(Date.now()+(s.id==='pv'?-4:-5)*36e5),x=d.getUTCHours()*3600+d.getUTCMinutes()*60+d.getUTCSeconds(),cut=FRETE.corte*3600,open=x<cut,r=open?cut-x:86400-x+cut,f=v=>String(v).padStart(2,'0');
+ $('#ct').textContent=`${f(r/3600|0)}:${f(r%3600/60|0)}:${f(r%60)}`;
+ $('#cl').textContent=open?`Receba hoje em ${s.name} se pedir em`:`Pedidos em ${s.name} saem amanhã. Próximo corte em`;
+}
+function shell(){
+ const s=st();if(!s)return;
+ $('#store').innerHTML=S.stores.map(x=>`<option value="${x.id}" ${x.id===s.id?'selected':''}>📍 ${esc(x.name)}</option>`).join('');
+ $('#top').textContent=`Loja: ${s.name} (${s.kind||'loja'}) • Compre até as ${FRETE.corte}h e receba no mesmo dia`;
+ const w=`https://wa.me/${s.whatsapp}`;['#wa','#herowa','#bandwa'].forEach(i=>$(i).href=w);
+ $('#fst').innerHTML=S.stores.map(x=>`<p><b class="text-white">${esc(x.name)}</b> — ${esc(x.kind||'')}</p>`).join('');
+ $('#dep').classList.toggle('hidden',!S.rev.length);
+ const rv=S.rev.map(r=>`<figure class="w-80 shrink-0 rounded-2xl border border-bd bg-s3 p-5"><p class="text-yellow-400">${'★'.repeat(r.rating)}</p><blockquote class="my-2 text-sm text-mut">${esc(r.body)}</blockquote><figcaption class="text-sm font-semibold">${esc(r.customer_name)}</figcaption></figure>`).join('');
+ $('#mq').innerHTML=rv+rv;tick();
+}
+$('#faq').innerHTML=[['Como funciona a entrega no mesmo dia?','Pedidos feitos até as 15h (horário da sua cidade) em Rio Branco e Porto Velho saem no mesmo dia por motoboy. Depois desse horário, saem no dia seguinte.'],['Posso retirar na loja?','Pode. Escolha “Retirar na loja” no carrinho e combine o horário pelo WhatsApp. Não há taxa de entrega.'],['Quais são as formas de pagamento?','Pix com desconto ou cartão em até 5x sem juros. Você confirma o pagamento direto com a loja no WhatsApp.'],['Os produtos têm garantia?','Sim, todos têm garantia da loja. Os detalhes de cada produto você confirma com o atendimento.'],['E se o produto não estiver na minha loja?','O estoque muda conforme a loja escolhida no topo. Fale com a gente e verificamos a transferência ou a encomenda.']].map(([q,a])=>`<details class="rounded-2xl border border-bd bg-s3 p-5"><summary class="flex items-center justify-between font-semibold">${q}<span class="text-2xl text-pri transition-transform">+</span></summary><p class="mt-3 text-mut">${a}</p></details>`).join('');
+(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w,h,P;
+ const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(70,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
+ (function f(){x.clearRect(0,0,w,h);x.fillStyle='rgba(124,92,255,.7)';P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});requestAnimationFrame(f)})()})();
+/* ---------- rotas e eventos ---------- */
+function route(){
+ const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp');
+ $('#home').classList.toggle('hidden',!!m);pd.classList.toggle('hidden',!m);
+ if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
+}
+document.addEventListener('click',e=>{
+ if(!e.target.closest('#sug,#q'))$('#sug').classList.add('hidden');
+ const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,id=t.dataset.id;
+ if(a==='add'){if(add(id))toast('Adicionado ao carrinho')}
+ else if(a==='buy'){if(add(id))cart(true)}
+ else if(a==='fav'){S.favs=S.favs.includes(id)?S.favs.filter(x=>x!==id):S.favs.concat(id);save();render()}
+ else if(a==='cat'){S.cat=id;S.fav=false;if(location.hash)location.hash='#/';render();$('#vitrine').scrollIntoView()}
+ else if(a==='inc')add(id);
+ else if(a==='dec'){const it=S.cart.find(x=>x.id===id);it.n--;if(it.n<1)S.cart=S.cart.filter(x=>x!==it);save();renderCart()}
+ else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
+ else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
+ else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
+});
+document.addEventListener('change',e=>{if(e.target.name==='pay'){S.pay=e.target.value;renderCart()}if(e.target.name==='ship'){S.ship=e.target.value;renderCart()}});
+document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad'}[e.target.id];if(m)S.f[m]=e.target.value});
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const r=S.q?S.prods.filter(p=>p.name.toLowerCase().includes(S.q)).slice(0,5):[];
+ $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-bd"><span class="truncate">${esc(p.emoji||'🎮')} ${esc(p.name)}</span><b class="text-acc">${R(pix(p))}</b></a>`).join('');
+ $('#sug').classList.toggle('hidden',!r.length);if(!location.hash.startsWith('#/p/'))render()});
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){location.hash='#/';$('#sug').classList.add('hidden');render();$('#vitrine').scrollIntoView()}});
+$('#sort').onchange=e=>{S.sort=e.target.value;render()};$('#onlys').onchange=e=>{S.only=e.target.checked;render()};
+$('#store').onchange=e=>{S.store=e.target.value;ls.set('store',S.store);shell();render();route();toast('Estoque de '+st().name)};
+$('#cartb').onclick=$('#mcart').onclick=()=>cart(true);$('#cx').onclick=$('#sc').onclick=()=>cart(false);
+$('#favb').onclick=$('#mfav').onclick=()=>{S.fav=!S.fav;S.cat='';location.hash='#/';render();$('#vitrine').scrollIntoView()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cart(false)});
+addEventListener('hashchange',route);
+$('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(4);
+load().then(()=>{S.store=st().id;shell();render();route();setInterval(tick,1000)});
+</script>
+</body>
+</html>
