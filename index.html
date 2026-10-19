@@ -135,6 +135,7 @@ details[open] summary span{transform:rotate(45deg)}
  <div id="lines" class="flex-1 overflow-auto px-5"></div>
  <div id="ck" class="space-y-3 border-t border-bd bg-s2 p-5"></div>
 </aside>
+<div id="pay" class="fixed inset-0 z-[70] hidden grid place-items-center overflow-auto bg-black/80 p-4" role="dialog" aria-modal="true" aria-label="Pagamento"><div id="payc" class="w-full max-w-md rounded-3xl border border-bd bg-s3 p-6 text-center shadow-2xl"></div></div>
 <div id="toast" class="fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 translate-y-40 rounded-xl border border-bd bg-s3 px-5 py-3 text-sm shadow-2xl transition-transform md:bottom-6" role="status"></div>
 
 <script>
@@ -146,7 +147,7 @@ const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):
 const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:{nm:'',ph:'',ad:''}};
+const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:{nm:'',ph:'',ad:'',em:''}};
 
 const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
 async function load(){
@@ -244,11 +245,11 @@ function renderCart(){
  $('#ck').innerHTML=L.length?`<div class="flex gap-2"><input id="cp" placeholder="Cupom de desconto" class="h-10 min-w-0 flex-1 px-3 text-sm uppercase" value="${S.cp?esc(S.cp.code):''}"><button data-a="coupon" class="rounded-xl px-4 text-sm font-bold ring-1 ring-bd hover:ring-pri">Aplicar</button></div>
  <div class="grid grid-cols-2 gap-2">${opt('pay','pix','💠 Pix (desconto)',S.pay)}${opt('pay','cartao','💳 Cartão',S.pay)}</div>
  <div class="grid grid-cols-2 gap-2">${opt('ship','entrega','🛵 Entrega',S.ship)}${opt('ship','retirada','🏬 Retirar na loja',S.ship)}</div>
- <input id="nm" placeholder="Seu nome" autocomplete="name" value="${esc(F.nm)}" class="h-11 w-full px-3"><input id="ph" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" value="${esc(F.ph)}" class="h-11 w-full px-3">
+ <input id="nm" placeholder="Seu nome" autocomplete="name" value="${esc(F.nm)}" class="h-11 w-full px-3"><input id="ph" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" value="${esc(F.ph)}" class="h-11 w-full px-3"><input id="em" type="email" placeholder="E-mail (opcional, para o recibo)" autocomplete="email" value="${esc(F.em)}" class="h-11 w-full px-3">
  ${S.ship==='entrega'?`<input id="ad" placeholder="Endereço completo (rua, número, bairro)" autocomplete="street-address" value="${esc(F.ad)}" class="h-11 w-full px-3">`:''}
  <div class="space-y-1 text-sm text-mut"><p class="flex justify-between"><span>Subtotal</span><span>${R(k.s)}</span></p>${k.d?`<p class="flex justify-between text-acc"><span>Cupom ${esc(S.cp.code)}</span><span>-${R(k.d)}</span></p>`:''}<p class="flex justify-between"><span>Entrega</span><span>${S.ship==='retirada'?'Retirada':k.f?R(k.f):'Grátis'}</span></p></div>
  <p class="flex justify-between font-display text-3xl font-bold"><span>Total</span><span class="text-acc">${R(k.t)}</span></p>
- <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">Finalizar pelo WhatsApp</button>`:'';
+ <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">${sb?'Pagar agora':'Finalizar pelo WhatsApp'}</button>${sb?'<p class="text-center text-xs text-mut">Pagamento seguro pelo Mercado Pago. O Pix confirma na hora.</p>':''}`:'';
 }
 async function coupon(){
  const c=$('#cp').value.trim().toUpperCase();S.cp=null;if(!c)return renderCart();
@@ -262,20 +263,59 @@ async function order(){
  if(F.nm.trim().length<2||ph.length<10)return toast('Informe seu nome e WhatsApp com DDD.');
  if(S.ship==='entrega'&&F.ad.trim().length<8)return toast('Informe o endereço de entrega.');
  const s=st(),k=calc(),items=L.map(({p,n})=>({id:p.id,name:p.name,qty:n,unit:+(S.pay==='pix'?pix(p):p.price).toFixed(2)}));
- S.busy=true;const b=$('[data-a="order"]');if(b){b.disabled=true;b.textContent='Enviando pedido…'}
- const w=window.open('','_blank');            /* abre já: evita bloqueio de pop-up após o await */
- let num=null,total=k.t;
+ S.busy=true;const b=$('[data-a="order"]');if(b){b.disabled=true;b.textContent='Registrando pedido…'}
+ let num=null,tok=null,total=k.t;
  if(sb)try{
   const{data,error}=await sb.rpc('place_order',{p_store:s.id,p_name:F.nm.trim(),p_phone:ph,p_payment:S.pay,p_delivery:S.ship,
    p_address:S.ship==='entrega'?F.ad.trim():null,p_items:items.map(({id,qty})=>({id,qty})),p_coupon:S.cp?.code||null});
-  if(error&&error.code==='P0001'){S.busy=false;w&&w.close();renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
-  if(data){num=data.order_number;total=+data.total}
- }catch(e){}                                   /* falha de rede: não perde a venda, segue pro WhatsApp */
+  if(error&&error.code==='P0001'){S.busy=false;renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
+  if(data){num=data.order_number;tok=data.token;total=+data.total}
+ }catch(e){}
+ if(num&&tok&&await startPay(num,tok,F.em)){S.busy=false;S.cart=[];S.cp=null;save();renderCart();cart(false);return}
  S.busy=false;
+ /* plano B: se o pagamento online não abrir, o pedido segue pelo WhatsApp como antes */
  const m=`Olá, Plebeu Games ${s.name}! Quero finalizar meu pedido${num?' #'+num:''}:\n`+items.map(i=>`• ${i.qty}x ${i.name} — ${R(i.unit)}`).join('\n')+`\n\nPagamento: ${S.pay==='pix'?'Pix':'Cartão'}\n${S.cp?`Cupom: ${S.cp.code}\n`:''}${S.ship==='entrega'?`Entrega: ${F.ad.trim()}`:'Retirada na loja'}\nTotal: ${R(total)}\nNome: ${F.nm.trim()}\nWhatsApp: ${ph}`;
  const u=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(m)}`;
- if(w)w.location.href=u;else window.open(u,'_blank')||location.assign(u);
+ window.open(u,'_blank')||location.assign(u);
  S.cart=[];S.cp=null;save();renderCart();cart(false);toast(num?`Pedido #${num} registrado! Continue no WhatsApp.`:'Pedido enviado! Continue a conversa no WhatsApp.');
+}
+/* ---------- pagamento (Mercado Pago) ---------- */
+let pt=null;
+const DET=x=>({cc_rejected_insufficient_amount:'Saldo insuficiente no cartão.',cc_rejected_bad_filled_security_code:'Código de segurança inválido.',cc_rejected_bad_filled_date:'Data de validade inválida.',cc_rejected_call_for_authorize:'Autorize o pagamento com o seu banco e tente de novo.',cc_rejected_high_risk:'Recusado por segurança. Tente outro cartão ou pague no Pix.'}[x]||'O banco não aprovou. Tente outro cartão ou pague no Pix.');
+async function startPay(num,tok,email){
+ try{
+  const{data,error}=await sb.functions.invoke('mercadopago',{body:{action:'create',order_number:num,token:tok,email:email||'',return_url:location.origin+location.pathname}});
+  if(error||!data||!data.ok){console.warn('Mercado Pago:',error||data?.error);return false}
+  ls.set('pay',{num,tok});
+  if(data.kind==='checkout'){S.cart=[];save();location.href=data.url;return true}
+  openPay(num,tok);return true;
+ }catch(e){return false}
+}
+async function openPay(num,tok,fast,quiet){
+ const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;clearInterval(pt);let n=0;
+ const step=async()=>{
+  const{data:d}=await sb.rpc('get_order_payment',{p_order_number:num,p_token:tok});
+  if(!d){ls.set('pay',null);return closePay()}
+  const ok=d.payment_status==='approved',dead=d.status==='cancelado'&&!ok;
+  const k=n++;
+  if(!ok&&!dead&&((fast&&k===0)||(k>0&&k%5===0)))sb.functions.invoke('mercadopago',{body:{action:'sync',order_number:num,token:tok}}).catch(()=>{});
+  if(dead&&quiet){ls.set('pay',null);return closePay()}
+  o.classList.remove('hidden');renderPay(d,ok,dead);
+  if(ok||dead){clearInterval(pt);ls.set('pay',null)}
+ };
+ await step();if(!o.classList.contains('hidden'))pt=setInterval(step,4000);
+}
+function closePay(){clearInterval(pt);$('#pay').classList.add('hidden')}
+function renderPay(d,ok,dead){
+ const T=R(d.total),B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
+ const H=(i,t,x)=>`<p class="text-5xl">${i}</p><h2 class="mt-2 font-display text-3xl font-bold">${t}</h2><p class="mt-1 text-sm text-mut">${x}</p>`;
+ const close=`<button data-a="payclose" class="${B} border border-bd">${ok?'Continuar comprando':'Fechar'}</button>`;
+ const wa=`https://wa.me/${d.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${d.store_name}! Acabei de pagar o pedido #${d.order_number} (${T}).\n`+(d.items||[]).map(i=>`• ${i.qty}x ${i.name}`).join('\n')+`\n${d.delivery_type==='entrega'?'Entrega: '+d.address:'Retirada na loja'}\nNome: ${d.customer_name}`)}`;
+ $('#payc').innerHTML=ok?H('✅','Pagamento confirmado!',`Pedido #${d.order_number} · ${T}. Já estamos separando o seu pedido.`)+`<a href="${wa}" target="_blank" rel="noopener" class="${B} glow bg-pri text-white">Avisar a loja no WhatsApp</a>`+close
+ :dead?H('⌛','Pedido cancelado','O pagamento não foi concluído a tempo e o estoque foi liberado. Faça um novo pedido quando quiser.')+`<button data-a="payclose" class="${B} bg-pri text-white">Voltar à loja</button>`
+ :d.payment_status==='rejected'?H('❌','Pagamento recusado',esc(DET(d.status_detail)))+`<button data-a="payretry" class="${B} bg-pri text-white">Tentar de novo</button>`+close
+ :d.pix_qr_code?H('💠',`Pague ${T} no Pix`,`Pedido #${d.order_number} · expira em <b id="pxt" data-e="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b>`)+`<img alt="QR Code Pix" class="mx-auto mt-4 h-52 w-52 rounded-xl bg-white p-2" src="data:image/png;base64,${d.pix_qr_base64}"><button data-a="copy" data-u="${esc(d.pix_qr_code)}" class="${B} glow bg-pri text-white">Copiar código Pix</button><p class="mt-3 text-xs text-mut">No app do seu banco, escolha Pix copia e cola. A confirmação aparece aqui sozinha.</p>`+close
+ :H('⏳','Aguardando confirmação',`Pedido #${d.order_number} · ${T}. Assim que o Mercado Pago confirmar, avisamos aqui.`)+(d.checkout_url?`<a href="${esc(d.checkout_url)}" class="${B} bg-pri text-white">Abrir pagamento</a>`:'')+close;
 }
 function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
  if(cur+n>m){toast(m?`Só temos ${m} em estoque.`:'Sem estoque nesta loja.');return false}
@@ -286,6 +326,7 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('transl
 function tick(){
  const s=st(),d=new Date(Date.now()+(s.id==='pv'?-4:-5)*36e5),x=d.getUTCHours()*3600+d.getUTCMinutes()*60+d.getUTCSeconds(),cut=FRETE.corte*3600,open=x<cut,r=open?cut-x:86400-x+cut,f=v=>String(v).padStart(2,'0');
  $('#ct').textContent=`${f(r/3600|0)}:${f(r%3600/60|0)}:${f(r%60)}`;
+ const px=$('#pxt');if(px&&px.dataset.e){const q=Math.max(0,(+px.dataset.e-Date.now())/1e3|0);px.textContent=`${f(q/60|0)}:${f(q%60)}`}
  $('#cl').textContent=open?`Receba hoje em ${s.name} se pedir em`:`Pedidos em ${s.name} saem amanhã. Próximo corte em`;
 }
 function shell(){
@@ -319,10 +360,13 @@ document.addEventListener('click',e=>{
  else if(a==='dec'){const it=S.cart.find(x=>x.id===id);it.n--;if(it.n<1)S.cart=S.cart.filter(x=>x!==it);save();renderCart()}
  else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
  else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
+ else if(a==='copy')navigator.clipboard.writeText(t.dataset.u).then(()=>toast('Código Pix copiado!'),()=>toast('Não foi possível copiar. Selecione o código e copie.'));
+ else if(a==='payclose')closePay();
+ else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'')}
  else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
 });
 document.addEventListener('change',e=>{if(e.target.name==='pay'){S.pay=e.target.value;renderCart()}if(e.target.name==='ship'){S.ship=e.target.value;renderCart()}});
-document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad'}[e.target.id];if(m)S.f[m]=e.target.value});
+document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em'}[e.target.id];if(m)S.f[m]=e.target.value});
 $('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const r=S.q?S.prods.filter(p=>p.name.toLowerCase().includes(S.q)).slice(0,5):[];
  $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-bd"><span class="truncate">${esc(p.emoji||'🎮')} ${esc(p.name)}</span><b class="text-acc">${R(pix(p))}</b></a>`).join('');
  $('#sug').classList.toggle('hidden',!r.length);if(!location.hash.startsWith('#/p/'))render()});
@@ -334,7 +378,10 @@ $('#favb').onclick=$('#mfav').onclick=()=>{S.fav=!S.fav;S.cat='';location.hash='
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cart(false)});
 addEventListener('hashchange',route);
 $('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(4);
-load().then(()=>{S.store=st().id;shell();render();route();setInterval(tick,1000)});
+load().then(()=>{S.store=st().id;shell();render();route();setInterval(tick,1000);
+ const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:ls.get('pay',null);
+ if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);openPay(r.num,r.tok,true,!q.get('pedido'))}
+});
 </script>
 </body>
 </html>
