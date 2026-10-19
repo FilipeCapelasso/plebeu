@@ -6,23 +6,42 @@
 <title>Plebeu Games | Sua loja gamer no Acre e Rondônia</title>
 <meta name="description" content="Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho. Pix com desconto e até 5x sem juros.">
 <meta name="theme-color" content="#000000">
+<script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m==='light')d.classList.add('light');if(a)d.dataset.ac=a}catch(e){}</script>
+<link rel="preconnect" href="https://hlanjhafrhebmheozkmt.supabase.co" crossorigin><link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
 <meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<script>tailwind.config={theme:{extend:{colors:{bg:"#000",s2:"#070707",s3:"#0c0c10",bd:"#1c1c24",pri:"var(--p,#7c5cff)",acc:"var(--a,#00e6a8)",mut:"#8b8fa3"},fontFamily:{display:["Rajdhani","system-ui","sans-serif"],sans:["Inter","system-ui","sans-serif"]}}}}</script>
+<script>const tc=n=>`rgb(var(--${n}) / <alpha-value>)`;tailwind.config={theme:{extend:{colors:{bg:tc('bg'),s2:tc('s2'),s3:tc('s3'),bd:tc('bd'),pri:tc('pr'),acc:tc('ac'),mut:tc('mut'),fg:tc('fg')},fontFamily:{display:["Rajdhani","system-ui","sans-serif"],sans:["Inter","system-ui","sans-serif"]}}}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <style>
-:root{--p:#7c5cff;--a:#00e6a8}
-body{background:#000;color:#f1f2f6;font-family:Inter,system-ui,sans-serif;padding-bottom:64px}
+:root{--bg:0 0 0;--s2:7 7 7;--s3:12 12 16;--bd:28 28 36;--mut:139 143 163;--fg:241 242 246;--pr:124 92 255;--ac:0 230 168;--acl:0 140 100;color-scheme:dark}
+html.light{--bg:244 245 250;--s2:234 237 246;--s3:255 255 255;--bd:214 219 232;--mut:92 99 124;--fg:18 20 32;color-scheme:light}
+html[data-ac=verde]{--pr:5 150 105;--ac:163 230 53;--acl:77 124 15}
+html[data-ac=fogo]{--pr:225 29 72;--ac:251 191 36;--acl:180 83 9}
+html[data-ac=oceano]{--pr:37 99 235;--ac:34 211 238;--acl:14 116 144}
+html.light{--ac:var(--acl)}
+body{background:rgb(var(--bg));color:rgb(var(--fg));font-family:Inter,system-ui,sans-serif;padding-bottom:64px;transition:background-color .3s,color .3s}
 @media(min-width:768px){body{padding-bottom:0}}
-::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#2a2d38;border-radius:8px}
-.glass{background:rgba(0,0,0,.82);backdrop-filter:blur(14px)}
-.gt{background:linear-gradient(90deg,#a78bfa,#7c5cff 45%,#c9b6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ch{transition:.25s}.ch:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.6);box-shadow:0 16px 44px -14px rgba(124,92,255,.45)}
-@keyframes gl{0%,100%{box-shadow:0 0 22px 2px rgba(124,92,255,.5)}50%{box-shadow:0 0 34px 8px rgba(124,92,255,.8)}}
-.glow{animation:gl 2.2s ease-in-out infinite}
+.max-w-\[1920px\]{padding-inline:max(1rem,2vw)!important}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgb(var(--bd));border-radius:8px}
+.glass{background:rgb(var(--bg)/.82);backdrop-filter:blur(14px)}
+.gt{background:linear-gradient(90deg,rgb(var(--pr)),rgb(var(--ac)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ch{transition:transform .25s,border-color .25s,box-shadow .25s;content-visibility:auto;contain-intrinsic-size:auto 400px}
+.ch:hover{transform:translateY(-4px);border-color:rgb(var(--pr)/.6);box-shadow:0 16px 44px -14px rgb(var(--pr)/.45)}
+.ch img{transition:transform .45s}.ch:hover img{transform:scale(1.07)}
+.rg{background:radial-gradient(circle at 50% 40%,rgb(var(--pr)/.25),transparent 65%)}
+.hs{box-shadow:0 0 60px -15px rgb(var(--pr)/.6)}
+.hbg{background:radial-gradient(60% 80% at 85% 0,rgb(var(--pr)/.22),transparent 60%),radial-gradient(45% 60% at 0 100%,rgb(var(--ac)/.12),transparent 60%)}
+.hgrid{background-image:linear-gradient(rgb(var(--bd)/.55) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--bd)/.55) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at 60% 40%,#000 20%,transparent 72%);mask-image:radial-gradient(ellipse at 60% 40%,#000 20%,transparent 72%)}
+.glow{position:relative;isolation:isolate}.glow::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 32px 6px rgb(var(--pr)/.75);opacity:.45;z-index:-1;pointer-events:none;animation:gl 2.4s ease-in-out infinite}.glow:disabled::after{display:none}
+@keyframes gl{50%{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.rv{animation:up .5s cubic-bezier(.2,.7,.2,1) backwards}
+.hin>*{animation:up .8s cubic-bezier(.2,.7,.2,1) backwards}.hin>:nth-child(2){animation-delay:.08s}.hin>:nth-child(3){animation-delay:.16s}.hin>:nth-child(4){animation-delay:.24s}
+@keyframes bump{40%{transform:scale(1.25) rotate(-8deg)}}.bump{animation:bump .4s}
+button:active{transform:scale(.97)}
 @keyframes sh{0%{background-position:-120% 0}100%{background-position:220% 0}}
 .b1,.b2{background-size:220% 100%;animation:sh 2.8s linear infinite;color:#000}
 .b1{background-image:linear-gradient(110deg,#ff5c5c,#ff8a5c 35%,#ff5c5c 60%,#ff8a5c);color:#fff}
@@ -30,12 +49,15 @@ body{background:#000;color:#f1f2f6;font-family:Inter,system-ui,sans-serif;paddin
 @keyframes fl{50%{transform:translateY(-10px)}}.fl{animation:fl 4.5s ease-in-out infinite}
 @keyframes mq{to{transform:translateX(-50%)}}.mq{animation:mq 40s linear infinite;width:max-content}.mq:hover{animation-play-state:paused}
 @keyframes sk{to{background-position:-200% 0}}
-.sk{background:linear-gradient(90deg,#0c0c10 25%,#16161d 50%,#0c0c10 75%);background-size:200% 100%;animation:sk 1.2s infinite}
-input,select{background:#0c0c10;border:1px solid #1c1c24;border-radius:12px;color:#f1f2f6}
-input:focus,select:focus{outline:2px solid var(--p);border-color:transparent}
-:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.sk{background:linear-gradient(90deg,rgb(var(--s3)) 25%,rgb(var(--bd)/.6) 50%,rgb(var(--s3)) 75%);background-size:200% 100%;animation:sk 1.2s infinite}
+input,select{background:rgb(var(--s3));border:1px solid rgb(var(--bd));border-radius:12px;color:rgb(var(--fg))}
+input:focus,select:focus{outline:2px solid rgb(var(--pr));border-color:transparent}
+:focus-visible{outline:2px solid rgb(var(--ac));outline-offset:2px}
 details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-marker{display:none}
 details[open] summary span{transform:rotate(45deg)}
+html.light .text-white,html.light .hover\:text-white:hover{color:rgb(var(--fg))}
+html.light .bg-pri.text-white,html.light .bg-pri .text-white{color:#fff}
+html.light .bg-acc.text-black{color:#fff}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -43,7 +65,7 @@ details[open] summary span{transform:rotate(45deg)}
 <div id="top" class="bg-s3 border-b border-bd py-2 text-center text-xs text-mut px-3"></div>
 
 <header class="glass sticky top-0 z-30 border-b border-bd">
- <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3">
+ <div class="mx-auto flex max-w-[1920px] flex-wrap items-center gap-3 px-4 py-3">
   <a href="#/" class="font-display text-3xl font-bold leading-none gt">Plebeu<span class="block text-sm tracking-[.35em] text-white">GAMES</span></a>
   <div class="relative order-last w-full md:order-none md:w-auto md:flex-1">
    <input id="q" type="search" autocomplete="off" placeholder="Busque console, jogo, headset…" aria-label="Buscar" class="h-11 w-full pl-4 pr-4">
@@ -51,25 +73,32 @@ details[open] summary span{transform:rotate(45deg)}
   </div>
   <select id="store" class="h-11 px-3 text-sm font-semibold" aria-label="Escolher loja"></select>
   <button id="favb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Favoritos">♥</button>
-  <button id="cartb" class="relative h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Carrinho">🛒<b id="cn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-xs leading-5 text-black"></b></button>
+  <div class="relative"><button id="thb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Tema do site">🎨</button>
+  <div id="thm" class="absolute right-0 top-14 z-50 hidden w-60 rounded-2xl border border-bd bg-s3 p-4 shadow-2xl">
+   <p class="mb-2 text-xs font-semibold text-mut">Aparência</p>
+   <div class="grid grid-cols-2 gap-2"><button data-th="dark" class="rounded-xl border border-bd py-2 text-sm font-semibold">🌙 Escuro</button><button data-th="light" class="rounded-xl border border-bd py-2 text-sm font-semibold">☀️ Claro</button></div>
+   <p class="mb-2 mt-4 text-xs font-semibold text-mut">Cor de destaque</p>
+   <div class="flex gap-2.5"><button data-ac="roxo" aria-label="Roxo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(124 92 255),rgb(0 230 168))"></button><button data-ac="verde" aria-label="Verde" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(5 150 105),rgb(163 230 53))"></button><button data-ac="fogo" aria-label="Fogo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(225 29 72),rgb(251 191 36))"></button><button data-ac="oceano" aria-label="Oceano" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(37 99 235),rgb(34 211 238))"></button></div>
+  </div></div>
+ <button id="cartb" class="relative h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Carrinho">🛒<b id="cn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-xs leading-5 text-black"></b></button>
  </div>
- <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2"></div></nav>
+ <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-[1920px] gap-2 overflow-x-auto px-4 py-2"></div></nav>
 </header>
 
 <main id="home">
- <section class="relative overflow-hidden border-b border-bd">
+ <section class="hbg relative overflow-hidden border-b border-bd"><div class="hgrid absolute inset-0"></div>
   <canvas id="pc" class="absolute inset-0 h-full w-full"></canvas>
-  <div class="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_.85fr] md:py-20">
-   <div>
+  <div class="relative mx-auto grid max-w-[1920px] items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_.85fr] md:py-20">
+   <div class="hin">
     <span class="inline-block rounded-full border border-bd bg-s3 px-3 py-1 text-xs font-semibold text-acc">Rio Branco (AC) e Porto Velho (RO)</span>
-    <h1 class="mt-4 font-display text-5xl font-bold leading-[.95] md:text-7xl">Sua loja <span class="gt">gamer</span> no Acre e em Rondônia</h1>
+    <h1 class="mt-4 font-display text-5xl font-bold leading-[.95] md:text-7xl 2xl:text-8xl">Sua loja <span class="gt">gamer</span> no Acre e em Rondônia</h1>
     <p class="mt-5 max-w-xl text-lg text-mut">Consoles, jogos, periféricos e informática com garantia da loja. Escolha, pague no Pix e receba no mesmo dia.</p>
     <div class="mt-7 flex flex-wrap gap-3">
      <a href="#vitrine" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Ver produtos</a>
      <a id="herowa" target="_blank" rel="noopener" class="rounded-xl border border-bd bg-s3 px-7 py-3.5 font-bold hover:border-pri">Falar com a loja</a>
     </div>
    </div>
-   <div class="fl rounded-3xl border border-bd bg-s3/90 p-7 shadow-[0_0_60px_-15px_rgba(124,92,255,.6)]">
+   <div class="fl rounded-3xl border border-bd bg-s3/90 p-7 hs">
     <p id="cl" class="text-sm font-semibold text-mut"></p>
     <p id="ct" class="my-2 font-display text-6xl font-bold tabular-nums gt">--:--:--</p>
     <p class="text-sm text-mut">Pedidos até as 15h saem no mesmo dia, no horário da sua cidade.</p>
@@ -82,22 +111,22 @@ details[open] summary span{transform:rotate(45deg)}
   </div>
  </section>
 
- <section class="border-b border-bd bg-s2"><div class="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
+ <section class="border-b border-bd bg-s2"><div class="mx-auto grid max-w-[1920px] grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
   <div class="text-sm text-mut"><b class="block text-white">⚡ Entrega no mesmo dia</b>Rio Branco e Porto Velho</div>
   <div class="text-sm text-mut"><b class="block text-white">💠 Desconto no Pix</b>Preço menor, na hora</div>
   <div class="text-sm text-mut"><b class="block text-white">🛡️ Garantia da loja</b>Suporte direto no WhatsApp</div>
   <div class="text-sm text-mut"><b class="block text-white">🏬 Retire na loja</b>Sem pagar frete</div>
  </div></section>
 
- <section id="vitrine" class="mx-auto max-w-7xl px-4 py-12">
+ <section id="vitrine" class="mx-auto max-w-[1920px] px-4 py-12">
   <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
    <h2 id="gt" class="font-display text-4xl font-bold">Destaques da semana</h2>
    <div class="flex items-center gap-3 text-sm">
-    <label class="flex items-center gap-2 text-mut"><input id="onlys" type="checkbox" class="h-4 w-4 accent-violet-500">Só com estoque</label>
+    <label class="flex items-center gap-2 text-mut"><input id="onlys" type="checkbox" class="h-4 w-4 accent-pri">Só com estoque</label>
     <select id="sort" class="h-10 px-3" aria-label="Ordenar"><option value="rel">Relevância</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option><option value="az">A–Z</option></select>
    </div>
   </div>
-  <div id="grid" class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4"></div>
+  <div id="grid" class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5 min-[1700px]:grid-cols-6"></div>
  </section>
 
  <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2 py-12">
@@ -105,20 +134,20 @@ details[open] summary span{transform:rotate(45deg)}
   <div id="mq" class="mq flex gap-4"></div>
  </section>
 
- <section class="mx-auto max-w-3xl px-4 py-14">
+ <section class="mx-auto max-w-5xl px-4 py-14">
   <h2 class="mb-6 text-center font-display text-4xl font-bold">Dúvidas frequentes</h2>
-  <div id="faq" class="space-y-3"></div>
+  <div id="faq" class="grid gap-3 lg:grid-cols-2 lg:items-start"></div>
  </section>
 
- <section class="mx-auto max-w-7xl px-4 pb-14"><div class="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-bd bg-s3 p-8 shadow-[0_0_60px_-20px_rgba(124,92,255,.7)]">
+ <section class="mx-auto max-w-[1920px] px-4 pb-14"><div class="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-bd bg-s3 p-8 hs">
   <div><h2 class="font-display text-3xl font-bold">Não achou o que procura?</h2><p class="text-mut">Conseguimos consoles, peças e acessórios sob encomenda.</p></div>
-  <a id="bandwa" target="_blank" rel="noopener" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold">Pedir pelo WhatsApp</a>
+  <a id="bandwa" target="_blank" rel="noopener" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Pedir pelo WhatsApp</a>
  </div></section>
 </main>
 
-<main id="pdp" class="mx-auto hidden max-w-7xl px-4 py-8"></main>
+<main id="pdp" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
 
-<footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-7xl flex-wrap justify-between gap-6 px-4">
+<footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-[1920px] flex-wrap justify-between gap-6 px-4">
  <div><b class="font-display text-2xl gt">Plebeu Games</b><p class="mt-1">Loja gamer em Rio Branco (AC) e Porto Velho (RO).</p></div>
  <div id="fst" class="space-y-1"></div>
 </div></footer>
@@ -158,10 +187,10 @@ async function load(){
   Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
   if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
   sb.channel('stock').on('postgres_changes',{event:'*',schema:'public',table:'product_stock'},({new:n})=>{
-   if(!n||!n.product_id||!S.stores.length)return;S.stock[n.product_id+'|'+n.store_id]=n.qty;render();
+   if(!n||!n.product_id||!S.stores.length)return;S.stock[n.product_id+'|'+n.store_id]=n.qty;clearTimeout(S.rt);S.rt=setTimeout(render,200);
    const m=location.hash.match(/^#\/p\/(.+)$/);if(m)pdp(decodeURIComponent(m[1]))}).subscribe();
   return;
- }catch(e){console.warn('Supabase indisponível: modo demonstração')}
+ }catch(e){console.warn('Supabase indisponível');if(S.stores.length)return}
  S.demo=true;
  S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];
  S.cats=[['consoles','Consoles','🎮'],['jogos','Jogos','💿'],['perifericos','Periféricos','🎧'],['informatica','Informática','💻']].map(([slug,name,emoji])=>({slug,name,emoji}));
@@ -171,7 +200,7 @@ async function load(){
 const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0];
 const qty=p=>{const k=p.id+'|'+st().id;return k in S.stock?S.stock[k]:(S.demo?9:0)};
 const pix=p=>Math.round(p.price*(1-(p.pix_discount||0)/100)*100)/100;
-const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
+const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" decoding="async" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
 const off=p=>p.old_price?Math.round((1-p.price/p.old_price)*100):0;
 
 function list(){
@@ -181,9 +210,9 @@ function list(){
 }
 const card=p=>{const n=qty(p),o=off(p);
  return `<article class="ch relative flex flex-col overflow-hidden rounded-2xl border border-bd bg-s3">
- <a href="#/p/${esc(p.slug)}" class="relative grid aspect-square place-items-center overflow-hidden bg-[radial-gradient(circle_at_50%_40%,rgba(124,92,255,.25),transparent_65%)] text-7xl">
+ <a href="#/p/${esc(p.slug)}" class="relative grid aspect-square place-items-center overflow-hidden rg text-7xl">
  ${o?`<span class="b1 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">-${o}%</span>`:n&&n<4?`<span class="b2 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">Últimas ${n}</span>`:''}${pic(p)}</a>
- <button data-a="fav" data-id="${p.id}" class="absolute right-3 top-3 h-9 w-9 rounded-full bg-black/70 ${S.favs.includes(p.id)?'text-red-500':'text-mut'}" aria-label="Favoritar">♥</button>
+ <button data-a="fav" data-id="${p.id}" class="absolute right-3 top-3 h-9 w-9 rounded-full bg-bg/70 ${S.favs.includes(p.id)?'text-red-500':'text-mut'}" aria-label="Favoritar">♥</button>
  <div class="flex flex-1 flex-col gap-1.5 p-4"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 min-h-[2.6rem] text-sm font-semibold">${esc(p.name)}</a>
  ${p.sold_count>9?`<span class="text-xs text-mut">🔥 ${p.sold_count} vendidos</span>`:''}
  <p class="font-display text-3xl font-bold leading-none text-acc">${R(pix(p))}<small class="ml-1 font-sans text-xs font-medium text-mut">no Pix</small></p>
@@ -194,6 +223,7 @@ const card=p=>{const n=qty(p),o=off(p);
 function render(){
  const l=list(),c=S.cats.find(x=>x.slug===S.cat);
  $('#grid').innerHTML=l.length?l.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
+ {const sg=[S.cat,S.q,S.sort,S.only,S.fav,S.store].join('|');if(sg!==S.sg){S.sg=sg;[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'})}}
  $('#nav').innerHTML=[['','Tudo','🔥']].concat(S.cats.map(x=>[x.slug,x.name,x.emoji])).map(([s,n,e])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)}</button>`).join('');
  $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:c?c.name:'Destaques da semana';
  renderCart();
@@ -203,11 +233,11 @@ let gi=0;
 function pdp(slug){
  {const _p=S.prods.find(x=>x.slug===slug);if(sb&&!S.demo&&_p&&S.vw!==slug){S.vw=slug;sb.rpc('track_view',{p_product:_p.id,p_visitor:VID}).then(()=>{},()=>{})}}
  const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
- const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,4);
+ const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,6);
  document.title=p.name+' | Plebeu Games';
  $('#pdp').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-white">← Voltar para a loja</a>
- <div class="mt-5 grid gap-8 md:grid-cols-2">
-  <div><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd bg-[radial-gradient(circle_at_50%_40%,rgba(124,92,255,.3),transparent_65%)] text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
+ <div class="mt-5 grid gap-8 lg:grid-cols-[minmax(0,680px)_minmax(0,1fr)] lg:gap-12">
+  <div class="lg:sticky lg:top-40 lg:self-start"><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd rg text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
   ${imgs.length>1?`<div class="mt-3 flex gap-2">${imgs.map(u=>`<button data-a="img" data-u="${esc(u)}" class="h-16 w-16 overflow-hidden rounded-xl border border-bd"><img src="${esc(u)}" alt="" class="h-full w-full object-cover"></button>`).join('')}</div>`:''}</div>
   <div class="space-y-4"><p class="text-sm text-mut">${esc(p.brand||'')}</p><h1 class="font-display text-4xl font-bold leading-tight">${esc(p.name)}</h1>
    ${p.sold_count>9?`<p class="text-sm text-mut">🔥 ${p.sold_count} vendidos</p>`:''}
@@ -220,7 +250,7 @@ function pdp(slug){
   </div></div>
   <div class="mt-10 grid gap-8 md:grid-cols-2"><div><h2 class="mb-3 font-display text-3xl font-bold">Descrição</h2><p class="text-mut">${esc(p.description)}</p></div>
   ${(p.features||[]).length?`<div><h2 class="mb-3 font-display text-3xl font-bold">Destaques</h2><ul class="space-y-2 text-mut">${p.features.map(f=>`<li>✔ ${esc(f)}</li>`).join('')}</ul></div>`:''}</div>
-  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">${rel.map(card).join('')}</div>`:''}`;
+  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rel.map(card).join('')}</div>`:''}`;
 }
 async function cep(){
  const v=$('#cep').value.replace(/\D/g,''),o=$('#cepr');if(v.length!==8)return o.textContent='Digite os 8 números do CEP.';
@@ -340,7 +370,7 @@ function renderPay(d,ok,dead){
 }
 function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
  if(cur+n>m){toast(m?`Só temos ${m} em estoque.`:'Sem estoque nesta loja.');return false}
- it?it.n+=n:S.cart.push({id,n});save();renderCart();return true}
+ it?it.n+=n:S.cart.push({id,n});save();renderCart();{const b=$('#cartb');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}return true}
 const cart=o=>{$('#cart').classList.toggle('translate-x-full',!o);$('#sc').classList.toggle('hidden',!o)};
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('translate-y-40');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('translate-y-40'),2600)}
 /* ---------- extras ---------- */
@@ -361,14 +391,26 @@ function shell(){
  $('#mq').innerHTML=rv+rv;tick();
 }
 $('#faq').innerHTML=[['Como funciona a entrega no mesmo dia?','Pedidos feitos até as 15h (horário da sua cidade) em Rio Branco e Porto Velho saem no mesmo dia por motoboy. Depois desse horário, saem no dia seguinte.'],['Posso retirar na loja?','Pode. Escolha “Retirar na loja” no carrinho e combine o horário pelo WhatsApp. Não há taxa de entrega.'],['Quais são as formas de pagamento?','Pix com desconto ou cartão em até 5x sem juros. No Pix, o QR Code é gerado na hora e a confirmação é automática. No cartão, você paga no ambiente seguro do Mercado Pago.'],['Os produtos têm garantia?','Sim, todos têm garantia da loja. Os detalhes de cada produto você confirma com o atendimento.'],['E se o produto não estiver na minha loja?','O estoque muda conforme a loja escolhida no topo. Fale com a gente e verificamos a transferência ou a encomenda.']].map(([q,a])=>`<details class="rounded-2xl border border-bd bg-s3 p-5"><summary class="flex items-center justify-between font-semibold">${q}<span class="text-2xl text-pri transition-transform">+</span></summary><p class="mt-3 text-mut">${a}</p></details>`).join('');
-(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w,h,P;
- const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(70,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
- (function f(){x.clearRect(0,0,w,h);x.fillStyle='rgba(124,92,255,.7)';P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});requestAnimationFrame(f)})()})();
+const TH={m:ls.get('mode','dark'),a:ls.get('ac','roxo')};
+function theme(){const h=document.documentElement,on=['ring-2','ring-fg','ring-offset-2','ring-offset-s3'];h.classList.toggle('light',TH.m==='light');h.dataset.ac=TH.a;
+ $('meta[name=theme-color]').content=TH.m==='light'?'#f4f5fa':'#000000';
+ document.querySelectorAll('[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
+ document.querySelectorAll('[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
+ window.PC=`rgb(${getComputedStyle(h).getPropertyValue('--pr').trim()} / .7)`}
+theme();
+document.addEventListener('click',e=>{const t=e.target.closest('[data-th],[data-ac],#thb'),p=$('#thm');
+ if(t&&t.id==='thb')p.classList.toggle('hidden');
+ else if(t){if(t.dataset.th)TH.m=t.dataset.th;else TH.a=t.dataset.ac;ls.set('mode',TH.m);ls.set('ac',TH.a);theme()}
+ else if(!e.target.closest('#thm'))p.classList.add('hidden')});
+(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w,h,P,on=1,raf;
+ const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(90,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
+ const f=()=>{if(!on)return;x.clearRect(0,0,w,h);x.fillStyle=window.PC;P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});raf=requestAnimationFrame(f)};
+ new IntersectionObserver(([e])=>{if(e.isIntersecting&&!on){on=1;f()}else if(!e.isIntersecting){on=0;cancelAnimationFrame(raf)}}).observe(c);f()})();
 /* ---------- rotas e eventos ---------- */
 function route(){
  const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp');
  $('#home').classList.toggle('hidden',!!m);pd.classList.toggle('hidden',!m);
- if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
+ if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
 }
 document.addEventListener('click',e=>{
  if(!e.target.closest('#sug,#q'))$('#sug').classList.add('hidden');
@@ -398,8 +440,11 @@ $('#cartb').onclick=$('#mcart').onclick=()=>cart(true);$('#cx').onclick=$('#sc')
 $('#favb').onclick=$('#mfav').onclick=()=>{S.fav=!S.fav;S.cat='';location.hash='#/';render();$('#vitrine').scrollIntoView()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cart(false)});
 addEventListener('hashchange',route);
-$('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(4);
-load().then(()=>{S.store=st().id;shell();render();route();setInterval(tick,1000);
+$('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(12);
+const CA=sb?ls.get('cache',null):null;
+if(CA&&CA.stores&&CA.stores.length){Object.assign(S,CA);S.store=st().id;shell();render();route()}
+load().then(()=>{if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods,stock:S.stock,rev:S.rev});
+ S.store=st().id;shell();render();CA?(location.hash.startsWith('#/p/')&&pdp(decodeURIComponent(location.hash.slice(4)))):route();setInterval(tick,1000);
  const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:ls.get('pay',null);
  if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);openPay(r.num,r.tok,true,!q.get('pedido'))}
 });
