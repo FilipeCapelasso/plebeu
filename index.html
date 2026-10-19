@@ -308,7 +308,9 @@ async function openPay(num,tok,fast,quiet){
   const ok=d.payment_status==='approved',dead=d.status==='cancelado'&&!ok;
   const k=n++;
   if(!ok&&!dead&&((fast&&k===0)||(k>0&&k%5===0)))sb.functions.invoke('mercadopago',{body:{action:'sync',order_number:num,token:tok}}).catch(()=>{});
-  if(dead&&quiet){ls.set('pay',null);return closePay()}
+  const exp=!d.expires_at||new Date(d.expires_at)>new Date(),
+   live=!ok&&!dead&&d.payment_status!=='rejected'&&((d.pix_qr_code&&exp)||(d.checkout_url&&d.payment_status==='pending'&&exp));
+  if(quiet&&!ok&&!live){ls.set('pay',null);return closePay()}   /* ao recarregar a página, não reabre telas sem ação possível */
   o.classList.remove('hidden');renderPay(d,ok,dead);
   if(ok||dead){clearInterval(pt);ls.set('pay',null)}
  };
@@ -316,13 +318,14 @@ async function openPay(num,tok,fast,quiet){
 }
 function closePay(){clearInterval(pt);$('#pay').classList.add('hidden')}
 function payFail(num,tok,s){
- const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;ls.set('pay',{num,tok});
+ const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;ls.set('pay',null);
  const B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
  const wa=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${s.name}! Meu pedido #${num} foi registrado, mas não consegui gerar o pagamento no site. Podem me ajudar?`)}`;
  $('#payc').innerHTML=`<p class="text-5xl">⚠️</p><h2 class="mt-2 font-display text-3xl font-bold">Não conseguimos gerar o pagamento</h2><p class="mt-1 text-sm text-mut">Seu pedido #${num} está reservado. Tente novamente; se continuar, fale com a gente.</p>${S.perr?`<p class="mt-2 text-xs text-red-400">Motivo: ${esc(S.perr)}</p>`:''}<button data-a="payretry" class="${B} glow bg-pri text-white">Tentar de novo</button><a href="${wa}" target="_blank" rel="noopener" class="${B} border border-bd">Falar com a loja no WhatsApp</a><button data-a="payclose" class="${B} border border-bd">Fechar</button>`;
  o.classList.remove('hidden');
 }
 function renderPay(d,ok,dead){
+ S.live=!ok&&!dead&&d.payment_status!=='rejected'&&!!d.pix_qr_code;
  const T=R(d.total),B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
  const H=(i,t,x)=>`<p class="text-5xl">${i}</p><h2 class="mt-2 font-display text-3xl font-bold">${t}</h2><p class="mt-1 text-sm text-mut">${x}</p>`;
  const close=`<button data-a="payclose" class="${B} border border-bd">${ok?'Continuar comprando':'Fechar'}</button>`;
@@ -379,7 +382,7 @@ document.addEventListener('click',e=>{
  else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
  else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
  else if(a==='copy')navigator.clipboard.writeText(t.dataset.u).then(()=>toast('Código Pix copiado!'),()=>toast('Não foi possível copiar. Selecione o código e copie.'));
- else if(a==='payclose')closePay();
+ else if(a==='payclose'){if(!S.live)ls.set('pay',null);closePay()}
  else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'').then(ok=>{if(!ok)toast(S.perr||'Ainda não foi possível gerar o pagamento. Tente de novo ou fale com a loja.')})}
  else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
 });
