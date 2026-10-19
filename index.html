@@ -81,6 +81,7 @@ html.light .bg-acc.text-black{color:#fff}
    <div class="flex gap-2.5"><button data-ac="roxo" aria-label="Roxo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(124 92 255),rgb(0 230 168))"></button><button data-ac="verde" aria-label="Verde" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(5 150 105),rgb(163 230 53))"></button><button data-ac="fogo" aria-label="Fogo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(225 29 72),rgb(251 191 36))"></button><button data-ac="oceano" aria-label="Oceano" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(37 99 235),rgb(34 211 238))"></button></div>
   </div></div>
  <button id="cartb" class="relative h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Carrinho">🛒<b id="cn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-xs leading-5 text-black"></b></button>
+  <a id="prb" href="#/perfil" class="relative grid h-11 w-11 place-items-center rounded-xl border border-bd bg-s3 text-lg" aria-label="Meu perfil">👤<b id="pfn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-center text-xs leading-5 text-black"></b></a>
  </div>
  <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-[1920px] gap-2 overflow-x-auto px-4 py-2"></div></nav>
 </header>
@@ -146,15 +147,16 @@ html.light .bg-acc.text-black{color:#fff}
 </main>
 
 <main id="pdp" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
+<main id="prf" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
 
 <footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-[1920px] flex-wrap justify-between gap-6 px-4">
  <div><b class="font-display text-2xl gt">Plebeu Games</b><p class="mt-1">Loja gamer em Rio Branco (AC) e Porto Velho (RO).</p></div>
  <div id="fst" class="space-y-1"></div>
 </div></footer>
 
-<nav class="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-bd text-xs md:hidden">
+<nav class="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-bd text-xs md:hidden">
  <a href="#/" class="py-3 text-center">🏠<br>Início</a><a href="#vitrine" class="py-3 text-center">🕹️<br>Produtos</a>
- <button id="mfav" class="py-3">♥<br>Favoritos</button><button id="mcart" class="py-3">🛒<br>Carrinho</button>
+ <button id="mfav" class="py-3">♥<br>Favoritos</button><button id="mcart" class="py-3">🛒<br>Carrinho</button><a href="#/perfil" class="py-3 text-center">👤<br>Perfil</a>
 </nav>
 <a id="wa" target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-20 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-2xl shadow-lg md:bottom-5">💬</a>
 
@@ -177,7 +179,7 @@ const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{styl
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const VID=(()=>{let v=ls.get('vid',null);if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).replace(/[^\w-]/g,'');ls.set('vid',v)}return v})();
-const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:{nm:'',ph:'',ad:'',em:''}};
+const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,pt:'pg',ords:[],cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:Object.assign({nm:'',ph:'',ad:'',em:''},ls.get('prof',{}))};
 
 const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
 async function load(){
@@ -302,7 +304,7 @@ async function order(){
    p_address:S.ship==='entrega'?F.ad.trim():null,p_items:items.map(({id,qty})=>({id,qty})),p_coupon:S.cp?.code||null});
   if(error&&error.code==='P0001'){S.busy=false;renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
   if(error)console.warn('place_order:',error);
-  if(data){num=data.order_number;tok=data.token;total=+data.total;sb.rpc('link_visitor',{p_order:num,p_token:tok,p_visitor:VID}).then(()=>{},()=>{})}
+  if(data){num=data.order_number;tok=data.token;total=+data.total;addRef(num,tok);sb.rpc('link_visitor',{p_order:num,p_token:tok,p_visitor:VID}).then(()=>{},()=>{})}
  }catch(e){console.warn('place_order:',e)}
  if(num&&tok&&await startPay(num,tok,F.em)){S.busy=false;S.cart=[];S.cp=null;save();renderCart();cart(false);return}
  S.busy=false;
@@ -331,9 +333,10 @@ async function startPay(num,tok,email){
  }catch(e){S.perr='sem conexão com o serviço de pagamento';return false}
 }
 async function openPay(num,tok,fast,quiet){
- const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;clearInterval(pt);let n=0;
+ const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;clearInterval(pt);let n=0;o.dataset.c='';
  const step=async()=>{
   const{data:d}=await sb.rpc('get_order_payment',{p_order_number:num,p_token:tok});
+  if(o.dataset.c)return;
   if(!d){ls.set('pay',null);return closePay()}
   const ok=d.payment_status==='approved',dead=d.status==='cancelado'&&!ok;
   const k=n++;
@@ -346,7 +349,7 @@ async function openPay(num,tok,fast,quiet){
  };
  await step();if(!o.classList.contains('hidden'))pt=setInterval(step,4000);
 }
-function closePay(){clearInterval(pt);$('#pay').classList.add('hidden')}
+function closePay(){clearInterval(pt);const o=$('#pay');o.dataset.c='1';o.classList.add('hidden')}
 function payFail(num,tok,s){
  const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;ls.set('pay',null);
  const B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
@@ -378,6 +381,7 @@ function tick(){
  const s=st(),d=new Date(Date.now()+(s.id==='pv'?-4:-5)*36e5),x=d.getUTCHours()*3600+d.getUTCMinutes()*60+d.getUTCSeconds(),cut=FRETE.corte*3600,open=x<cut,r=open?cut-x:86400-x+cut,f=v=>String(v).padStart(2,'0');
  $('#ct').textContent=`${f(r/3600|0)}:${f(r%3600/60|0)}:${f(r%60)}`;
  const px=$('#pxt');if(px&&px.dataset.e){const q=Math.max(0,(+px.dataset.e-Date.now())/1e3|0);px.textContent=`${f(q/60|0)}:${f(q%60)}`}
+ document.querySelectorAll('[data-cd]').forEach(e=>{if(e.dataset.cd){const q=Math.max(0,(+e.dataset.cd-Date.now())/1e3|0);e.textContent=`${f(q/60|0)}:${f(q%60)}`}});
  $('#cl').textContent=open?`Receba hoje em ${s.name} se pedir em`:`Pedidos em ${s.name} saem amanhã. Próximo corte em`;
 }
 function shell(){
@@ -406,11 +410,44 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-th],[data-
  const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(90,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
  const f=()=>{if(!on)return;x.clearRect(0,0,w,h);x.fillStyle=window.PC;P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});raf=requestAnimationFrame(f)};
  new IntersectionObserver(([e])=>{if(e.isIntersecting&&!on){on=1;f()}else if(!e.isIntersecting){on=0;cancelAnimationFrame(raf)}}).observe(c);f()})();
+/* ---------- perfil do cliente ---------- */
+const refs=()=>ls.get('orders',[]);
+function addRef(n,t){ls.set('orders',[{n,t,at:Date.now()},...refs().filter(x=>x.n!==n)].slice(0,30))}
+const isLive=d=>{const exp=!d.expires_at||new Date(d.expires_at)>new Date();return d.payment_status!=='approved'&&d.status!=='cancelado'&&d.payment_status!=='rejected'&&((d.pix_qr_code&&exp)||(d.checkout_url&&d.payment_status==='pending'&&exp))};
+const cls=d=>d.payment_status==='approved'?'ok':isLive(d)?'pg':'cc';
+const LBL=d=>d.status==='cancelado'?'Cancelado':d.payment_status==='approved'?({enviado:'Enviado',entregue:'Entregue'}[d.status]||'Pago'):d.payment_status==='rejected'?'Pagamento recusado':isLive(d)?'Aguardando pagamento':'Não concluído';
+async function loadOrders(){
+ if(!sb||S.demo)return S.ords=[];
+ const fin=ls.get('oc',{});
+ S.ords=(await Promise.all(refs().map(async r=>{
+  let d=fin[r.n];
+  if(!d)try{d=(await sb.rpc('get_order_payment',{p_order_number:r.n,p_token:r.t})).data;if(d&&(d.status==='cancelado'||d.status==='entregue'))fin[r.n]={...d,pix_qr_base64:null,pix_qr_code:null}}catch{}
+  return d&&{...r,d}}))).filter(Boolean);
+ ls.set('oc',fin);return S.ords}
+function bdg(){const n=(S.ords||[]).filter(o=>cls(o.d)==='pg').length,b=$('#pfn');b.textContent=n;b.classList.toggle('hidden',!n)}
+function ocard({n,at,d}){const k=cls(d),it=(d.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join(', '),c={ok:'border-acc text-acc',pg:'border-yellow-500 text-yellow-500',cc:'border-red-400 text-red-400'}[k];
+ return `<article class="rounded-2xl border border-bd bg-s3 p-4"><div class="flex items-start justify-between gap-3"><div><p class="font-semibold">Pedido #${d.order_number}</p><p class="text-xs text-mut">${at?new Date(at).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})+' · ':''}${esc(d.store_name)}</p></div><span class="whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-bold ${c}">${LBL(d)}</span></div>
+ <p class="mt-2 line-clamp-2 text-sm text-mut">${it}</p>
+ <div class="mt-3 flex items-center justify-between gap-3"><p class="font-display text-2xl font-bold">${R(d.total)}</p>${k==='pg'?`<p class="text-xs text-mut">expira em <b data-cd="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b></p>`:''}</div>
+ ${k==='pg'?`<button data-a="ppay" data-id="${n}" class="glow mt-3 h-11 w-full rounded-xl bg-pri font-bold text-white">Pagar agora</button>`:''}</article>`}
+function plist(){
+ const g={pg:[],ok:[],cc:[]};(S.ords||[]).forEach(o=>g[cls(o.d)].push(o));
+ $('#ptabs').innerHTML=[['pg','A pagar'],['ok','Compras realizadas'],['cc','Canceladas']].map(([k,n])=>`<button data-a="ptab" data-id="${k}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.pt===k?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${n} (${g[k].length})</button>`).join('');
+ $('#plist').innerHTML=g[S.pt].length?g[S.pt].map(ocard).join(''):`<p class="col-span-full py-12 text-center text-mut">${{pg:'Nenhum pagamento em aberto.',ok:'Você ainda não tem compras realizadas.',cc:'Nenhuma compra cancelada.'}[S.pt]}</p>`;
+ bdg();tick()}
+function prof(){
+ const F=S.f,inp=(i,l,v,t,a)=>`<label class="block text-sm"><span class="mb-1 block text-mut">${l}</span><input id="${i}" type="${t}" autocomplete="${a}" value="${esc(v)}" class="h-11 w-full px-3"></label>`;
+ $('#prf').innerHTML=`<h1 class="font-display text-4xl font-bold">Meu perfil</h1>
+ <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
+  <section class="h-fit space-y-4 rounded-2xl border border-bd bg-s3 p-5"><h2 class="font-display text-2xl font-bold">Meus dados</h2>${inp('pnm','Nome',F.nm,'text','name')}${inp('pph','WhatsApp com DDD',F.ph,'tel','tel')}${inp('pem','E-mail',F.em,'email','email')}${inp('pad','Endereço de entrega',F.ad,'text','street-address')}<p class="text-xs text-mut">Salvo automaticamente neste aparelho e já preenchido no carrinho.</p></section>
+  <section><div id="ptabs" class="flex gap-2 overflow-x-auto"></div><div id="plist" class="mt-4 grid gap-3 xl:grid-cols-2"></div></section></div>`;
+ $('#plist').innerHTML='<div class="sk h-28 rounded-2xl"></div>'.repeat(2);
+ loadOrders().then(plist)}
 /* ---------- rotas e eventos ---------- */
 function route(){
- const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp');
- $('#home').classList.toggle('hidden',!!m);pd.classList.toggle('hidden',!m);
- if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
+ const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil';
+ $('#home').classList.toggle('hidden',!!m||pf);pd.classList.toggle('hidden',!m);$('#prf').classList.toggle('hidden',!pf);
+ if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else if(pf){document.title='Meu perfil | Plebeu Games';prof();scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
 }
 document.addEventListener('click',e=>{
  if(!e.target.closest('#sug,#q'))$('#sug').classList.add('hidden');
@@ -424,12 +461,14 @@ document.addEventListener('click',e=>{
  else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
  else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
  else if(a==='copy')navigator.clipboard.writeText(t.dataset.u).then(()=>toast('Código Pix copiado!'),()=>toast('Não foi possível copiar. Selecione o código e copie.'));
- else if(a==='payclose'){if(!S.live)ls.set('pay',null);closePay()}
+ else if(a==='payclose'){ls.set('pay',null);closePay();loadOrders().then(()=>{bdg();if(location.hash==='#/perfil')plist()})}
  else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'').then(ok=>{if(!ok)toast(S.perr||'Ainda não foi possível gerar o pagamento. Tente de novo ou fale com a loja.')})}
+ else if(a==='ptab'){S.pt=id;plist()}
+ else if(a==='ppay'){const o=S.ords.find(x=>x.n==id);if(o)openPay(o.n,o.t)}
  else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
 });
 document.addEventListener('change',e=>{if(e.target.name==='pay'){S.pay=e.target.value;renderCart()}if(e.target.name==='ship'){S.ship=e.target.value;renderCart()}});
-document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em'}[e.target.id];if(m)S.f[m]=e.target.value});
+document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em',pnm:'nm',pph:'ph',pad:'ad',pem:'em'}[e.target.id];if(m){S.f[m]=e.target.value;ls.set('prof',S.f)}});
 $('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const r=S.q?S.prods.filter(p=>p.name.toLowerCase().includes(S.q)).slice(0,5):[];
  $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-bd"><span class="truncate">${esc(p.emoji||'🎮')} ${esc(p.name)}</span><b class="text-acc">${R(pix(p))}</b></a>`).join('');
  $('#sug').classList.toggle('hidden',!r.length);if(!location.hash.startsWith('#/p/'))render()});
@@ -443,10 +482,10 @@ addEventListener('hashchange',route);
 $('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(12);
 const CA=sb?ls.get('cache',null):null;
 if(CA&&CA.stores&&CA.stores.length){Object.assign(S,CA);S.store=st().id;shell();render();route()}
-load().then(()=>{if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods,stock:S.stock,rev:S.rev});
+load().then(()=>{if(refs().length)loadOrders().then(bdg);if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods,stock:S.stock,rev:S.rev});
  S.store=st().id;shell();render();CA?(location.hash.startsWith('#/p/')&&pdp(decodeURIComponent(location.hash.slice(4)))):route();setInterval(tick,1000);
- const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:ls.get('pay',null);
- if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);openPay(r.num,r.tok,true,!q.get('pedido'))}
+ const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:null;
+ if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);addRef(r.num,r.tok);openPay(r.num,r.tok,true,false)}
 });
 </script>
 </body>
