@@ -666,11 +666,11 @@ $('#faq').innerHTML=[['Como funciona a entrega no mesmo dia?','Pedidos feitos at
 const TH={m:ls.get('mode','light'),a:ls.get('ac','oceano')};
 function theme(){const h=document.documentElement,on=['ring-2','ring-fg','ring-offset-2','ring-offset-s3'];h.classList.toggle('light',TH.m==='light');h.dataset.ac=TH.a;
  $('meta[name=theme-color]').content=TH.m==='light'?'#f4f5fa':'#000000';
- document.querySelectorAll('[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
- document.querySelectorAll('[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
+ document.querySelectorAll('button[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
+ document.querySelectorAll('button[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
  window.PC=`rgb(${getComputedStyle(h).getPropertyValue('--pr').trim()} / .7)`}
 theme();
-document.addEventListener('click',e=>{const t=e.target.closest('[data-th],[data-ac],#thb'),p=$('#thm');
+document.addEventListener('click',e=>{const t=e.target.closest('button[data-th],button[data-ac],#thb'),p=$('#thm');
  if(t&&t.id==='thb')p.classList.toggle('hidden');
  else if(t){if(t.dataset.th)TH.m=t.dataset.th;else TH.a=t.dataset.ac;ls.set('mode',TH.m);ls.set('ac',TH.a);theme()}
  else if(!e.target.closest('#thm'))p.classList.add('hidden')});
@@ -799,7 +799,7 @@ ${SERV('Porto Velho')}${POR('Porto Velho','Avenida Calama, 4239, Bairro Embratel
 <h2>Política de Fretes — Plebeu Games</h2>
 <p>Na Plebeu Games, facilitamos para você receber seus produtos onde estiver. Confira abaixo as condições de frete para compras realizadas em nosso site.</p>
 <h3>Frete Grátis por Região</h3>
-<div class="overflow-x-auto"><table><thead><tr><th>Região</th><th>Valor mínimo para frete grátis</th></tr></thead><tbody><tr><td>Porto Velho (RO) e Rio Branco (AC)</td><td>A partir de R$ 200,00</td></tr><tr><td>Demais cidades da Região Norte</td><td>A partir de R$ 900,00</td></tr><tr><td>Restante do Brasil</td><td>A partir de R$ 2.000,00</td></tr></tbody></table></div>
+<div class="overflow-x-auto"><table><thead><tr><th>Região</th><th>Valor mínimo para frete grátis</th></tr></thead><tbody><tr><td>Porto Velho (RO) e Rio Branco (AC)</td><td>A partir de {{GRATIS}}</td></tr><tr><td>Demais cidades da Região Norte</td><td>A partir de R$ 900,00</td></tr><tr><td>Restante do Brasil</td><td>A partir de R$ 2.000,00</td></tr></tbody></table></div>
 <ul><li>O frete grátis é aplicado automaticamente no fechamento do pedido quando o valor mínimo da região correspondente for atingido.</li><li>Para compras abaixo dos valores acima, o frete é calculado conforme o CEP de entrega e informado antes da finalização da compra.</li></ul>
 <h3>Prazo de Entrega</h3>
 <ul><li>Os prazos de entrega variam conforme a região e a transportadora responsável, sendo informados no momento da compra, antes do pagamento.</li><li>Pedidos para Porto Velho e Rio Branco, por serem nossas cidades de operação, tendem a ter prazos de entrega mais rápidos.</li></ul>
@@ -809,7 +809,7 @@ ${SERV('Porto Velho')}${POR('Porto Velho','Avenida Calama, 4239, Bairro Embratel
 $('#finfo').innerHTML=Object.entries(INFO).map(([k,v])=>`<a href="#/info/${k}" class="block py-0.5 hover:text-white hover:underline">${v.t}</a>`).join('');
 function info(k){const d=INFO[k];if(!d){location.hash='#/';return}
  document.title=`${d.t} | Plebeu Games`;
- $('#inf').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-fg">← Voltar à loja</a><article class="inf mt-5 rounded-3xl border border-bd bg-s3 p-6 md:p-10"><h1 class="font-display text-4xl font-bold text-fg">${d.t}</h1>${d.h}</article>`}
+ $('#inf').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-fg">← Voltar à loja</a><article class="inf mt-5 rounded-3xl border border-bd bg-s3 p-6 md:p-10"><h1 class="font-display text-4xl font-bold text-fg">${d.t}</h1>${d.h.replace(/\{\{GRATIS\}\}/g,R(FRETE.gratis))}</article>`}
 /* ---------- rotas e eventos ---------- */
 function route(){
  const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil',ct=location.hash==='#/carrinho',inf=location.hash.match(/^#\/info\/(.+)$/),ad=location.hash==='#/admin';
