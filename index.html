@@ -1,915 +1,589 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plebeu Games | Sua loja gamer no Acre e Rondônia</title>
-<meta name="description" content="Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho. Pix com desconto e até 5x sem juros.">
-<meta name="theme-color" content="#f4f5fa">
-<script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m!=='dark')d.classList.add('light');d.dataset.ac=a||'oceano'}catch(e){document.documentElement.classList.add('light');document.documentElement.dataset.ac='oceano'}</script>
-<link rel="preconnect" href="https://hlanjhafrhebmheozkmt.supabase.co" crossorigin><link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
-<meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
-<script src="https://cdn.tailwindcss.com/3.4.17"></script>
-<script>const tc=n=>`rgb(var(--${n}) / <alpha-value>)`;tailwind.config={theme:{extend:{colors:{bg:tc('bg'),s2:tc('s2'),s3:tc('s3'),bd:tc('bd'),pri:tc('pr'),acc:tc('ac'),mut:tc('mut'),fg:tc('fg')},fontFamily:{display:["Rajdhani","system-ui","sans-serif"],sans:["Inter","system-ui","sans-serif"]}}}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<meta name="theme-color" content="#0d0d12">
+<title>Vitrine de Motos Honda</title>
+<meta name="description" content="Escolha sua moto Honda com consórcio ou financiamento e fale direto com o vendedor pelo WhatsApp.">
+<meta property="og:type" content="website"><meta property="og:title" content="Vitrine de Motos Honda"><meta property="og:description" content="Consórcio e financiamento de motos Honda com atendimento direto pelo WhatsApp.">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://qrmwgqkiwoenlkfzjazs.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--bg:0 0 0;--s2:7 7 7;--s3:12 12 16;--bd:28 28 36;--mut:139 143 163;--fg:241 242 246;--pr:124 92 255;--ac:0 230 168;--acl:0 140 100;color-scheme:dark}
-html.light{--bg:244 245 250;--s2:234 237 246;--s3:255 255 255;--bd:214 219 232;--mut:92 99 124;--fg:18 20 32;color-scheme:light}
-html[data-ac=verde]{--pr:5 150 105;--ac:163 230 53;--acl:77 124 15}
-html[data-ac=fogo]{--pr:225 29 72;--ac:251 191 36;--acl:180 83 9}
-html[data-ac=oceano]{--pr:37 99 235;--ac:34 211 238;--acl:14 116 144}
-html.light{--ac:var(--acl)}
-body{background:rgb(var(--bg));color:rgb(var(--fg));font-family:Inter,system-ui,sans-serif;padding-bottom:64px;transition:background-color .3s,color .3s}
-@media(min-width:768px){body{padding-bottom:0}}
-.max-w-\[1920px\]{padding-inline:max(1rem,2vw)!important}
-::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgb(var(--bd));border-radius:8px}
-.glass{background:rgb(var(--bg)/.82);backdrop-filter:blur(14px)}
-.inf{color:rgb(var(--fg)/.88)}.inf h2{margin:2rem 0 .5rem;font:700 1.6rem Rajdhani,system-ui,sans-serif;color:rgb(var(--fg))}.inf h3{margin:1.5rem 0 .3rem;font-weight:700;font-size:1.05rem;color:rgb(var(--fg))}.inf p{margin:.75rem 0;line-height:1.7}.inf ul{margin:.75rem 0;padding-left:1.3rem;list-style:disc}.inf li{margin:.35rem 0;line-height:1.65}.inf b{color:rgb(var(--fg))}.inf a{color:rgb(var(--pr));text-decoration:underline;word-break:break-all}.inf table{width:100%;border-collapse:collapse;margin:.75rem 0}.inf th,.inf td{border:1px solid rgb(var(--bd));padding:.7rem .9rem;text-align:left}.inf th{background:rgb(var(--s2))}
-.gt{background:linear-gradient(90deg,rgb(var(--pr)),rgb(var(--ac)));-webkit-background-clip:text;background-clip:text;color:transparent}
-.ch{transition:transform .25s,border-color .25s,box-shadow .25s;content-visibility:auto;contain-intrinsic-size:auto 400px}
-.ch:hover{transform:translateY(-4px);border-color:rgb(var(--pr)/.6);box-shadow:0 16px 44px -14px rgb(var(--pr)/.45)}
-.ch img{transition:transform .45s}.ch:hover img{transform:scale(1.07)}
-.rg{background:radial-gradient(circle at 50% 40%,rgb(var(--pr)/.25),transparent 65%)}
-.hs{box-shadow:0 0 60px -15px rgb(var(--pr)/.6)}
-.hbg{background:radial-gradient(60% 80% at 85% 0,rgb(var(--pr)/.22),transparent 60%),radial-gradient(45% 60% at 0 100%,rgb(var(--ac)/.12),transparent 60%)}
-.hgrid{background-image:linear-gradient(rgb(var(--bd)/.55) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--bd)/.55) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at 60% 40%,#000 20%,transparent 72%);mask-image:radial-gradient(ellipse at 60% 40%,#000 20%,transparent 72%)}
-.glow{position:relative;isolation:isolate}.glow::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 32px 6px rgb(var(--pr)/.75);opacity:.45;z-index:-1;pointer-events:none;animation:gl 2.4s ease-in-out infinite}.glow:disabled::after{display:none}
-@keyframes gl{50%{opacity:1}}
-@keyframes up{from{opacity:0;transform:translateY(16px)}}
-.rv{animation:up .5s cubic-bezier(.2,.7,.2,1) backwards}
-.hin>*{animation:up .8s cubic-bezier(.2,.7,.2,1) backwards}.hin>:nth-child(2){animation-delay:.08s}.hin>:nth-child(3){animation-delay:.16s}.hin>:nth-child(4){animation-delay:.24s}
-@keyframes bump{40%{transform:scale(1.25) rotate(-8deg)}}.bump{animation:bump .4s}
-button:active{transform:scale(.97)}
-@keyframes sh{0%{background-position:-120% 0}100%{background-position:220% 0}}
-.b1,.b2{background-size:220% 100%;animation:sh 2.8s linear infinite;color:#000}
-.b1{background-image:linear-gradient(110deg,#ff5c5c,#ff8a5c 35%,#ff5c5c 60%,#ff8a5c);color:#fff}
-.b2{background-image:linear-gradient(110deg,#ffb020,#ffd76a 35%,#ffb020 60%,#ffd76a)}
-@keyframes fl{50%{transform:translateY(-10px)}}.fl{animation:fl 4.5s ease-in-out infinite}
-@keyframes mq{to{transform:translateX(-50%)}}.mq{animation:mq 40s linear infinite;width:max-content}.mq:hover{animation-play-state:paused}
-@keyframes sk{to{background-position:-200% 0}}
-.sk{background:linear-gradient(90deg,rgb(var(--s3)) 25%,rgb(var(--bd)/.6) 50%,rgb(var(--s3)) 75%);background-size:200% 100%;animation:sk 1.2s infinite}
-input,select{background:rgb(var(--s3));border:1px solid rgb(var(--bd));border-radius:12px;color:rgb(var(--fg))}
-input:focus,select:focus{outline:2px solid rgb(var(--pr));border-color:transparent}
-:focus-visible{outline:2px solid rgb(var(--ac));outline-offset:2px}
-details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-marker{display:none}
-details[open] summary span{transform:rotate(45deg)}
-html.light .text-white,html.light .hover\:text-white:hover{color:rgb(var(--fg))}
-html.light .bg-pri.text-white,html.light .bg-pri .text-white{color:#fff}
-html.light .bg-acc.text-black{color:#fff}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{--r:#c80000;--r2:#a00000;--g:#25ae88;--bg:#fff;--cd:#f8f8f8;--bd:#e6e6e6;--tx:#2b2b33;--mu:#8b8b96}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--tx);background:var(--bg)}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px 90px}
+.cover{height:110px;background:linear-gradient(135deg,#c80000,#e8452f 60%,#7a0000)}
+.prof{display:flex;justify-content:space-between;align-items:flex-end;margin-top:-52px}
+.ava{width:104px;height:104px;border-radius:50%;border:4px solid #fff;object-fit:cover;background:#ddd;display:grid;place-items:center;font-size:40px;font-weight:800;color:#fff;background:var(--r)}
+.ava.s{width:56px;height:56px;border-width:2px;font-size:20px}
+.logo{height:76px;max-width:130px;object-fit:contain;background:#fff;border-radius:8px;padding:4px}
+h1{margin:14px 0 2px;font-size:26px;font-weight:800}h2{font-size:22px;font-weight:800;margin:26px 0 12px}h3{margin:0;font-size:18px;font-weight:800}
+.mu,small{color:var(--mu)}.row{display:flex;gap:10px;margin:14px 0}
+.btn{display:block;width:100%;padding:15px;border-radius:999px;border:1px solid var(--bd);background:var(--cd);font:600 15px Inter,sans-serif;color:var(--tx);text-align:center;text-decoration:none;cursor:pointer;margin-top:10px}
+.btn.red{background:var(--r);color:#fff;border-color:var(--r)}.btn.red:hover{background:var(--r2)}
+.btn.wa{background:var(--g);color:#fff;border-color:var(--g)}.btn.or{background:#c96d22;color:#fff;border-color:#c96d22}
+.row .btn{width:auto;margin:0;padding:13px 22px}
+.card{border:1px solid var(--bd);border-radius:22px;padding:18px;margin-bottom:16px}
+.card img{width:100%;height:200px;object-fit:contain;margin:8px 0 12px}
+.foot{text-align:center;font-size:12px;margin-top:30px}.foot a{color:var(--mu)}
+.bubble{position:fixed;right:14px;bottom:16px;background:var(--g);color:#fff;border-radius:999px;padding:8px 18px 8px 8px;display:flex;gap:10px;align-items:center;font-weight:600;text-decoration:none;box-shadow:0 6px 20px #0003;z-index:5}
+.bubble .ava{width:44px;height:44px;border-width:2px;font-size:16px}
+#modal{position:fixed;inset:0;background:#0007;display:none;z-index:10;overflow:auto}
+.sheet{background:#fff;max-width:560px;min-height:100%;margin:0 auto;padding:16px 18px 40px}
+.mh,.mt{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mh{padding-bottom:12px;border-bottom:1px solid var(--bd)}.mt{padding:6px 0;border-bottom:1px solid var(--bd);margin-bottom:12px}
+.mt h2{margin:10px 0;font-size:21px}.mt b{font-size:26px;color:var(--r);padding:0 7px;cursor:pointer}.mt b:last-child{color:var(--mu)}
+.mp{display:flex;gap:10px;align-items:center}.wab{background:var(--g);color:#fff;border-radius:999px;padding:12px 18px;text-decoration:none;font-weight:700}
+.gal #gm{width:100%;height:260px;object-fit:contain}.th{display:flex;gap:8px;overflow:auto;padding:6px 0}
+.th img{width:70px;height:54px;object-fit:contain;border:2px solid var(--bd);border-radius:8px;cursor:pointer}
+.vid{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000;margin-top:8px}
+.desc{white-space:pre-wrap;line-height:1.6;margin-top:18px}
+.pl label{display:block;padding:9px 0;font-size:18px;cursor:pointer}.pl input{accent-color:var(--r);margin-right:10px;transform:scale(1.4)}
+input,select,textarea{width:100%;padding:15px;border:1px solid var(--bd);border-radius:12px;font:16px Inter,sans-serif;margin-top:10px;background:#fff}
+textarea{min-height:150px}label.l{display:block;font-size:13px;color:var(--mu);margin-top:12px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 20px;border-radius:999px;z-index:30;display:none}
+.card{position:relative}.row .btn{flex:1;padding:13px 12px}
+.chips{display:flex;gap:8px;overflow:auto;padding:12px 0 6px}.chip{flex:none;padding:9px 16px;border-radius:999px;border:1px solid var(--bd);background:#fff;font:600 14px Inter,sans-serif;cursor:pointer}.chip.on{background:var(--r);color:#fff;border-color:var(--r)}
+.selo{position:absolute;top:14px;right:14px;background:var(--r);color:#fff;font:700 12px Inter,sans-serif;padding:5px 11px;border-radius:999px}
+.par{margin:2px 0 8px;font-size:14px}.par b{color:var(--r);font-size:18px}
+.lb{position:fixed;inset:0;background:#000e;z-index:20;display:grid;place-items:center}.lb img{max-width:96vw;max-height:90vh}
+.sk{height:260px;border-radius:22px;background:linear-gradient(90deg,#f0f0f0,#fafafa,#f0f0f0);margin-bottom:16px}
+.stk{position:sticky;bottom:0;background:#fff;padding:10px 0 4px;margin-top:14px}#modal{overscroll-behavior:contain}
+details{border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin:12px 0;font-size:14px;line-height:1.5}summary{font-weight:700;cursor:pointer}
+@media(min-width:720px){#modal{padding:28px 14px}.sheet{max-width:780px;min-height:0;border-radius:18px;box-shadow:0 20px 60px #0005}.gal #gm{height:330px}}
+.gal{display:flex;gap:10px;align-items:center}#gmain{flex:1;min-width:0}.gal .th{flex-direction:column;width:76px;flex:none;max-height:340px;padding:0}.gal .th img{width:70px}
+.vb{width:46px;height:46px;border-radius:50%;background:var(--r);color:#fff;border:0;font-size:16px;cursor:pointer;flex:none;align-self:center}
+@media(max-width:719px){.gal{flex-direction:column;align-items:stretch}.gal .th{flex-direction:row;width:100%;max-height:none;overflow:auto}}
+.acts{display:flex;gap:8px;margin:12px 0;border-top:1px solid var(--bd);padding-top:12px}.acts .btn{margin:0;border-radius:10px;padding:14px 6px;font-size:14px;flex:1}
+.ft{font-size:18px;font-weight:800;margin:18px 0 8px}.desc{white-space:normal;line-height:1.55;margin-top:0}.hl{color:var(--mu);font-weight:800;margin:6px 0}
+.fin{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}.fin>div{flex:1}.fin img{width:48%;border:1px solid var(--bd);border-radius:12px;object-fit:contain}
+.hw{background:var(--cd);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5;margin:10px 0}.pill{width:auto!important;margin:0!important;padding:12px 18px!important}
+/* admin */
+.ad{max-width:760px;margin:0 auto;padding:18px}.tabs{display:flex;gap:8px;margin:14px 0}.tabs .btn{margin:0;padding:11px}.tabs .on{background:var(--r);color:#fff}
+.it{display:flex;gap:12px;align-items:center;border:1px solid var(--bd);border-radius:14px;padding:10px;margin-top:10px}
+.it img{width:70px;height:54px;object-fit:contain}.it .g{flex:1}.it button,.sm{border:1px solid var(--bd);background:var(--cd);border-radius:10px;padding:8px 12px;cursor:pointer;font:600 13px Inter}
+.ph{display:grid;grid-template-columns:repeat(auto-fill,90px);gap:8px;margin-top:10px}.ph div{position:relative}.ph img{width:90px;height:70px;object-fit:contain;border:1px solid var(--bd);border-radius:8px}
+.ph i{position:absolute;top:-6px;right:-6px;background:var(--r);color:#fff;border-radius:50%;width:22px;height:22px;text-align:center;font-style:normal;cursor:pointer}
+.pr{display:flex;gap:8px}.pr input{margin-top:8px}
 
-/* ---------- cabeçalho recolhível no celular ---------- */
-@media(max-width:767px){
- #hdr{transition:clip-path .42s cubic-bezier(.4,0,.2,1)}
- #hdr.clip{clip-path:inset(0 0 0 0)}
- #hdr.mini{clip-path:inset(0 0 calc(100% - var(--hl,75px)) 0)}
- #hdr.mid{clip-path:inset(0 0 calc(100% - var(--hm,130px)) 0)}
- #hdr::after{content:"";position:absolute;left:0;right:0;top:calc(var(--hl,75px) - 1px);height:1px;background:rgb(var(--bd));opacity:0;transition:opacity .3s,top .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
- #hdr.mini::after{opacity:1}
- #hdr.mid::after{opacity:1;top:calc(var(--hm,130px) - 1px)}
- #hrow>:not(.logo),#hdr>nav{transition:opacity .32s ease .08s,translate .4s cubic-bezier(.4,0,.2,1),visibility 0s}
- #hdr.mini #hrow>:not(.logo),#hdr.mini>nav,#hdr.mid>nav{opacity:0;translate:0 -18px;visibility:hidden;pointer-events:none;transition:opacity .2s ease,translate .4s cubic-bezier(.4,0,.2,1),visibility 0s .4s}
- #home>section.hbg{margin-top:calc(var(--hd,0px)*-1)}
- #home>section.hbg>div.relative{padding-top:calc(3.5rem + var(--hd,0px))}
- #vitrine{scroll-margin-top:calc(var(--hl,75px) + 8px)}
+/* ===== V2: visual profissional ===== */
+:root{--ink:#0d0d12;--paper:#f3f3f6;--sh:0 1px 2px #0001,0 14px 34px -16px #0003}
+html{scroll-behavior:smooth}
+body{background:var(--paper);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Sora,Inter,sans-serif;letter-spacing:-.02em}
+:focus-visible{outline:3px solid #c8000066;outline-offset:2px}
+.hero{position:relative;overflow:hidden;color:#fff;padding:28px 32px 30px;border-radius:0 0 32px 32px;background:radial-gradient(640px 240px at 90% -40%,#c8000050,transparent 70%),linear-gradient(160deg,#1b1b23,#0a0a0e 78%);box-shadow:0 22px 44px -30px #000}
+.glow{position:absolute;width:280px;height:280px;left:-130px;bottom:-190px;background:#c80000;filter:blur(110px);opacity:.26;animation:breathe 7s ease-in-out infinite;pointer-events:none}
+.spd{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.spd i{position:absolute;height:2px;width:36vw;left:-40vw;opacity:0;background:linear-gradient(90deg,transparent,#ff3b30,transparent);transform:skewX(-30deg);animation:dash 5.5s cubic-bezier(.4,0,.2,1) infinite}
+.spd i:nth-child(1){top:24%}.spd i:nth-child(2){top:52%;animation-delay:1.8s;width:26vw}.spd i:nth-child(3){top:80%;animation-delay:3.4s}.spd i:nth-child(4){display:none}
+@keyframes dash{0%{left:-40vw;opacity:0}15%{opacity:.7}60%{opacity:.4}100%{left:110vw;opacity:0}}
+@keyframes breathe{50%{opacity:.4;transform:scale(1.15)}}
+@keyframes up{from{opacity:0;transform:translateY(18px)}}
+.hin{position:relative;max-width:1376px;margin:0 auto;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-areas:"a id l s" "a c l s";column-gap:22px;row-gap:14px;align-items:center}
+.hin.nl{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"a id s" "a c s"}
+.hin>*{animation:up .7s cubic-bezier(.2,.8,.2,1) both}
+.hero .ava{grid-area:a;width:96px;height:96px;border:3px solid #ffffff33;box-shadow:0 0 0 6px #ffffff10,0 14px 34px #0008;flex:none}
+.idt{grid-area:id;min-width:0;align-self:end;animation-delay:.06s}
+.hero h1{margin:0;font-size:clamp(28px,3.4vw,40px);line-height:1.05;display:flex;align-items:center;gap:10px;font-weight:800}
+.vf{width:.5em;height:.5em;flex:none}
+.hero p{margin:6px 0 0;color:#ffffffbd;font-size:15px;max-width:520px;line-height:1.45}
+.ctas{grid-area:c;display:flex;gap:10px;align-self:start;flex-wrap:wrap;animation-delay:.12s}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 22px;border-radius:999px;font:700 14.5px Inter,sans-serif;color:#fff;text-decoration:none;background:#ffffff14;border:1px solid #ffffff30;backdrop-filter:blur(6px);transition:transform .25s,background .25s,box-shadow .25s}
+.cta svg{width:18px;height:18px;flex:none}
+.cta.w{background:linear-gradient(135deg,#e01a1a,#b00000);border-color:#ff5a4d66;box-shadow:0 10px 26px -10px #e0111199}
+.cta:hover{transform:translateY(-2px);background:#ffffff26}.cta.w:hover{background:linear-gradient(135deg,#f02a2a,#c00000);box-shadow:0 14px 30px -10px #e01111cc}
+.hlogo{grid-area:l;height:58px;max-width:150px;object-fit:contain;background:#fff;border-radius:14px;padding:7px 11px;box-shadow:0 10px 26px -12px #000a;animation-delay:.18s}
+.stats{grid-area:s;display:flex;gap:10px;animation-delay:.24s}
+.stats div{background:#ffffff0d;border:1px solid #ffffff1c;border-radius:16px;padding:12px 18px;min-width:150px;backdrop-filter:blur(10px)}
+.stats b{display:block;font:800 clamp(21px,2.2vw,28px) Sora,sans-serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stats span{display:block;margin-top:3px;font-size:12px;color:#ffffff9e;line-height:1.3}
+.wrap{max-width:1440px;padding:0 32px 60px}
+.sec{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:28px 0 12px}
+.sec h2{margin:0;font-size:clamp(22px,2.4vw,28px)}
+.nc{font:600 13px Inter,sans-serif;color:var(--mu);white-space:nowrap}
+.bar{position:sticky;top:10px;z-index:6;margin:0 0 22px;display:flex;align-items:center;gap:14px;padding:10px 12px;background:#ffffffe8;backdrop-filter:blur(16px) saturate(1.4);border:1px solid #fff;border-radius:20px;box-shadow:0 14px 36px -18px #0005;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.bar.hd{transform:translateY(calc(-100% - 24px))}.bar:focus-within{transform:none}
+.sb{position:relative;flex:0 1 340px}.sb svg{position:absolute;left:16px;top:50%;translate:0 -50%;width:18px;color:var(--mu)}
+.sb input{margin:0;padding:12px 16px 12px 44px;border-radius:14px;transition:box-shadow .2s,border-color .2s}
+.sb input:focus{outline:0;border-color:var(--r);box-shadow:0 0 0 4px #c8000020}
+.bar .chips{flex:1;padding:6px 0;margin:-6px 0;min-width:0;scrollbar-width:none}.bar .chips::-webkit-scrollbar{display:none}
+.chip{transition:all .25s}.chip:hover{border-color:var(--r);color:var(--r)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.dvs{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin:18px 0 4px;color:var(--mu)}.dvs::before,.dvs::after{content:'';flex:1;height:1px;background:var(--bd)}.dvs span{font:700 13px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.cd{position:relative;display:flex;flex-direction:column;border:1px solid #0000000d;border-radius:26px;background:#fff;overflow:hidden;box-shadow:var(--sh);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.cd::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),#c8000014,transparent 60%)}
+.cd:hover{transform:translateY(-8px);box-shadow:0 30px 60px -24px #c8000066,0 8px 20px -10px #0003}.cd:hover::before{opacity:1}
+.an .cd{animation:cin .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*70ms)}
+@keyframes cin{from{opacity:0;transform:translateY(40px) scale(.96)}}
+.im{position:relative;margin:10px 10px 0;border-radius:18px;aspect-ratio:4/3;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#fff,#eceef3)}
+.im::after{content:"";position:absolute;bottom:13%;left:20%;right:20%;height:14px;background:#000;filter:blur(14px);opacity:.2;border-radius:50%;transition:all .5s}
+.cd:hover .im::after{opacity:.34;left:12%;right:12%}
+.im img{position:relative;z-index:1;width:88%;height:88%;margin:0;object-fit:contain;opacity:0;transition:opacity .6s,transform .35s ease-out;transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--s,1))}
+.im img.ok{opacity:1}.cd:hover .im img{--s:1.08}
+.selo{top:18px;right:18px;z-index:2;background:linear-gradient(135deg,#dc1414,#a00000);box-shadow:0 6px 16px -6px #c80000}
+.cb{position:relative;display:flex;flex-direction:column;flex:1;padding:16px 18px 18px}
+.cb small{font:600 12px Inter,sans-serif}.cb h3{font-size:18px;line-height:1.2;margin:2px 0 10px}
+.par{margin:0 0 14px;min-height:36px;font-size:12.5px;line-height:1.35;color:var(--mu)}.par b{display:block;color:var(--r);font:800 17px Sora,sans-serif;letter-spacing:-.02em}
+.cb .btn{margin-top:0;border-radius:14px;transition:transform .2s,box-shadow .25s,background .25s,color .2s}
+.cb .btn.red{background:linear-gradient(135deg,#dc1414,#b00000);box-shadow:0 10px 22px -10px #c80000}.cb .btn.red:hover{transform:translateY(-2px);box-shadow:0 14px 28px -10px #c80000}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.two .btn{padding:12px 6px;font-size:13.5px;background:#fff}.two .btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--mu)}.empty b{display:block;margin-bottom:6px;font:700 20px Sora,sans-serif;color:var(--tx)}.empty .btn{display:inline-block;width:auto;padding:13px 26px;margin-top:14px}
+.sk{height:390px;margin:0;border-radius:26px;background:linear-gradient(90deg,#e9e9ee 25%,#f7f7fa 50%,#e9e9ee 75%);background-size:200% 100%;animation:sh 1.3s infinite}@keyframes sh{to{background-position:-200% 0}}
+.foot2{background:var(--ink);color:#ffffff99;text-align:center;padding:40px 20px 110px;font-size:13px;line-height:1.9}.foot2 b{color:#fff;font:700 17px Sora,sans-serif}.foot2 a{color:#ffffffb3;margin:0 8px}.foot2 a:hover{color:#fff}
+.bw{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;animation:up .8s 1.2s cubic-bezier(.2,.8,.2,1) both}
+.bubble{position:relative;right:auto;bottom:auto;z-index:auto;background:linear-gradient(135deg,#2bc597,#1f9a76);box-shadow:0 12px 30px -8px #1f9a7699;transition:transform .3s}
+.bubble:hover{transform:translateY(-3px) scale(1.02)}.bubble::after{content:"";position:absolute;inset:0;border-radius:inherit;animation:ring 2.6s infinite;pointer-events:none}
+.bx{position:absolute;top:-9px;right:-4px;width:26px;height:26px;border-radius:50%;border:0;background:#fff;color:#444;font:700 16px/1 Inter,sans-serif;box-shadow:0 4px 12px #0004;cursor:pointer;z-index:2;display:grid;place-items:center;padding:0}
+@keyframes ring{0%{box-shadow:0 0 0 0 #25ae8899}70%,100%{box-shadow:0 0 0 18px #25ae8800}}
+#modal{background:#08080cb3;backdrop-filter:blur(10px)}
+.sheet{animation:pop .45s cubic-bezier(.2,.8,.2,1) both}@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.97)}}
+@media(min-width:720px){.sheet{max-width:1000px;border-radius:28px;padding:22px 30px 34px}.gal #gm{height:440px}.gal .th{max-height:440px}}
+#gmain{border-radius:20px;background:radial-gradient(circle at 50% 40%,#fff,#eceef3)}.gal #gm{animation:fd .4s both}@keyframes fd{from{opacity:0;transform:scale(.97)}}
+.th img{transition:all .2s}.th img:hover{border-color:var(--r);transform:translateY(-2px)}
+.mt b{transition:transform .2s}.mt b:hover{transform:scale(1.25)}
+.sheet .btn{border-radius:14px;transition:transform .2s,box-shadow .2s}.sheet .btn:hover{transform:translateY(-2px)}.sheet .btn.red{background:linear-gradient(135deg,#dc1414,#b00000)}
+.pl label{padding:12px 14px;margin-top:8px;border:1px solid var(--bd);border-radius:14px;transition:all .2s}.pl label:hover,.pl label:has(input:checked){border-color:var(--r);background:#fff5f5}
+.pl label:has(input:checked){box-shadow:0 0 0 3px #c8000018}
+.pl label{display:flex;align-items:center}.pl input{width:auto;padding:0;margin:0 14px 0 4px;border:0;flex:none}.pl label b{margin-left:.35em}
+@media(max-width:1180px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:899px){
+.hero{padding:24px 22px 24px}
+.hin{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"a id l" "c c c" "s s s";column-gap:16px;row-gap:14px}
+.hin.nl{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"a id" "c c" "s s"}
+.idt{align-self:center}.ctas{flex-wrap:nowrap}.cta{flex:1}
+.stats div{flex:1;min-width:0}
 }
-
-/* ---------- admin (#/admin) usa as cores/tema da loja ---------- */
-#adm input,#adm select,#adm textarea{background:rgb(var(--s3));border:1px solid rgb(var(--bd));border-radius:10px;padding:.5rem .7rem;width:100%;color:rgb(var(--fg))}
-#adm input[type=checkbox]{width:auto}#adm input[readonly]{opacity:.8}
-#adm th{text-align:left;color:rgb(var(--mut));font-weight:500;padding:.5rem}
-#adm td{padding:.5rem;border-top:1px solid rgb(var(--bd));vertical-align:middle}
-#adm .b{border-radius:10px;padding:.5rem .9rem;font-weight:700;background:rgb(var(--pr));color:#fff}
-#adm .g{background:rgb(var(--s3));border:1px solid rgb(var(--bd))}
-#adm .tab.on{background:rgb(var(--pr));color:#fff}
-body.adm{padding-bottom:0}
-body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:none!important}
+@media(max-width:860px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+@media(max-width:719px){
+.bar{flex-direction:column;align-items:stretch;gap:8px;padding:10px;top:8px;border-radius:18px}
+.sb{flex:none}
+.bar .chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.chip{padding:8px 15px;font-size:13.5px}
+}
+@media(max-width:560px){
+.grid{grid-template-columns:1fr}.wrap{padding:0 14px 50px}
+.hero{padding:20px 16px 18px;border-radius:0 0 26px 26px}
+.hin{column-gap:14px;row-gap:12px}
+.hero .ava{width:68px;height:68px;border-width:2px;box-shadow:0 0 0 4px #ffffff10,0 10px 24px #0008}
+.hero h1{font-size:27px}
+.hero p{font-size:13.5px;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cta{padding:13px 10px;font-size:14px}
+.hlogo{height:44px;max-width:88px;padding:5px 8px;border-radius:12px}
+.stats{gap:8px}.stats div{padding:10px 12px;border-radius:14px}.stats b{font-size:20px}.stats span{font-size:11.5px}
+.sec{margin-top:22px}
+.im{aspect-ratio:16/11}.cb{padding:14px 16px 16px}
+.bubble{font-size:13px;padding:6px 16px 6px 6px}.bubble .ava{width:38px;height:38px}
+}
+@media(max-width:560px){.mp{min-width:0;gap:8px}.mp small{white-space:nowrap}.wab{flex:none;padding:10px 14px;font-size:14px}.ava.s{width:46px;height:46px}}
+.par{flex:1}
+.im.mm{aspect-ratio:3/2}.im.mm::after{display:none}.im.mm img{width:100%;height:100%;border-radius:18px;object-fit:cover}.cd:hover .im.mm img{--s:1.03}
+.nof{font:600 13px Inter,sans-serif;color:var(--mu)}
+.fl{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:24px 0 14px}
+.foot2 .fp{display:inline-flex;flex-direction:column;align-items:center;margin:0;padding:10px 22px;border:1px solid #ffffff2e;border-radius:16px;color:#fff;text-decoration:none;font:700 14px/1.25 Inter,sans-serif;transition:transform .25s,background .25s,border-color .25s}
+.foot2 .fp small{margin-top:2px;font:500 11.5px Inter,sans-serif;color:#ffffff99}
+.foot2 .fp:hover{background:#ffffff14;border-color:#ffffff55;transform:translateY(-2px)}
+.foot2 .mk{display:inline-flex;align-items:center;gap:12px;margin:0;padding:13px 24px;border-radius:999px;background:linear-gradient(135deg,#e01a1a,#b00000);color:#ffffffe6;text-decoration:none;font:500 14px Inter,sans-serif;box-shadow:0 12px 28px -12px #e01111aa;transition:transform .25s}
+.foot2 .mk b{font:800 14px Inter,sans-serif;color:#fff}.foot2 .mk:hover{transform:translateY(-2px)}
+.hero .ava[data-foto],.mp .ava[data-foto]{cursor:zoom-in;transition:transform .25s}.hero .ava[data-foto]:hover,.mp .ava[data-foto]:hover{transform:scale(1.05)}
+.lb{animation:fd .25s both;cursor:zoom-out}.lb.fv img{width:min(88vw,520px);height:auto;max-height:84vh;object-fit:cover;border-radius:28px;box-shadow:0 30px 80px #000a}
+#modal{cursor:pointer}.sheet{cursor:auto}
+@media(max-width:719px){.sheet{position:relative;margin-top:9vh;min-height:calc(100% - 9vh);border-radius:26px 26px 0 0;box-shadow:0 -12px 40px #0004}.sheet::before{content:"";display:block;width:42px;height:4px;border-radius:4px;background:#d3d3db;margin:-6px auto 12px}}
+body:has(#modal[style*="block"]){overflow:hidden}
+.im{cursor:pointer}
+.sheet{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+/* ===== VENDEDOR VIRTUAL (chat) ===== */
+.ch{position:fixed;z-index:30;display:none;flex-direction:column;background:#f6f6f8;inset:0;height:100dvh;overflow:hidden}
+.ch.on{display:flex;animation:chin .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes chin{from{opacity:0;transform:translateY(24px) scale(.98)}}
+@media(min-width:721px){.ch{inset:auto 20px 20px auto;width:392px;height:min(680px,calc(100dvh - 40px));border-radius:22px;box-shadow:0 30px 80px -20px #000a,0 0 0 1px #0001}}
+.chh{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 10px;padding-top:calc(12px + env(safe-area-inset-top,0px));background:linear-gradient(135deg,#1a1a22,#0d0d12);color:#fff;border-bottom:2px solid var(--r)}
+.chh>div{flex:1;min-width:0}.chh b{display:block;font:700 15px Sora,Inter,sans-serif}
+.chh small{display:flex;align-items:center;gap:6px;color:#b8f5df;font-size:12px}
+.chh small i{width:8px;height:8px;border-radius:50%;background:#2bd69b;animation:chrg 1.8s infinite}
+@keyframes chrg{0%{box-shadow:0 0 0 0 #2bd69bbb}80%,100%{box-shadow:0 0 0 8px #2bd69b00}}
+.chb{width:36px;height:36px;border:0;border-radius:50%;background:#ffffff1a;color:#fff;font-size:18px;cursor:pointer;flex:none;transition:.2s}
+.chb:hover{background:#ffffff33}.chb:disabled{opacity:.3;cursor:default}
+.cha{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #ffffff55;background:#444;display:grid;place-items:center;font-weight:700;color:#fff}
+.chl{flex:1;overflow-y:auto;padding:16px 12px 8px;display:flex;flex-direction:column;gap:8px;scroll-behavior:smooth;overscroll-behavior:contain}
+.chm{display:flex;gap:8px;align-items:flex-end;animation:chmi .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes chmi{from{opacity:0;transform:translateY(10px)}}
+.chm.u{justify-content:flex-end}
+.chm .cha{width:28px;height:28px;border-width:1px;font-size:12px;border-color:#0002}
+.chm>div{max-width:80%;padding:11px 14px;border-radius:14px 14px 14px 4px;background:#fff;box-shadow:0 1px 3px #0002;font-size:15px;line-height:1.4;word-break:break-word;color:var(--tx)}
+.chm.u>div{background:#2b2b33;color:#fff;border-radius:14px 14px 4px 14px}
+.chm.e>div{background:#fff1f0;color:#a00000}
+.chm>div.im{padding:6px}.chm .im img{display:block;width:100%;max-width:260px;border-radius:10px}
+.chm a.ln{color:inherit;text-decoration:underline;word-break:break-all}
+.chm>div.wb{padding:0;background:none;box-shadow:none;max-width:88%}
+.chw{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#2bc597,#1f9a76);color:#fff!important;font-weight:700;text-decoration:none;padding:14px 18px;border-radius:12px;box-shadow:0 10px 24px -10px #1f9a76cc;text-align:center}
+.chw svg{width:20px;height:20px;flex:none}
+.chty>div{display:flex;gap:4px;padding:14px}.chty span{width:7px;height:7px;border-radius:50%;background:#9a9aa6;animation:chd 1s infinite}
+.chty span:nth-child(2){animation-delay:.15s}.chty span:nth-child(3){animation-delay:.3s}
+@keyframes chd{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.chq{display:flex;flex-wrap:wrap;gap:8px;padding:6px 12px;max-height:140px;overflow-y:auto}.chq:empty{display:none}
+.chq button{border:1.5px solid #d9d9e0;background:#fff;color:var(--tx);border-radius:999px;padding:9px 15px;font:600 14px Inter,sans-serif;cursor:pointer;transition:.2s;animation:chmi .35s both}
+.chq button:hover{border-color:var(--r);color:var(--r);transform:translateY(-1px)}
+.chf{display:flex;gap:8px;padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));background:#f6f6f8}
+.chf input{flex:1;min-width:0;border:1px solid var(--bd);border-radius:12px;padding:13px 14px;font:16px Inter,sans-serif;background:#fff;outline:0}
+.chf input:focus{border-color:#1f9a76;box-shadow:0 0 0 3px #25ae8826}
+.chf button{border:0;border-radius:12px;padding:0 20px;background:linear-gradient(135deg,#2bc597,#1f9a76);color:#fff;font:700 15px Inter,sans-serif;cursor:pointer}
+.chf button:disabled,.chf input:disabled{opacity:.5}
+body.chopen .bw{display:none}
+@media(prefers-reduced-motion:reduce){.ch,.chm,.chq button{animation:none}}
 </style>
 </head>
 <body>
-<div id="top" class="bg-s3 border-b border-bd py-2 text-center text-xs text-mut px-3"></div>
-
-<header id="hdr" class="glass sticky top-0 z-30 border-b border-bd">
- <div id="hrow" class="mx-auto flex max-w-[1920px] flex-wrap items-center gap-3 px-4 py-3">
-  <a href="#/" class="logo font-display text-3xl font-bold leading-none gt">Plebeu<span class="block text-sm tracking-[.35em] text-white">GAMES</span></a>
-  <div class="relative order-last w-full md:order-none md:w-auto md:flex-1">
-   <input id="q" type="search" autocomplete="off" placeholder="Busque console, jogo, headset…" aria-label="Buscar" class="h-11 w-full pl-4 pr-4">
-   <div id="sug" class="absolute inset-x-0 top-12 z-40 hidden overflow-hidden rounded-xl border border-bd bg-s3 shadow-2xl"></div>
-  </div>
-  <select id="store" class="h-11 px-3 text-sm font-semibold" aria-label="Escolher loja"></select>
-  <button id="favb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Favoritos">♥</button>
-  <div class="relative"><button id="thb" class="h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Tema do site">🎨</button>
-  <div id="thm" class="absolute right-0 top-14 z-50 hidden w-60 rounded-2xl border border-bd bg-s3 p-4 shadow-2xl">
-   <p class="mb-2 text-xs font-semibold text-mut">Aparência</p>
-   <div class="grid grid-cols-2 gap-2"><button data-th="dark" class="rounded-xl border border-bd py-2 text-sm font-semibold">🌙 Escuro</button><button data-th="light" class="rounded-xl border border-bd py-2 text-sm font-semibold">☀️ Claro</button></div>
-   <p class="mb-2 mt-4 text-xs font-semibold text-mut">Cor de destaque</p>
-   <div class="flex gap-2.5"><button data-ac="roxo" aria-label="Roxo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(124 92 255),rgb(0 230 168))"></button><button data-ac="verde" aria-label="Verde" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(5 150 105),rgb(163 230 53))"></button><button data-ac="fogo" aria-label="Fogo" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(225 29 72),rgb(251 191 36))"></button><button data-ac="oceano" aria-label="Oceano" class="h-9 w-9 rounded-full" style="background:linear-gradient(135deg,rgb(37 99 235),rgb(34 211 238))"></button></div>
-  </div></div>
- <button id="cartb" class="relative h-11 w-11 rounded-xl border border-bd bg-s3 text-lg" aria-label="Carrinho">🛒<b id="cn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-xs leading-5 text-black"></b></button>
-  <a id="prb" href="#/perfil" class="relative grid h-11 w-11 place-items-center rounded-xl border border-bd bg-s3 text-lg" aria-label="Meu perfil">👤<b id="pfn" class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-acc px-1 text-center text-xs leading-5 text-black"></b></a>
- </div>
- <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-[1920px] gap-2 overflow-x-auto px-4 py-2"></div></nav>
-</header>
-
-<main id="home">
- <section class="hbg relative overflow-hidden border-b border-bd"><div class="hgrid absolute inset-0"></div>
-  <canvas id="pc" class="absolute inset-0 h-full w-full"></canvas>
-  <div class="relative mx-auto grid max-w-[1920px] items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_.85fr] md:py-20">
-   <div class="hin">
-    <span class="inline-block rounded-full border border-bd bg-s3 px-3 py-1 text-xs font-semibold text-acc">Rio Branco (AC) e Porto Velho (RO)</span>
-    <h1 class="mt-4 font-display text-5xl font-bold leading-[.95] md:text-7xl 2xl:text-8xl">Sua loja <span class="gt">gamer</span> no Acre e em Rondônia</h1>
-    <p class="mt-5 max-w-xl text-lg text-mut">Consoles, jogos, periféricos e informática com garantia da loja. Escolha, pague no Pix e receba no mesmo dia.</p>
-    <div class="mt-7 flex flex-wrap gap-3">
-     <a href="#vitrine" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Ver produtos</a>
-     <a id="herowa" target="_blank" rel="noopener" class="rounded-xl border border-bd bg-s3 px-7 py-3.5 font-bold hover:border-pri">Falar com a loja</a>
-    </div>
-   </div>
-   <div class="fl rounded-3xl border border-bd bg-s3/90 p-7 hs">
-    <p id="cl" class="text-sm font-semibold text-mut"></p>
-    <p id="ct" class="my-2 font-display text-6xl font-bold tabular-nums gt">15h</p>
-    <p class="text-sm text-mut">Pedidos até as 15h saem no mesmo dia, no horário da sua cidade.</p>
-    <div class="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-mut">
-     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">Pix</b>desconto</div>
-     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">5x</b>sem juros</div>
-     <div class="rounded-xl border border-bd p-3"><b class="block text-xl text-white">2</b>lojas físicas</div>
-    </div>
-   </div>
-  </div>
- </section>
-
- <section class="border-b border-bd bg-s2"><div class="mx-auto grid max-w-[1920px] grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
-  <div class="text-sm text-mut"><b class="block text-white">⚡ Entrega no mesmo dia</b>Rio Branco e Porto Velho</div>
-  <div class="text-sm text-mut"><b class="block text-white">💠 Desconto no Pix</b>Preço menor, na hora</div>
-  <div class="text-sm text-mut"><b class="block text-white">🛡️ Garantia da loja</b>Suporte direto no WhatsApp</div>
-  <div class="text-sm text-mut"><b class="block text-white">🏬 Retire na loja</b>Sem pagar frete</div>
- </div></section>
-
- <section id="vitrine" class="mx-auto max-w-[1920px] px-4 py-12">
-  <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
-   <h2 id="gt" class="font-display text-4xl font-bold">Destaques da semana</h2>
-   <div class="flex items-center gap-3 text-sm">
-    <label class="flex items-center gap-2 text-mut"><input id="onlys" type="checkbox" class="h-4 w-4 accent-pri">Só com estoque</label>
-    <select id="sort" class="h-10 px-3" aria-label="Ordenar"><option value="rel">Relevância</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option><option value="az">A–Z</option></select>
-   </div>
-  </div>
-  <div id="grid" class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5 min-[1700px]:grid-cols-6"></div>
- </section>
-
- <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2 py-12">
-  <h2 class="mb-6 text-center font-display text-4xl font-bold">Quem comprou <span class="gt">aprova</span></h2>
-  <div id="mq" class="mq flex gap-4"></div>
- </section>
-
- <section class="mx-auto max-w-5xl px-4 py-14">
-  <h2 class="mb-6 text-center font-display text-4xl font-bold">Dúvidas frequentes</h2>
-  <div id="faq" class="grid gap-3 lg:grid-cols-2 lg:items-start"></div>
- </section>
-
- <section class="mx-auto max-w-[1920px] px-4 pb-14"><div class="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-bd bg-s3 p-8 hs">
-  <div><h2 class="font-display text-3xl font-bold">Não achou o que procura?</h2><p class="text-mut">Conseguimos consoles, peças e acessórios sob encomenda.</p></div>
-  <a id="bandwa" target="_blank" rel="noopener" class="glow rounded-xl bg-pri px-7 py-3.5 font-bold text-white">Pedir pelo WhatsApp</a>
- </div></section>
-</main>
-
-<main id="pdp" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
-<main id="prf" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
-<main id="crt" class="mx-auto hidden max-w-[1920px] px-4 py-8"></main>
-<main id="inf" class="mx-auto hidden max-w-3xl px-4 py-8"></main>
-<main id="adm" class="hidden">
-<div id="login" class="grid min-h-screen place-items-center p-4"><div class="w-full max-w-sm space-y-3 rounded-2xl border border-bd bg-s3 p-6">
-<h1 class="text-2xl font-bold">🎮 Plebeu Games · Admin</h1>
-<input id="aem" type="email" placeholder="E-mail" autocomplete="username"><input id="pw" type="password" placeholder="Senha" autocomplete="current-password">
-<button id="go" class="b w-full">Entrar</button><p id="err" class="text-sm text-red-400"></p><a href="#/" class="block text-center text-sm text-mut">← Voltar à loja</a></div></div>
-
-<div id="app" class="hidden mx-auto max-w-7xl p-4">
-<header class="mb-4 flex flex-wrap items-center gap-2"><h1 class="mr-auto text-xl font-bold">🎮 Admin Plebeu Games</h1>
-<nav id="tabs" class="flex flex-wrap gap-1"></nav><a href="#/" class="g rounded-lg px-3 py-2 text-sm">Ver loja</a><button id="out" class="g rounded-lg px-3 py-2 text-sm">Sair</button></header>
-<main id="main"></main></div>
-
-<div id="modal" class="fixed inset-0 z-50 hidden overflow-auto bg-black/80 p-4"><div id="mc" class="mx-auto max-w-2xl rounded-2xl border border-bd bg-s3 p-5"></div></div>
-<div id="atoast" class="fixed bottom-4 left-1/2 z-[60] hidden -translate-x-1/2 rounded-xl bg-pri px-4 py-2 font-semibold"></div>
-</main>
-
-<footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-[1920px] flex-wrap justify-between gap-6 px-4">
- <div><b class="font-display text-2xl gt">Plebeu Games</b><p class="mt-1">Loja gamer em Rio Branco (AC) e Porto Velho (RO).</p></div>
- <div id="fst" class="space-y-1"></div>
- <div><b class="text-fg">Institucional</b><nav id="finfo" class="mt-2" aria-label="Institucional"></nav></div>
-</div>
-<div class="mx-auto mt-8 max-w-[1920px] px-4 text-center"><p class="font-display text-lg font-bold text-fg">Siga-nos nas redes sociais</p><div class="mt-3 flex justify-center gap-3"><a href="https://www.facebook.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Facebook da Plebeu Games" class="flex items-center gap-2 rounded-xl border border-bd bg-s3 px-4 py-2.5 font-semibold text-fg hover:border-pri"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a><a href="https://www.instagram.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Plebeu Games" class="flex items-center gap-2 rounded-xl border border-bd bg-s3 px-4 py-2.5 font-semibold text-fg hover:border-pri"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram</a></div></div>
-<p class="mx-auto mt-8 max-w-[1920px] border-t border-bd px-4 pt-6 text-center text-xs">R. O. Lima - CNPJ: 28.668.658/0001-95 © Todos os direitos reservados. 2026 · <a href="#/admin" class="hover:underline">Área da loja</a></p></footer>
-
-<nav class="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-bd text-xs md:hidden">
- <a href="#/" class="py-3 text-center">🏠<br>Início</a><a href="#vitrine" class="py-3 text-center">🕹️<br>Produtos</a>
- <button id="mfav" class="py-3">♥<br>Favoritos</button><button id="mcart" class="py-3">🛒<br>Carrinho</button><a href="#/perfil" class="py-3 text-center">👤<br>Perfil</a>
-</nav>
-<a id="wa" target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-20 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-2xl shadow-lg md:bottom-5">💬</a>
-
-<div id="pay" class="fixed inset-0 z-[70] hidden grid place-items-center overflow-auto bg-black/80 p-4" role="dialog" aria-modal="true" aria-label="Pagamento"><div id="payc" class="w-full max-w-md rounded-3xl border border-bd bg-s3 p-6 text-center shadow-2xl"></div></div>
-<div id="toast" class="fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 translate-y-40 rounded-xl border border-bd bg-s3 px-5 py-3 text-sm shadow-2xl transition-transform md:bottom-6" role="status"></div>
-
+<div id="app"></div><div id="modal" role="dialog" aria-modal="true" aria-label="Detalhes da moto"></div><div id="toast"></div>
 <script>
-/* ===== ÁREA ADMIN (#/admin): isolada em ADM para não colidir com a loja ===== */
-const ADM=(()=>{
-const $=s=>document.querySelector('#adm '+s);
-const R=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),D=d=>d?new Date(d).toLocaleString('pt-BR'):'—';
+/* ===== CONFIGURE AQUI (Supabase > Project Settings > API) ===== */
+const SUPABASE_URL='https://qrmwgqkiwoenlkfzjazs.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFybXdncWtpd29lbmxrZnpqYXpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4MDc3OTIsImV4cCI6MjEwNjM4Mzc5Mn0.lhgkQS_WcB55uG0SKk0ngQgpc9oruFRt2H2D8orjNnc';
+/* =============================================================== */
+const SU=SUPABASE_URL.trim().replace(/\/(rest|auth)\/v1.*$/,'').replace(/\/+$/,'');
+const DEMO=!(/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(SU)&&SUPABASE_KEY.trim().length>30&&!SUPABASE_KEY.startsWith('COLE_'));
+const sb=DEMO?null:supabase.createClient(SU,SUPABASE_KEY.trim());
+const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const toast=m=>{const t=$('#atoast');t.textContent=m;t.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('hidden'),2800)};
-const slug=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const TABS=[['res','Resumo'],['prod','Produtos'],['ped','Pedidos'],['cli','Clientes'],['vis','Visualizações'],['cup','Cupons'],['bl','Bling']];
-const ST=['novo','confirmado','pago','enviado','entregue','cancelado'];
-const pxOf=x=>x.pix_price!=null?+x.pix_price:Math.round(x.price*(1-(x.pix_discount||0)/100)*100)/100;
-let tab='res',stores=[],cats=[],PI=[];   /* PI = fotos do produto em edição: {u:url} já enviada | {f:File,u:blob} nova; a 1ª é a principal */
+const brl=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+let V={nome:'Vendedor',whatsapp:'5568984041407'},M=[],L=[],A=[],K=[],Q='',C='Todas',G=0,cur=0,E={},T='perfil';
+const toast=t=>{const e=$('#toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2800)};
+const wa=t=>`https://wa.me/${V.whatsapp}?text=${encodeURIComponent(t)}`;
+const tel=()=>{const n=(V.whatsapp||'').replace(/^55/,'');return n.length>=10?`(${n.slice(0,2)}) ${n.slice(2,-4)}-${n.slice(-4)}`:n};
+const av=(u,c)=>u?`<img class="ava ${c||''}" src="${esc(u)}" alt="${esc(V.nome)}" decoding="async" data-foto="1" title="Ver foto" tabindex="0" role="button">`:`<div class="ava ${c||''}">${esc((V.nome||'?')[0])}</div>`;
+const img0=m=>(m.fotos||[])[0]||'';
+const soCon=m=>m.categoria==='Motores e Máquinas';
 
-/* ---------- login ---------- */
-async function enter(){
- if(!sb){$('#err').textContent='Supabase não configurado neste arquivo.';return}
- const{data:{session}}=await sb.auth.getSession();if(!session)return;
- const{data:ok}=await sb.rpc('is_admin');
- if(!ok){await sb.auth.signOut();$('#err').textContent='Esta conta não tem permissão de administrador.';return}
- $('#login').classList.add('hidden');$('#app').classList.remove('hidden');
- [{data:stores},{data:cats}]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position')]);
- stores=stores||[];cats=cats||[];nav();show();
+const ph=(t,c)=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><rect width='600' height='400' fill='#f3f3f3'/><circle cx='170' cy='280' r='70' fill='#333'/><circle cx='430' cy='280' r='70' fill='#333'/><path d='M170 280 L260 170 L380 170 L430 280 L330 230 Z' fill='${c}'/><text x='300' y='60' font-size='34' font-family='Arial' font-weight='700' text-anchor='middle' fill='#555'>${t}</text></svg>`);
+const DEMO_M=[
+ {id:'d1',nome:'CB300F TWISTER ABS',modelo:'ABS',categoria:'Street',selo:'Mais vendida',ativo:true,fotos:[ph('CB300F','#c80000'),ph('CB300F','#222')],planos:[{parcelas:80,valor:512.68},{parcelas:60,valor:664.03},{parcelas:48,valor:817.9},{parcelas:36,valor:1077.53},{parcelas:24,valor:1584.88}],descricao:'Design\nExemplo de descrição. No painel você cola aqui o texto copiado do Google.\n\nEspecificações\nCilindrada: 293,5 cc\nTransmissão: 6 velocidades'},
+ {id:'d2',nome:'BIZ 125 ES',modelo:'ES',categoria:'Street',selo:'Novo',ativo:true,fotos:[ph('BIZ 125 ES','#1e3a8a')],planos:[{parcelas:80,valor:310.5},{parcelas:60,valor:401.2}],descricao:'Exemplo de moto cadastrada.'},
+ {id:'d3',nome:'XRE 190',modelo:'',categoria:'Adventure',ativo:true,fotos:[ph('XRE 190','#111')],planos:[],descricao:'Exemplo de moto Adventure.'}];
+async function init(){
+  if(DEMO){V={nome:'Shayron',bio:'Conectando você à sua próxima moto com as melhores condições!',whatsapp:'5568984041407',instagram:'shayrondahonda'};M=DEMO_M;
+    document.body.insertAdjacentHTML('beforeend','<div style="position:fixed;top:0;left:0;right:0;background:#222;color:#fff;font:600 12px Inter,sans-serif;text-align:center;padding:5px;z-index:40">MODO DEMONSTRAÇÃO – configure o Supabase no início do arquivo</div>');return route()}
+  if(!M.length)$('#app').innerHTML='<div class="hero" style="min-height:230px"></div><div class="wrap" style="padding-top:28px"><div class="grid">'+'<div class="sk"></div>'.repeat(8)+'</div></div>';
+  const [v,m]=await Promise.all([sb.from('vendedor').select().eq('id',1).maybeSingle(),sb.from('motos').select().order('ordem').order('created_at')]);
+  if(v.data)V=v.data;M=m.data||[];route();
 }
-$('#go').onclick=async()=>{$('#err').textContent='';
- const{error}=await sb.auth.signInWithPassword({email:$('#aem').value.trim(),password:$('#pw').value});
- if(error)return $('#err').textContent='E-mail ou senha incorretos.';enter()};
-$('#pw').onkeydown=e=>{if(e.key==='Enter')$('#go').click()};
-$('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
-function nav(){$('#tabs').innerHTML=TABS.map(([k,n])=>`<button data-t="${k}" class="tab g rounded-lg px-3 py-2 text-sm ${k===tab?'on':''}">${n}</button>`).join('')}
-$('#tabs').onclick=e=>{const t=e.target.dataset.t;if(t){tab=t;nav();show()}};
-const show=()=>({res,prod,ped,cli,vis,cup,bl}[tab])();
-const card=(t,v)=>`<div class="g rounded-2xl p-4"><p class="text-sm text-mut">${t}</p><p class="text-2xl font-bold text-acc">${v}</p></div>`;
-const tbl=(h,rows)=>`<div class="g overflow-x-auto rounded-2xl"><table class="w-full text-sm"><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows||`<tr><td colspan="${h.length}" class="text-mut">Nada por aqui ainda.</td></tr>`}</table></div>`;
-
-/* ---------- resumo ---------- */
-async function res(){
- const[{data:o},{data:c},{data:v},{data:ls}]=await Promise.all([sb.from('orders').select('total,status,created_at'),sb.from('admin_customers').select('phone'),sb.from('admin_product_views').select('views'),sb.from('admin_low_stock').select('*')]);
- const ok=(o||[]).filter(x=>['pago','enviado','entregue'].includes(x.status)),hoje=new Date().toDateString();
- $('#main').innerHTML=`<div class="grid grid-cols-2 gap-3 md:grid-cols-4">${card('Pedidos',(o||[]).length)}${card('Faturamento pago',R(ok.reduce((t,x)=>t+ +x.total,0)))}${card('Clientes',(c||[]).length)}${card('Visualizações',(v||[]).reduce((t,x)=>t+x.views,0))}${card('Pedidos hoje',(o||[]).filter(x=>new Date(x.created_at).toDateString()===hoje).length)}</div>
- <h2 class="mb-2 mt-5 font-bold">⚠️ Estoque baixo</h2>${tbl(['Produto','Loja','Qtd'],(ls||[]).map(x=>`<tr><td>${esc(x.product)}</td><td>${esc(x.store)}</td><td class="font-bold text-red-400">${x.qty}</td></tr>`).join(''))}`}
-
-/* ---------- produtos ---------- */
-async function prod(){
- const[{data:p},{data:s}]=await Promise.all([sb.from('products').select('*').order('created_at',{ascending:false}),sb.from('product_stock').select('*')]);
- const q=(id,st)=>(s||[]).find(x=>x.product_id===id&&x.store_id===st)?.qty??0;
- $('#main').innerHTML=`<div class="mb-3 flex gap-2"><input id="f" placeholder="Buscar produto…" class="max-w-xs"><button class="b" onclick="ADM.edit()">+ Novo produto</button></div>`+
- tbl(['','Produto','Preço','Promoção','Estoque',''],(p||[]).map(x=>`<tr data-n="${esc(x.name.toLowerCase())}" class="${x.active?'':'opacity-50'}"><td>${x.image_url?`<img src="${esc(x.image_url)}" class="h-12 w-12 rounded-lg object-contain bg-s2">`:esc(x.emoji||'🎮')}</td>
- <td><b>${esc(x.name)}</b><br><span class="text-xs text-mut">${esc(x.category_slug||'')} · ${x.sold_count} vendidos${x.active?'':' · INATIVO'}</span></td>
- <td>${R(x.price)}<br><span class="text-xs text-acc">Pix ${R(pxOf(x))}</span></td>
- <td>${x.old_price?`de ${R(x.old_price)}`:'—'}<br><span class="text-xs text-mut">${x.max_installments}x sem juros</span></td>
- <td>${stores.map(t=>`<label class="mb-1 flex items-center gap-1 text-xs">${esc(t.name)} <input type="number" min="0" value="${q(x.id,t.id)}" class="w-20 !py-1" onchange="ADM.setQty('${x.id}','${t.id}',this.value)"></label>`).join('')}</td>
- <td class="whitespace-nowrap"><button class="g rounded-lg px-2 py-1" onclick="ADM.edit('${x.id}')">Editar</button> <button class="g rounded-lg px-2 py-1" onclick="ADM.del('${x.id}')">🗑️</button></td></tr>`).join(''));
- $('#f').oninput=e=>document.querySelectorAll('tr[data-n]').forEach(r=>r.hidden=!r.dataset.n.includes(e.target.value.toLowerCase()));
-}
-async function setQty(p,s,v){const{error}=await sb.from('product_stock').upsert({product_id:p,store_id:s,qty:Math.max(0,+v||0)});toast(error?'Erro: '+error.message:'Estoque atualizado')}
-async function del(id){if(!confirm('Excluir este produto? (para só esconder do site, edite e desmarque "Ativo")'))return;const{error}=await sb.from('products').delete().eq('id',id);toast(error?'Erro: '+error.message:'Produto excluído');prod()}
-async function edit(id){
- let p={active:true,pix_discount:0,max_installments:5,features:[],price:'',pix_price:'',old_price:'',emoji:'🎮'},st={};
- if(id){p=(await sb.from('products').select('*').eq('id',id).single()).data;((await sb.from('product_stock').select('*').eq('product_id',id)).data||[]).forEach(x=>st[x.store_id]=x.qty)}
- PI=[...new Set([p.image_url,...(p.gallery||[])].filter(Boolean))].map(u=>({u}));
- if(p.pix_price==null&&p.price!=='')p.pix_price=pxOf(p);   /* produtos antigos: mostra o preço Pix já calculado */
- const i=(k,l,t='text',x='')=>`<label class="block text-xs text-mut">${l}<input id="p_${k}" type="${t}" ${x} value="${esc(p[k]??'')}"></label>`;
- $('#mc').innerHTML=`<h2 class="mb-3 text-lg font-bold">${id?'Editar':'Novo'} produto</h2><div class="grid gap-3 md:grid-cols-2">
- <div class="md:col-span-2">${i('name','Nome')}</div>${i('brand','Marca')}${i('sku','SKU (mesmo código do Bling)')}
- <label class="block text-xs text-mut">Categoria<select id="p_category_slug">${cats.map(c=>`<option value="${esc(c.slug)}" ${c.slug===p.category_slug?'selected':''}>${esc(c.emoji||'')} ${esc(c.name)}</option>`).join('')}</select></label>
- ${i('pix_price','Preço no Pix (R$)','number','step="0.01" min="0"').replace('</label>','<span id="pxh" class="mt-1 block"></span></label>')}${i('price','Preço parcelado (R$)','number','step="0.01" min="0"').replace('</label>','<span id="prh" class="mt-1 block"></span></label>')}
- ${i('old_price','Preço antigo / "de" (promoção)','number','step="0.01" min="0"')}${i('max_installments','Parcelas (máx.)','number','min="1" max="12"')}${i('emoji','Emoji (se não houver foto)')}
- <div class="md:col-span-2"><p class="text-xs text-mut">Imagens do produto <span>(a 1ª é a principal; use ← → para reordenar)</span></p><div id="pgl" class="mt-2 flex flex-wrap gap-3"></div><input id="p_file" type="file" accept="image/*" multiple class="mt-2"></div>
- <label class="block text-xs text-mut md:col-span-2">Descrição<textarea id="p_description" rows="3">${esc(p.description||'')}</textarea></label>
- <label class="block text-xs text-mut md:col-span-2">Características (uma por linha)<textarea id="p_features" rows="3">${esc((p.features||[]).join('\n'))}</textarea></label>
- <div class="md:col-span-2"><p class="text-xs text-mut">Estoque por loja</p><div class="flex gap-3">${stores.map(t=>`<label class="text-xs">${esc(t.name)}<input type="number" min="0" data-st="${t.id}" value="${st[t.id]??0}"></label>`).join('')}</div></div>
- <label class="flex items-center gap-2 text-sm"><input id="p_active" type="checkbox" ${p.active?'checked':''}> Ativo (aparece no site)</label>
- <label class="flex items-center gap-2 text-sm"><input id="p_featured" type="checkbox" ${p.featured?'checked':''}> Destaque</label></div>
- <div class="mt-4 flex justify-end gap-2"><button class="g rounded-lg px-4 py-2" onclick="ADM.closeM()">Cancelar</button><button id="sv" class="b" onclick="ADM.saveP('${id||''}')">Salvar</button></div>`;
- $('#modal').classList.remove('hidden');
- $('#p_file').onchange=e=>{const fs=[...e.target.files];e.target.value='';
-  for(const f of fs){if(PI.length>=10){toast('Máximo de 10 imagens por produto.');break}PI.push({f,u:URL.createObjectURL(f)})}pig()};
- ['#p_price','#p_pix_price','#p_max_installments'].forEach(s=>$(s).oninput=pxh);pig();pxh();
-}
-function pig(){
- $('#pgl').innerHTML=PI.length?PI.map((x,i)=>`<div class="relative w-24"><img src="${esc(x.u)}" alt="" class="h-24 w-24 rounded-lg border ${i?'border-bd':'border-pri'} bg-s2 object-contain">${i?'':'<span class="absolute left-1 top-1 rounded bg-pri px-1.5 text-[10px] font-bold">Principal</span>'}
-  <div class="mt-1 flex justify-between text-xs"><button type="button" class="g rounded px-2 py-0.5 disabled:opacity-30" onclick="ADM.pim(${i},-1)" ${i?'':'disabled'} aria-label="Mover para trás">←</button><button type="button" class="g rounded px-2 py-0.5 disabled:opacity-30" onclick="ADM.pim(${i},1)" ${i<PI.length-1?'':'disabled'} aria-label="Mover para frente">→</button><button type="button" class="g rounded px-2 py-0.5 text-red-400" onclick="ADM.pir(${i})" aria-label="Remover">✕</button></div></div>`).join(''):'<p class="text-xs text-mut">Nenhuma imagem ainda.</p>'}
-function pim(i,d){const j=i+d;if(j<0||j>=PI.length)return;[PI[i],PI[j]]=[PI[j],PI[i]];pig()}
-function pir(i){const x=PI[i];if(x&&x.f)URL.revokeObjectURL(x.u);PI.splice(i,1);pig()}
-function pxh(){const a=$('#pxh'),b=$('#prh');if(!a||!b)return;
- const pr=+$('#p_price').value||0,px=$('#p_pix_price').value===''?pr:+$('#p_pix_price').value||0,n=+$('#p_max_installments').value||5,bad=px>pr;
- a.textContent=bad?'⚠️ O preço no Pix não pode ser maior que o parcelado.':(pr>0&&px<pr?`${Math.round((1-px/pr)*100)}% mais barato que o parcelado`:'Igual ao parcelado (sem desconto no Pix)');
- a.className='mt-1 block '+(bad?'text-red-400':'text-mut');
- b.textContent=pr>0?`No cartão: ${n}x de ${R(pr/n)} sem juros`:''}
-const closeM=()=>$('#modal').classList.add('hidden');
-async function saveP(id){
- const g=k=>$('#p_'+k).value.trim(),n=g('name');if(n.length<2||!(+g('price')>=0)||g('price')==='')return toast('Informe o nome e o preço parcelado.');
- const price=+g('price'),pxp=g('pix_price')===''?price:+g('pix_price');
- if(!(pxp>=0))return toast('Informe o preço no Pix (ou deixe em branco para igual ao parcelado).');
- if(pxp>price)return toast('O preço no Pix não pode ser maior que o preço parcelado.');
- const pd=price>0?Math.round((1-pxp/price)*10000)/100:0;   /* % só para compatibilidade; o valor exato vai em pix_price */
- if(g('old_price')&&+g('old_price')<=+g('price'))return toast('O preço antigo ("de") deve ser maior que o preço. Deixe em branco se não for promoção.');
- const bt=$('#sv');bt.disabled=true;bt.textContent='Salvando…';const urls=[];
- for(let i=0;i<PI.length;i++){const x=PI[i];if(!x.f){urls.push(x.u);continue}
-  const path=`${slug(n)||'produto'}-${Date.now()}-${i}-${Math.random().toString(36).slice(2,6)}.${(x.f.name.split('.').pop()||'jpg').toLowerCase()}`;
-  const{error}=await sb.storage.from('products').upload(path,x.f,{contentType:x.f.type,upsert:false});
-  if(error){bt.disabled=false;bt.textContent='Salvar';pig();return toast(`Falha no envio da imagem ${i+1}: `+error.message)}
-  const u=sb.storage.from('products').getPublicUrl(path).data.publicUrl;URL.revokeObjectURL(x.u);PI[i]={u};urls.push(u)}   /* já enviada: não reenvia se precisar tentar de novo */
- const row={name:n,brand:g('brand')||null,sku:g('sku')||null,category_slug:g('category_slug')||null,emoji:g('emoji')||null,image_url:urls[0]||null,gallery:urls.slice(1),price:+g('price'),
-  old_price:g('old_price')?+g('old_price'):null,pix_price:Math.round(pxp*100)/100,pix_discount:pd,max_installments:+g('max_installments')||5,
-  description:g('description')||null,features:g('features').split('\n').map(x=>x.trim()).filter(Boolean),active:$('#p_active').checked,featured:$('#p_featured').checked};
- if(!id)row.slug=slug(n)+'-'+Math.random().toString(36).slice(2,6);
- const r=id?await sb.from('products').update(row).eq('id',id).select('id').single():await sb.from('products').insert(row).select('id').single();
- if(r.error){bt.disabled=false;bt.textContent='Salvar';return toast('Erro: '+r.error.message)}
- const rows=[...document.querySelectorAll('[data-st]')].map(x=>({product_id:r.data.id,store_id:x.dataset.st,qty:Math.max(0,+x.value||0)}));
- const e2=(await sb.from('product_stock').upsert(rows)).error;
- toast(e2?'Produto salvo, erro no estoque: '+e2.message:'Produto salvo!');closeM();prod();
-}
-
-/* ---------- pedidos ---------- */
-async function ped(){
- const{data:o}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(200);
- const sn=id=>stores.find(x=>x.id===id)?.name||id;
- $('#main').innerHTML=tbl(['#','Data','Cliente','Itens','Total','Pagamento','Status','Bling'],(o||[]).map(x=>`<tr><td>${x.order_number}</td><td>${D(x.created_at)}<br><span class="text-xs text-mut">${esc(sn(x.store_id))}</span></td>
- <td>${esc(x.customer_name)}<br><a class="text-xs text-acc" target="_blank" href="https://wa.me/55${esc(String(x.customer_phone).replace(/^55/,''))}">${esc(x.customer_phone)}</a><br><span class="text-xs text-mut">${x.delivery_type==='entrega'?esc(x.address):'Retirada'}</span></td>
- <td class="text-xs">${(x.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join('<br>')}</td><td>${R(x.total)}${x.coupon_code?`<br><span class="text-xs text-mut">cupom ${esc(x.coupon_code)}</span>`:''}</td>
- <td class="text-xs">${esc(x.payment)} · ${esc(x.payment_status)}</td>
- <td><select onchange="ADM.setSt('${x.id}',this.value)">${ST.map(s=>`<option ${s===x.status?'selected':''}>${s}</option>`).join('')}</select></td>${blCell(x)}</tr>`).join(''))}
-async function setSt(id,v){const{error}=await sb.from('orders').update({status:v}).eq('id',id);toast(error?'Erro: '+error.message:'Status atualizado')}
-
-/* ---------- clientes ---------- */
-async function cli(){
- const{data:c}=await sb.from('admin_customers').select('*').order('last_order',{ascending:false});
- $('#main').innerHTML=tbl(['Cliente','WhatsApp','Pedidos','Total gasto','Primeira compra','Última',''],(c||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${D(x.first_order)}</td><td>${D(x.last_order)}</td>
- <td><button class="g rounded-lg px-2 py-1" onclick="ADM.cliDet('${esc(x.phone)}','${esc(x.name)}')">Detalhes</button></td></tr>`).join(''))}
-async function cliDet(ph,nm){
- const[{data:o},{data:v}]=await Promise.all([sb.from('orders').select('order_number,created_at,total,status,items').eq('customer_phone',ph).order('created_at',{ascending:false}),sb.from('admin_customer_views').select('*').eq('phone',ph).order('views',{ascending:false})]);
- $('#mc').innerHTML=`<h2 class="text-lg font-bold">${esc(nm)} <span class="text-sm text-mut">${esc(ph)}</span></h2><h3 class="mb-1 mt-4 font-semibold">Histórico de compras</h3>`+
- tbl(['#','Data','Itens','Total','Status'],(o||[]).map(x=>`<tr><td>${x.order_number}</td><td>${D(x.created_at)}</td><td class="text-xs">${(x.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join('<br>')}</td><td>${R(x.total)}</td><td>${esc(x.status)}</td></tr>`).join(''))+
- `<h3 class="mb-1 mt-4 font-semibold">Produtos que olhou</h3>`+tbl(['Produto','Vezes','Última vez'],(v||[]).map(x=>`<tr><td>${esc(x.product)}</td><td>${x.views}</td><td>${D(x.last_view)}</td></tr>`).join(''))+
- `<p class="mt-2 text-xs text-mut">Só aparecem visualizações feitas no mesmo navegador/aparelho usado na compra, a partir do dia em que o rastreio foi ativado.</p><div class="mt-4 text-right"><button class="g rounded-lg px-4 py-2" onclick="ADM.closeM()">Fechar</button></div>`;
- $('#modal').classList.remove('hidden')}
-
-/* ---------- visualizações ---------- */
-async function vis(){
- const{data:v}=await sb.from('admin_product_views').select('*').order('views',{ascending:false});
- $('#main').innerHTML=tbl(['Produto','Visualizações','Visitantes únicos','Última'],(v||[]).map(x=>`<tr><td>${esc(x.name)}</td><td class="font-bold text-acc">${x.views}</td><td>${x.visitors}</td><td>${D(x.last_view)}</td></tr>`).join(''))+`<p class="mt-2 text-xs text-mut">Conta 1 visualização por visitante a cada 30 minutos em cada produto.</p>`}
-
-/* ---------- cupons ---------- */
-async function cup(){
- const{data:c}=await sb.from('coupons').select('*').order('code');
- $('#main').innerHTML=`<div class="g mb-3 flex flex-wrap items-end gap-2 rounded-2xl p-3"><label class="text-xs text-mut">Código<input id="c_code" class="uppercase"></label><label class="text-xs text-mut">% desconto<input id="c_pct" type="number" min="1" max="100"></label><label class="text-xs text-mut">Compra mínima<input id="c_min" type="number" min="0" value="0"></label><label class="text-xs text-mut">Máx. usos<input id="c_max" type="number" min="1"></label><button class="b" onclick="ADM.addC()">Criar cupom</button></div>`+
- tbl(['Código','Desconto','Mínimo','Usos','Ativo',''],(c||[]).map(x=>`<tr><td><b>${esc(x.code)}</b></td><td>${+x.percent}%</td><td>${R(x.min_subtotal)}</td><td>${x.uses}${x.max_uses?'/'+x.max_uses:''}</td>
- <td><input type="checkbox" ${x.active?'checked':''} onchange="ADM.togC('${esc(x.code)}',this.checked)"></td><td><button class="g rounded-lg px-2 py-1" onclick="ADM.delC('${esc(x.code)}')">🗑️</button></td></tr>`).join(''))}
-async function addC(){const code=$('#c_code').value.trim().toUpperCase(),pct=+$('#c_pct').value;if(!code||!(pct>0))return toast('Informe código e %.');
- const{error}=await sb.from('coupons').insert({code,percent:pct,min_subtotal:+$('#c_min').value||0,max_uses:+$('#c_max').value||null});toast(error?'Erro: '+error.message:'Cupom criado');cup()}
-async function togC(c,v){await sb.from('coupons').update({active:v}).eq('code',c);toast('Cupom atualizado')}
-async function delC(c){if(confirm('Excluir cupom '+c+'?')){await sb.from('coupons').delete().eq('code',c);cup()}}
-
-/* ---------- bling ---------- */
-const blCell=x=>`<td class="text-xs">${x.bling_order_id?'✅ #'+esc(x.bling_order_id):x.bling_error?`<span class="text-red-400" title="${esc(x.bling_error)}">⚠️ erro</span><br><button class="g mt-1 rounded px-2 py-0.5" onclick="ADM.reBl(${+x.order_number})">Reenviar</button>`:'—'}</td>`;
-async function blCall(a){const{data,error}=await sb.functions.invoke('bling',{body:{action:a}});if(error||!data||data.ok===false){toast('Bling: '+((data&&data.error)||(error&&error.message)||'sem resposta da função'));return null}return data}
-async function reBl(n){const{error}=await sb.rpc('bling_retry_order',{p_order:n});toast(error?'Erro: '+error.message:`Pedido #${n} reenviado ao Bling`);setTimeout(ped,2500)}
-async function blAct(a,msg){toast(msg);const d=await blCall(a);if(!d)return;
- if(a==='connect')return void(location.href=d.url);
- toast(a==='import_products'?`Importação: ${d.created} produtos novos (inativos) e ${d.linked} ligados`:a==='test'?'Conexão OK. Exemplo: '+d.amostra:'Concluído');bl()}
-async function saveBl(){
- const m=$('#b_mode').value,n=k=>$('#b_'+k).value.trim()===''?null:+$('#b_'+k).value;
- const r=await sb.from('bling_settings').update({enabled:$('#b_enabled').checked,push_orders:$('#b_push_orders').checked,sync_stock:$('#b_sync_stock').checked,
-  bling_reserves_stock:m!=='late',stock_movement:m==='mov',situacao_id:n('situacao_id'),loja_id:n('loja_id'),forma_pagamento_pix:n('forma_pagamento_pix'),forma_pagamento_cartao:n('forma_pagamento_cartao')}).eq('id',1);
- const r2=await Promise.all([...document.querySelectorAll('#adm [data-dep]')].map(i=>sb.from('stores').update({bling_deposito_id:i.value.trim()===''?null:+i.value}).eq('id',i.dataset.dep)));
- const e=r.error||r2.map(x=>x.error).find(Boolean);toast(e?'Erro: '+e.message:'Configuração do Bling salva');if(!e)bl()}
-async function bl(){
- const[{data:s,error},{data:st}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*')]);stores=st||stores;
- if(error||!s)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Módulo Bling ainda não está no banco.</p><p class="mt-1 text-mut">Rode o arquivo plebeu_banco_completo.sql no SQL Editor do Supabase e recarregue. ${esc(error?error.message:'')}</p></div>`;
- const c=s.settings,q=s.queue,mode=c.stock_movement?'mov':c.bling_reserves_stock?'auto':'late',
-  chk=(k,l)=>`<label class="flex items-center gap-2 text-sm"><input type="checkbox" id="b_${k}" ${c[k]?'checked':''}> ${l}</label>`,
-  num=(k,l)=>`<label class="block text-xs text-mut">${l}<input id="b_${k}" type="number" value="${esc(c[k]??'')}"></label>`,
-  btn=(a,t,m,cl='g')=>`<button class="${cl} rounded-lg px-3 py-2 text-sm font-semibold" onclick="ADM.blAct('${a}','${m}')">${t}</button>`;
- $('#main').innerHTML=`<div class="grid gap-4 lg:grid-cols-2">
- <section class="g rounded-2xl p-4"><h2 class="font-bold">Conexão</h2>
-  <p class="mt-1 text-sm ${s.connected?'text-acc':'text-red-400'}">${s.connected?'● Conectado ao Bling desde '+D(s.connected_at):'● Não conectado'}</p>
-  <div class="mt-3 flex flex-wrap gap-2">${btn('connect',s.connected?'Reconectar':'Conectar ao Bling','Abrindo o Bling…','b')}${s.connected?btn('test','Testar conexão','Testando…')+btn('disconnect','Desconectar','Desconectando…'):''}</div>
-  <label class="mt-4 block text-xs text-mut">Endereço do webhook (cole no app do Bling)<input readonly value="${esc(SB_URL+'/functions/v1/bling')}" onfocus="this.select()"></label>
-  <p class="mt-3 text-xs text-mut">Produtos ligados ao Bling pelo SKU: <b class="text-acc">${s.linked}</b> de ${s.total}.${c.last_stock_sync?' Última conferência de estoque: '+D(c.last_stock_sync)+'.':''}</p></section>
- <section class="g rounded-2xl p-4"><h2 class="font-bold">Fila de sincronização</h2>
-  <p class="mt-1 text-sm text-mut">${q.pending} na fila · ${q.done24} concluídas em 24 h · <span class="${q.error?'font-bold text-red-400':''}">${q.error} com erro</span></p>
-  <div class="mt-3 flex flex-wrap gap-2">${btn('sync_stock','Sincronizar estoque agora','Sincronizando estoque…')}${btn('import_products','Importar produtos do Bling','Importando…')}${btn('retry_errors','Reprocessar erros','Reprocessando…')}</div>
-  ${(s.errors||[]).length?`<ul class="mt-3 space-y-1 text-xs text-red-400">${s.errors.map(e=>`<li><b>${esc(e.kind)} ${esc(e.ref)}</b> (${e.attempts}x): ${esc(e.last_error)}</li>`).join('')}</ul>`:''}</section>
- <section class="g rounded-2xl p-4 lg:col-span-2"><h2 class="font-bold">Regras</h2><div class="mt-3 grid gap-3 md:grid-cols-2">
-  <div class="space-y-2">${chk('enabled','<b>Integração ligada</b>')}${chk('push_orders','Enviar pedidos pagos do site ao Bling')}${chk('sync_stock','Receber estoque do Bling')}</div>
-  <label class="block text-xs text-mut">Como o estoque dos pedidos do site é baixado no Bling
-   <select id="b_mode"><option value="auto" ${mode==='auto'?'selected':''}>O Bling baixa sozinho ao receber o pedido</option><option value="mov" ${mode==='mov'?'selected':''}>O site lança a saída no depósito da loja</option><option value="late" ${mode==='late'?'selected':''}>Só quando o pedido for atendido no Bling</option></select></label>
-  ${num('situacao_id','ID da situação inicial do pedido (opcional)')}${num('loja_id','ID da loja/canal de venda no Bling (opcional)')}${num('forma_pagamento_pix','ID da forma de pagamento Pix (opcional)')}${num('forma_pagamento_cartao','ID da forma de pagamento Cartão (opcional)')}</div>
-  <h3 class="mt-4 text-sm font-semibold">Depósito do Bling de cada loja</h3><div class="mt-2 flex flex-wrap gap-3">${stores.map(t=>`<label class="text-xs text-mut">${esc(t.name)}<input type="number" data-dep="${esc(t.id)}" value="${esc(t.bling_deposito_id??'')}" class="w-44"></label>`).join('')}</div>
-  <p class="mt-2 text-xs text-mut">O estoque de cada loja só é atualizado pelo Bling quando o depósito dela está preenchido. Preencha o SKU dos produtos em Produtos.</p>
-  <div class="mt-4 text-right"><button class="b" onclick="ADM.saveBl()">Salvar regras</button></div></section></div>`}
-
-return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl,blAct,saveBl,reBl};
-})();
-</script>
-<script>
-/* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
-const SB_URL='https://hlanjhafrhebmheozkmt.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsYW5qaGFmcmhlYm1oZW96a210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNzQyNjksImV4cCI6MjEwNzk1MDI2OX0.KlVSEGBdhgQ7OPnNsajb7CrYjCrCrR-kQipSchpmCeE';
-const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
-/* ====================================================================================== */
-const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):null;
-const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-const VID=(()=>{let v=ls.get('vid',null);if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).replace(/[^\w-]/g,'');ls.set('vid',v)}return v})();
-const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,pt:'pg',ords:[],cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:Object.assign({nm:'',ph:'',ad:'',em:''},ls.get('prof',{}))};
-
-const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
-async function load(){
- if(sb)try{
-  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
-  if(a.error||b.error||c.error)throw 0;
-  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
-  if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
-  sb.channel('stock').on('postgres_changes',{event:'*',schema:'public',table:'product_stock'},({new:n})=>{
-   if(!n||!n.product_id||!S.stores.length)return;S.stock[n.product_id+'|'+n.store_id]=n.qty;clearTimeout(S.rt);S.rt=setTimeout(render,200);
-   const m=location.hash.match(/^#\/p\/(.+)$/);if(m)pdp(decodeURIComponent(m[1]))}).subscribe();
-  return;
- }catch(e){console.warn('Supabase indisponível');if(S.stores.length)return}
- S.demo=true;
- S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];
- S.cats=[['consoles','Consoles','🎮'],['jogos','Jogos','💿'],['perifericos','Periféricos','🎧'],['informatica','Informática','💻']].map(([slug,name,emoji])=>({slug,name,emoji}));
- S.prods=[D(1,'PlayStation 4 Slim 1TB desbloqueado + 7 jogos','consoles','🎮',1756.14,0,5,1,42),D(2,'Call of Duty Modern Warfare – PS4','jogos','💿',155.56,0,9,1,18),D(3,'Base para notebook com cooler','informatica','❄️',48.89,0,9,1,31),D(4,'Headset gamer RGB com microfone','perifericos','🎧',189.9,229.9,8,1,12),D(5,'Controle PS4 sem fio','consoles','🕹️',169.9,0,8,1,27),D(6,'SSD 480GB SATA III','informatica','💾',229.9,0,8,0,15)];
- S.rev=[{customer_name:'Cliente exemplo',rating:5,body:'Texto de exemplo. As avaliações reais vêm da tabela reviews.'}];
-}
-const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0];
-const qty=p=>{const k=p.id+'|'+st().id;return k in S.stock?S.stock[k]:(S.demo?9:0)};
-const pix=p=>p.pix_price!=null&&p.pix_price!==''?Math.round(+p.pix_price*100)/100:Math.round(p.price*(1-(p.pix_discount||0)/100)*100)/100;   /* preço no Pix: valor exato do admin (pix_price); sem ele, usa o desconto % antigo */
-const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" decoding="async" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
-const off=p=>p.old_price?Math.round((1-p.price/p.old_price)*100):0;
-
-function list(){
- let l=S.prods.filter(p=>(!S.cat||p.category_slug===S.cat)&&(!S.fav||S.favs.includes(p.id))&&(!S.only||qty(p)>0)&&(!S.q||(p.name+' '+(p.brand||'')).toLowerCase().includes(S.q)));
- const o={lo:(a,b)=>pix(a)-pix(b),hi:(a,b)=>pix(b)-pix(a),az:(a,b)=>a.name.localeCompare(b.name)}[S.sort];
- return o?l.sort(o):l.sort((a,b)=>(b.featured?1:0)-(a.featured?1:0)||(b.sold_count||0)-(a.sold_count||0));
-}
-const card=p=>{const n=qty(p),o=off(p);
- return `<article class="ch relative flex flex-col overflow-hidden rounded-2xl border border-bd bg-s3">
- <a href="#/p/${esc(p.slug)}" class="relative grid aspect-square place-items-center overflow-hidden rg text-7xl">
- ${o?`<span class="b1 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">-${o}%</span>`:n&&n<4?`<span class="b2 absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-bold">Últimas ${n}</span>`:''}${pic(p)}</a>
- <button data-a="fav" data-id="${p.id}" class="absolute right-3 top-3 h-9 w-9 rounded-full bg-bg/70 ${S.favs.includes(p.id)?'text-red-500':'text-mut'}" aria-label="Favoritar">♥</button>
- <div class="flex flex-1 flex-col gap-1.5 p-4"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 min-h-[2.6rem] text-sm font-semibold">${esc(p.name)}</a>
- ${p.sold_count>9?`<span class="text-xs text-mut">🔥 ${p.sold_count} vendidos</span>`:''}
- <p class="font-display text-3xl font-bold leading-none text-acc">${R(pix(p))}<small class="ml-1 font-sans text-xs font-medium text-mut">no Pix</small></p>
- <p class="text-xs text-mut">${p.old_price?`<s>${R(p.old_price)}</s> `:''}ou ${R(p.price)} em ${p.max_installments}x sem juros</p>
- <p class="text-xs font-bold ${n?'text-acc':'text-red-400'}">${n?'Em estoque em '+esc(st().name):'Sem estoque em '+esc(st().name)}</p>
- <button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="mt-auto h-11 rounded-xl bg-pri text-sm font-bold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:bg-bd disabled:text-mut">${n?'Adicionar ao carrinho':'Indisponível'}</button></div></article>`};
-
-function render(){
- const l=list(),c=S.cats.find(x=>x.slug===S.cat);
- $('#grid').innerHTML=l.length?l.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
- {const sg=[S.cat,S.q,S.sort,S.only,S.fav,S.store].join('|');if(sg!==S.sg){S.sg=sg;[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'})}}
- $('#nav').innerHTML=[['','Tudo','🔥']].concat(S.cats.map(x=>[x.slug,x.name,x.emoji])).map(([s,n,e])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)}</button>`).join('');
- $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:c?c.name:'Destaques da semana';
- renderCart();
-}
-/* ---------- página do produto ---------- */
-let gi=0;
-function pdp(slug){
- {const _p=S.prods.find(x=>x.slug===slug);if(sb&&!S.demo&&_p&&S.vw!==slug){S.vw=slug;sb.rpc('track_view',{p_product:_p.id,p_visitor:VID}).then(()=>{},()=>{})}}
- const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
- const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,6);
- document.title=p.name+' | Plebeu Games';
- $('#pdp').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-white">← Voltar para a loja</a>
- <div class="mt-5 grid gap-8 lg:grid-cols-[minmax(0,680px)_minmax(0,1fr)] lg:gap-12">
-  <div class="lg:sticky lg:top-40 lg:self-start"><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd rg text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
-  ${imgs.length>1?`<div class="mt-3 flex gap-2">${imgs.map(u=>`<button data-a="img" data-u="${esc(u)}" class="h-16 w-16 overflow-hidden rounded-xl border border-bd"><img src="${esc(u)}" alt="" class="h-full w-full object-cover"></button>`).join('')}</div>`:''}</div>
-  <div class="space-y-4"><p class="text-sm text-mut">${esc(p.brand||'')}</p><h1 class="font-display text-4xl font-bold leading-tight">${esc(p.name)}</h1>
-   ${p.sold_count>9?`<p class="text-sm text-mut">🔥 ${p.sold_count} vendidos</p>`:''}
-   <div class="rounded-2xl border border-bd bg-s3 p-5"><p class="font-display text-5xl font-bold text-acc">${R(pix(p))}<small class="ml-2 font-sans text-sm text-mut">no Pix ${pix(p)<p.price?`(-${Math.round((1-pix(p)/p.price)*100)}%)`:''}</small></p>
-   <p class="mt-1 text-sm text-mut">${o?`<s>${R(p.old_price)}</s> · `:''}ou ${R(p.price)} em até ${p.max_installments}x de ${R(p.price/p.max_installments)} sem juros</p></div>
-   <div class="space-y-1.5 rounded-2xl border border-bd p-4 text-sm">${S.stores.map(s=>{const k=p.id+'|'+s.id,q=k in S.stock?S.stock[k]:(S.demo?9:0);return `<p>${q?'✅':'⛔'} <b>${esc(s.name)}</b> <span class="text-mut">— ${q?(q<4?'últimas '+q+' unidades':'disponível'):'sem estoque'}</span></p>`}).join('')}</div>
-   <div class="flex gap-3"><button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="h-12 flex-1 rounded-xl border border-pri font-bold hover:bg-pri/20 disabled:opacity-40">Adicionar</button>
-   <button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-12 flex-1 rounded-xl bg-pri font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível em '+esc(st().name)}</button></div>
-   <div class="rounded-2xl border border-bd p-4"><p class="mb-2 text-sm font-semibold">Calcular entrega</p><div class="flex gap-2"><input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite seu CEP" class="h-11 min-w-0 flex-1 px-3"><button data-a="cep" class="h-11 rounded-xl bg-s2 px-5 text-sm font-bold ring-1 ring-bd hover:ring-pri">Calcular</button></div><p id="cepr" class="mt-2 text-sm text-mut"></p></div>
-  </div></div>
-  <div class="mt-10 grid gap-8 md:grid-cols-2"><div><h2 class="mb-3 font-display text-3xl font-bold">Descrição</h2><p class="text-mut">${esc(p.description)}</p></div>
-  ${(p.features||[]).length?`<div><h2 class="mb-3 font-display text-3xl font-bold">Destaques</h2><ul class="space-y-2 text-mut">${p.features.map(f=>`<li>✔ ${esc(f)}</li>`).join('')}</ul></div>`:''}</div>
-  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rel.map(card).join('')}</div>`:''}`;
-}
-async function cep(){
- const v=$('#cep').value.replace(/\D/g,''),o=$('#cepr');if(v.length!==8)return o.textContent='Digite os 8 números do CEP.';
- o.textContent='Calculando…';
- try{const d=await(await fetch(`https://viacep.com.br/ws/${v}/json/`)).json();if(d.erro)throw 0;
-  const loc=['Rio Branco','Porto Velho'].includes(d.localidade);
-  o.innerHTML=loc?`<b class="text-acc">${esc(d.localidade)}/${esc(d.uf)}:</b> entrega por motoboy por ${R(FRETE.taxa)} (grátis acima de ${R(FRETE.gratis)}). Pedido até as ${FRETE.corte}h sai hoje.`
-  :`${esc(d.localidade)}/${esc(d.uf)}: <a class="text-acc underline" target="_blank" rel="noopener" href="https://wa.me/${st().whatsapp}?text=${encodeURIComponent('Olá! Quero saber o frete para o CEP '+v)}">consulte o frete pelo WhatsApp</a>.`;
- }catch{o.textContent='Não encontramos esse CEP. Confira e tente de novo.'}
-}
-/* ---------- carrinho ---------- */
-const line=i=>{const p=S.prods.find(x=>x.id===i.id);return p&&{p,n:i.n}};
-const sub=()=>S.cart.map(line).filter(Boolean).reduce((t,{p,n})=>t+n*(S.pay==='pix'?pix(p):p.price),0);
-const calc=()=>{const s=sub(),d=S.cp?s*S.cp.pct/100:0,f=S.ship==='entrega'&&s-d<FRETE.gratis&&s>0?FRETE.taxa:0;return{s,d,f,t:s-d+f}};
-const save=()=>{ls.set('cart',S.cart);ls.set('favs',S.favs)};
-function recs(L){
- const ids=new Set(L.map(x=>x.p.id)),cats=new Set(L.map(x=>x.p.category_slug)),sc=p=>(cats.has(p.category_slug)?2:0)+(p.featured?1:0);
- return S.prods.filter(p=>!ids.has(p.id)&&qty(p)>0).sort((a,b)=>sc(b)-sc(a)||(b.sold_count||0)-(a.sold_count||0)).slice(0,6);
-}
-function renderCart(force){
- const L=S.cart.map(line).filter(Boolean),c=L.reduce((t,x)=>t+x.n,0);
- $('#cn').textContent=c;$('#cn').classList.toggle('hidden',!c);
- const pg=$('#crt'),ae=document.activeElement;
- if(!force&&ae&&ae.tagName==='INPUT'&&pg.contains(ae))return;   /* não apaga o que o cliente está digitando */
- const k=calc(),F=S.f,rec=S.stores.length?recs(L):[],sn=(st()||{}).name||'',
- back='<a href="#/" class="text-sm text-mut hover:text-white">← Continuar comprando</a>',
- recH=rec.length?`<section class="mt-12"><h2 class="mb-4 font-display text-3xl font-bold">${L.length?'Você também pode gostar':'Sugestões para você'}</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rec.map(card).join('')}</div></section>`:'';
- if(!L.length){
-  pg.innerHTML=`${back}<div class="mt-5 rounded-3xl border border-bd bg-s3 px-6 py-16 text-center"><p class="text-6xl">🛒</p><h1 class="mt-3 font-display text-4xl font-bold">Seu carrinho está vazio</h1><p class="mt-1 text-mut">Escolha seus produtos e volte aqui para finalizar.</p><div class="mt-6 flex flex-wrap justify-center gap-3"><a href="#/" class="glow rounded-xl bg-pri px-7 py-3 font-bold text-white">Ver produtos</a><a href="#/perfil" class="rounded-xl border border-bd px-7 py-3 font-bold hover:border-pri">Meus pedidos</a></div></div>${recH}`;
-  return;
- }
- const opt=(n,v,t,cur)=>`<label class="cursor-pointer rounded-xl border p-3 text-center text-sm font-semibold ${cur===v?'border-pri bg-pri/15':'border-bd'}"><input type="radio" name="${n}" value="${v}" class="hidden" ${cur===v?'checked':''}>${t}</label>`,
- row=({p,n})=>{const u=S.pay==='pix'?pix(p):p.price,m=qty(p);
-  return `<div class="flex items-center gap-4 border-b border-bd py-5 last:border-0">
-  <a href="#/p/${esc(p.slug)}" class="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-s2 text-4xl sm:h-28 sm:w-28">${p.image_url?`<img src="${esc(p.image_url)}" alt="" class="h-full w-full object-contain p-1">`:esc(p.emoji||'🎮')}</a>
-  <div class="min-w-0 flex-1"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 font-semibold">${esc(p.name)}</a>
-   <p class="mt-1 text-sm text-mut">${R(u)} cada${m>0&&m<4?` · últimas ${m} un.`:''}</p>
-   <div class="mt-2 flex flex-wrap items-center gap-3"><div class="inline-flex items-center rounded-lg border border-bd"><button data-a="dec" data-id="${p.id}" class="h-9 w-9" aria-label="Diminuir">−</button><span class="w-8 text-center font-bold">${n}</span><button data-a="inc" data-id="${p.id}" class="h-9 w-9" aria-label="Aumentar">+</button></div>
-   <button data-a="rm" data-id="${p.id}" class="text-sm text-mut hover:text-red-400" aria-label="Remover">🗑️ Remover</button></div></div>
-  <p class="font-display text-2xl font-bold text-acc">${R(Math.round(u*n*100)/100)}</p></div>`};
- pg.innerHTML=`${back}<h1 class="mt-3 font-display text-4xl font-bold">Seu carrinho <small class="font-sans text-base font-medium text-mut">(${c} ${c>1?'itens':'item'})</small></h1>
- <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px]">
-  <div class="space-y-6">
-   <section class="rounded-2xl border border-bd bg-s3 px-5">${L.map(row).join('')}</section>
-   <section class="rounded-2xl border border-bd bg-s3 p-5"><h2 class="font-display text-2xl font-bold">Seus dados</h2>
-    <div class="mt-4 grid gap-3 sm:grid-cols-2">
-     <label class="text-xs font-semibold text-mut">Nome<input id="nm" placeholder="Seu nome completo" autocomplete="name" value="${esc(F.nm)}" class="mt-1 h-11 w-full px-3"></label>
-     <label class="text-xs font-semibold text-mut">WhatsApp<input id="ph" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" value="${esc(F.ph)}" class="mt-1 h-11 w-full px-3"></label>
-     <label class="text-xs font-semibold text-mut sm:col-span-2">E-mail (opcional, para o recibo)<input id="em" type="email" placeholder="voce@email.com" autocomplete="email" value="${esc(F.em)}" class="mt-1 h-11 w-full px-3"></label>
-     ${S.ship==='entrega'?`<label class="text-xs font-semibold text-mut sm:col-span-2">Endereço de entrega<input id="ad" placeholder="Rua, número, bairro" autocomplete="street-address" value="${esc(F.ad)}" class="mt-1 h-11 w-full px-3"></label>`:`<p class="text-sm text-mut sm:col-span-2">🏬 Você vai retirar na loja ${esc(sn)}. Combine o horário pelo WhatsApp.</p>`}
-    </div></section>
-  </div>
-  <aside class="space-y-4 rounded-2xl border border-bd bg-s3 p-5 lg:sticky lg:top-40 lg:self-start"><h2 class="font-display text-2xl font-bold">Resumo do pedido</h2>
-   <div class="flex gap-2"><input id="cp" placeholder="Cupom de desconto" class="h-10 min-w-0 flex-1 px-3 text-sm uppercase" value="${S.cp?esc(S.cp.code):''}"><button data-a="coupon" class="rounded-xl px-4 text-sm font-bold ring-1 ring-bd hover:ring-pri">Aplicar</button></div>
-   <div><p class="mb-2 text-xs font-semibold text-mut">Pagamento</p><div class="grid grid-cols-2 gap-2">${opt('pay','pix','💠 Pix (desconto)',S.pay)}${opt('pay','cartao','💳 Cartão',S.pay)}</div></div>
-   <div><p class="mb-2 text-xs font-semibold text-mut">Entrega</p><div class="grid grid-cols-2 gap-2">${opt('ship','entrega','🛵 Entrega',S.ship)}${opt('ship','retirada','🏬 Retirar na loja',S.ship)}</div></div>
-   <div class="space-y-1 border-t border-bd pt-4 text-sm text-mut"><p class="flex justify-between"><span>Subtotal</span><span>${R(k.s)}</span></p>${k.d?`<p class="flex justify-between text-acc"><span>Cupom ${esc(S.cp.code)}</span><span>-${R(k.d)}</span></p>`:''}<p class="flex justify-between"><span>Entrega</span><span>${S.ship==='retirada'?'Retirada':k.f?R(k.f):'Grátis'}</span></p>${S.ship==='entrega'&&k.f?`<p class="text-xs">Entrega grátis acima de ${R(FRETE.gratis)}.</p>`:''}</div>
-   <p class="flex justify-between font-display text-3xl font-bold"><span>Total</span><span class="text-acc">${R(k.t)}</span></p>
-   <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">${sb?'Pagar agora':'Finalizar pelo WhatsApp'}</button>${sb?'<p class="text-center text-xs text-mut">Pagamento seguro pelo Mercado Pago. O Pix confirma na hora.</p>':''}
-  </aside>
- </div>${recH}`;
-}
-async function coupon(){
- const c=$('#cp').value.trim().toUpperCase();S.cp=null;if(!c)return renderCart();
- if(sb){const{data}=await sb.rpc('validate_coupon',{p_code:c,p_subtotal:sub()});if(data&&data.length)S.cp={code:c,pct:+data[0].percent}}
- else if(c==='PLEBEU10')S.cp={code:c,pct:10};
- toast(S.cp?`Cupom ${c} aplicado: ${S.cp.pct}% off`:'Cupom inválido ou valor mínimo não atingido');renderCart();
-}
-async function order(){
- if(S.busy)return;
- const L=S.cart.map(line).filter(Boolean),F=S.f,ph=F.ph.replace(/\D/g,'');
- if(F.nm.trim().length<2||ph.length<10)return toast('Informe seu nome e WhatsApp com DDD.');
- if(S.ship==='entrega'&&F.ad.trim().length<8)return toast('Informe o endereço de entrega.');
- const s=st(),k=calc(),items=L.map(({p,n})=>({id:p.id,name:p.name,qty:n,unit:+(S.pay==='pix'?pix(p):p.price).toFixed(2)}));
- S.busy=true;const b=$('[data-a="order"]');if(b){b.disabled=true;b.textContent='Registrando pedido…'}
- let num=null,tok=null,total=k.t;
- if(sb)try{
-  const{data,error}=await sb.rpc('place_order',{p_store:s.id,p_name:F.nm.trim(),p_phone:ph,p_payment:S.pay,p_delivery:S.ship,
-   p_address:S.ship==='entrega'?F.ad.trim():null,p_items:items.map(({id,qty})=>({id,qty})),p_coupon:S.cp?.code||null});
-  if(error&&error.code==='P0001'){S.busy=false;renderCart();return toast(error.message)}   /* regra do servidor (ex.: sem estoque) */
-  if(error)console.warn('place_order:',error);
-  if(data){num=data.order_number;tok=data.token;total=+data.total;addRef(num,tok);sb.rpc('link_visitor',{p_order:num,p_token:tok,p_visitor:VID}).then(()=>{},()=>{})}
- }catch(e){console.warn('place_order:',e)}
- if(num&&tok&&await startPay(num,tok,F.em)){S.busy=false;S.cart=[];S.cp=null;save();renderCart();cart(false);return}
- S.busy=false;
- if(sb&&!S.demo){
-  /* pagamento online é o fluxo oficial: não manda mais o cliente ao WhatsApp sozinho */
-  if(num&&tok){S.cart=[];S.cp=null;save();renderCart();cart(false);payFail(num,tok,s)}
-  else{renderCart();toast('Não foi possível registrar o pedido agora. Tente novamente em instantes.')}
-  return;
- }
- /* modo demonstração (sem Supabase): segue pelo WhatsApp */
- const m=`Olá, Plebeu Games ${s.name}! Quero finalizar meu pedido${num?' #'+num:''}:\n`+items.map(i=>`• ${i.qty}x ${i.name} — ${R(i.unit)}`).join('\n')+`\n\nPagamento: ${S.pay==='pix'?'Pix':'Cartão'}\n${S.cp?`Cupom: ${S.cp.code}\n`:''}${S.ship==='entrega'?`Entrega: ${F.ad.trim()}`:'Retirada na loja'}\nTotal: ${R(total)}\nNome: ${F.nm.trim()}\nWhatsApp: ${ph}`;
- const u=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(m)}`;
- window.open(u,'_blank')||location.assign(u);
- S.cart=[];S.cp=null;save();renderCart();cart(false);toast(num?`Pedido #${num} registrado! Continue no WhatsApp.`:'Pedido enviado! Continue a conversa no WhatsApp.');
-}
-/* ---------- pagamento (Mercado Pago) ---------- */
-let pt=null;
-const DET=x=>({cc_rejected_insufficient_amount:'Saldo insuficiente no cartão.',cc_rejected_bad_filled_security_code:'Código de segurança inválido.',cc_rejected_bad_filled_date:'Data de validade inválida.',cc_rejected_call_for_authorize:'Autorize o pagamento com o seu banco e tente de novo.',cc_rejected_high_risk:'Recusado por segurança. Tente outro cartão ou pague no Pix.'}[x]||'O banco não aprovou. Tente outro cartão ou pague no Pix.');
-async function startPay(num,tok,email){
- try{
-  const{data,error}=await sb.functions.invoke('mercadopago',{body:{action:'create',order_number:num,token:tok,email:email||'',return_url:location.origin+location.pathname}});
-  if(error||!data||!data.ok){console.warn('Mercado Pago:',error||data?.error);S.perr=data?.error||'serviço de pagamento sem resposta (função não publicada, erro interno ou configuração pendente)';return false}
-  ls.set('pay',{num,tok});
-  if(data.kind==='checkout'){S.cart=[];save();location.href=data.url;return true}
-  openPay(num,tok);return true;
- }catch(e){S.perr='sem conexão com o serviço de pagamento';return false}
-}
-async function openPay(num,tok,fast,quiet){
- const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;clearInterval(pt);let n=0;o.dataset.c='';
- const step=async()=>{
-  const{data:d}=await sb.rpc('get_order_payment',{p_order_number:num,p_token:tok});
-  if(o.dataset.c)return;
-  if(!d){ls.set('pay',null);return closePay()}
-  const ok=d.payment_status==='approved',dead=d.status==='cancelado'&&!ok;
-  const k=n++;
-  if(!ok&&!dead&&((fast&&k===0)||(k>0&&k%5===0)))sb.functions.invoke('mercadopago',{body:{action:'sync',order_number:num,token:tok}}).catch(()=>{});
-  const exp=!d.expires_at||new Date(d.expires_at)>new Date(),
-   live=!ok&&!dead&&d.payment_status!=='rejected'&&((d.pix_qr_code&&exp)||(d.checkout_url&&d.payment_status==='pending'&&exp));
-  if(quiet&&!ok&&!live){ls.set('pay',null);return closePay()}   /* ao recarregar a página, não reabre telas sem ação possível */
-  o.classList.remove('hidden');renderPay(d,ok,dead);
-  if(ok||dead){clearInterval(pt);ls.set('pay',null)}
- };
- await step();if(!o.classList.contains('hidden'))pt=setInterval(step,4000);
-}
-function closePay(){clearInterval(pt);const o=$('#pay');o.dataset.c='1';o.classList.add('hidden')}
-function payFail(num,tok,s){
- const o=$('#pay');o.dataset.n=num;o.dataset.t=tok;ls.set('pay',null);
- const B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
- const wa=`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${s.name}! Meu pedido #${num} foi registrado, mas não consegui gerar o pagamento no site. Podem me ajudar?`)}`;
- $('#payc').innerHTML=`<p class="text-5xl">⚠️</p><h2 class="mt-2 font-display text-3xl font-bold">Não conseguimos gerar o pagamento</h2><p class="mt-1 text-sm text-mut">Seu pedido #${num} está reservado. Tente novamente; se continuar, fale com a gente.</p>${S.perr?`<p class="mt-2 text-xs text-red-400">Motivo: ${esc(S.perr)}</p>`:''}<button data-a="payretry" class="${B} glow bg-pri text-white">Tentar de novo</button><a href="${wa}" target="_blank" rel="noopener" class="${B} border border-bd">Falar com a loja no WhatsApp</a><button data-a="payclose" class="${B} border border-bd">Fechar</button>`;
- o.classList.remove('hidden');
-}
-function renderPay(d,ok,dead){
- S.live=!ok&&!dead&&d.payment_status!=='rejected'&&!!d.pix_qr_code;
- const T=R(d.total),B='mt-3 block h-12 w-full rounded-xl text-center font-bold leading-[3rem]';
- const H=(i,t,x)=>`<p class="text-5xl">${i}</p><h2 class="mt-2 font-display text-3xl font-bold">${t}</h2><p class="mt-1 text-sm text-mut">${x}</p>`;
- const close=`<button data-a="payclose" class="${B} border border-bd">${ok?'Continuar comprando':'Fechar'}</button>`;
- const wa=`https://wa.me/${d.whatsapp}?text=${encodeURIComponent(`Olá, Plebeu Games ${d.store_name}! Tenho uma dúvida sobre o meu pedido #${d.order_number} (${T}).`)}`;
- const itens=(d.items||[]).map(i=>`<li>${+i.qty}x ${esc(i.name)}</li>`).join(''),
-  ent=d.delivery_type==='entrega'?`Entrega em: ${esc(d.address)}`:`Retirada na loja ${esc(d.store_name)}`;
- $('#payc').innerHTML=ok?H('🎉','Parabéns pela sua compra!',`Pagamento confirmado · Pedido #${d.order_number} · ${T}`)+`<div class="mt-4 rounded-xl border border-bd p-3 text-left text-sm text-mut"><ul class="list-disc pl-5">${itens}</ul><p class="mt-2">${ent}</p></div><p class="mt-4 text-sm">Obrigado por comprar na <b>Plebeu Games</b>, ${esc(String(d.customer_name).split(' ')[0])}! Já estamos separando o seu pedido e avisaremos você pelo WhatsApp.</p><p class="mt-2 text-xs text-mut">Ficou com alguma dúvida? É só falar com a gente.</p><a href="${wa}" target="_blank" rel="noopener" class="${B} glow bg-pri text-white">Falar com a loja no WhatsApp</a>`+close
- :dead?H('⌛','Pedido cancelado','O pagamento não foi concluído a tempo e o estoque foi liberado. Faça um novo pedido quando quiser.')+`<button data-a="payclose" class="${B} bg-pri text-white">Voltar à loja</button>`
- :d.payment_status==='rejected'?H('❌','Pagamento recusado',esc(DET(d.status_detail)))+`<button data-a="payretry" class="${B} bg-pri text-white">Tentar de novo</button>`+close
- :d.pix_qr_code?H('💠',`Pague ${T} no Pix`,`Pedido #${d.order_number} · expira em <b id="pxt" data-e="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b>`)+`<img alt="QR Code Pix" class="mx-auto mt-4 h-52 w-52 rounded-xl bg-white p-2" src="data:image/png;base64,${d.pix_qr_base64}"><button data-a="copy" data-u="${esc(d.pix_qr_code)}" class="${B} glow bg-pri text-white">Copiar código Pix</button><p class="mt-3 text-xs text-mut">No app do seu banco, escolha Pix copia e cola. A confirmação aparece aqui sozinha.</p>`+close
- :H('⏳','Aguardando confirmação',`Pedido #${d.order_number} · ${T}. Assim que o Mercado Pago confirmar, avisamos aqui.`)+(d.checkout_url?`<a href="${esc(d.checkout_url)}" class="${B} bg-pri text-white">Abrir pagamento</a>`:'')+close;
-}
-function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
- if(cur+n>m){toast(m?`Só temos ${m} em estoque.`:'Sem estoque nesta loja.');return false}
- it?it.n+=n:S.cart.push({id,n});save();renderCart();{const b=$('#cartb');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}return true}
-const cart=o=>{if(o)location.hash='#/carrinho'};   /* o carrinho agora é uma página (#/carrinho) */
-function toast(m){const t=$('#toast');t.textContent=m;t.classList.remove('translate-y-40');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('translate-y-40'),2600)}
-/* ---------- extras ---------- */
-function tick(){
- const s=st(),d=new Date(Date.now()+(s.id==='pv'?-4:-5)*36e5),x=d.getUTCHours()*3600+d.getUTCMinutes()*60+d.getUTCSeconds(),cut=FRETE.corte*3600,open=x<cut,r=open?cut-x:86400-x+cut,f=v=>String(v).padStart(2,'0');
- $('#ct').textContent=`${FRETE.corte}h`;
- const px=$('#pxt');if(px&&px.dataset.e){const q=Math.max(0,(+px.dataset.e-Date.now())/1e3|0);px.textContent=`${f(q/60|0)}:${f(q%60)}`}
- document.querySelectorAll('[data-cd]').forEach(e=>{if(e.dataset.cd){const q=Math.max(0,(+e.dataset.cd-Date.now())/1e3|0);e.textContent=`${f(q/60|0)}:${f(q%60)}`}});
- $('#cl').textContent=open?`Receba hoje em ${s.name} se pedir até as`:`Pedidos em ${s.name} saem amanhã. Peça hoje até as`;
-}
-function shell(){
- const s=st();if(!s)return;
- $('#store').innerHTML=S.stores.map(x=>`<option value="${x.id}" ${x.id===s.id?'selected':''}>📍 ${esc(x.name)}</option>`).join('');
- $('#top').textContent=`Loja: ${s.name} (${s.kind||'loja'}) • Compre até as ${FRETE.corte}h e receba no mesmo dia`;
- const w=`https://wa.me/${s.whatsapp}`;['#wa','#herowa','#bandwa'].forEach(i=>$(i).href=w);
- $('#fst').innerHTML=S.stores.map(x=>`<p><b class="text-white">${esc(x.name)}</b> — ${esc(x.kind||'')}</p>`).join('');
- $('#dep').classList.toggle('hidden',!S.rev.length);
- const rv=S.rev.map(r=>`<figure class="w-80 shrink-0 rounded-2xl border border-bd bg-s3 p-5"><p class="text-yellow-400">${'★'.repeat(r.rating)}</p><blockquote class="my-2 text-sm text-mut">${esc(r.body)}</blockquote><figcaption class="text-sm font-semibold">${esc(r.customer_name)}</figcaption></figure>`).join('');
- $('#mq').innerHTML=rv+rv;tick();
-}
-$('#faq').innerHTML=[['Como funciona a entrega no mesmo dia?','Pedidos feitos até as 15h (horário da sua cidade) em Rio Branco e Porto Velho saem no mesmo dia por motoboy. Depois desse horário, saem no dia seguinte.'],['Posso retirar na loja?','Pode. Escolha “Retirar na loja” no carrinho e combine o horário pelo WhatsApp. Não há taxa de entrega.'],['Quais são as formas de pagamento?','Pix com desconto ou cartão em até 5x sem juros. No Pix, o QR Code é gerado na hora e a confirmação é automática. No cartão, você paga no ambiente seguro do Mercado Pago.'],['Os produtos têm garantia?','Sim, todos têm garantia da loja. Os detalhes de cada produto você confirma com o atendimento.'],['E se o produto não estiver na minha loja?','O estoque muda conforme a loja escolhida no topo. Fale com a gente e verificamos a transferência ou a encomenda.']].map(([q,a])=>`<details class="rounded-2xl border border-bd bg-s3 p-5"><summary class="flex items-center justify-between font-semibold">${q}<span class="text-2xl text-pri transition-transform">+</span></summary><p class="mt-3 text-mut">${a}</p></details>`).join('');
-/* padrão para visitante novo: branco e azul. Depois que a pessoa personaliza, a escolha fica salva no navegador */
-const TH={m:ls.get('mode','light'),a:ls.get('ac','oceano')};
-function theme(){const h=document.documentElement,on=['ring-2','ring-fg','ring-offset-2','ring-offset-s3'];h.classList.toggle('light',TH.m==='light');h.dataset.ac=TH.a;
- $('meta[name=theme-color]').content=TH.m==='light'?'#f4f5fa':'#000000';
- document.querySelectorAll('button[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
- document.querySelectorAll('button[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
- window.PC=`rgb(${getComputedStyle(h).getPropertyValue('--pr').trim()} / .7)`}
-theme();
-document.addEventListener('click',e=>{const t=e.target.closest('button[data-th],button[data-ac],#thb'),p=$('#thm');
- if(t&&t.id==='thb')p.classList.toggle('hidden');
- else if(t){if(t.dataset.th)TH.m=t.dataset.th;else TH.a=t.dataset.ac;ls.set('mode',TH.m);ls.set('ac',TH.a);theme()}
- else if(!e.target.closest('#thm'))p.classList.add('hidden')});
-/* fecha o painel de tema ao tocar/clicar fora (pointerdown funciona também no celular) e com Esc */
-document.addEventListener('pointerdown',e=>{const p=$('#thm');if(p&&!p.classList.contains('hidden')&&!e.target.closest('#thm,#thb'))p.classList.add('hidden')},true);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#thm').classList.add('hidden')});
-(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w,h,P,on=1,raf;
- const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(90,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
- const f=()=>{if(!on)return;x.clearRect(0,0,w,h);x.fillStyle=window.PC;P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});raf=requestAnimationFrame(f)};
- new IntersectionObserver(([e])=>{if(e.isIntersecting&&!on){on=1;f()}else if(!e.isIntersecting){on=0;cancelAnimationFrame(raf)}}).observe(c);f()})();
-/* ---------- perfil do cliente ---------- */
-const refs=()=>ls.get('orders',[]);
-function addRef(n,t){ls.set('orders',[{n,t,at:Date.now()},...refs().filter(x=>x.n!==n)].slice(0,30))}
-const isLive=d=>{const exp=!d.expires_at||new Date(d.expires_at)>new Date();return d.payment_status!=='approved'&&d.status!=='cancelado'&&d.payment_status!=='rejected'&&((d.pix_qr_code&&exp)||(d.checkout_url&&d.payment_status==='pending'&&exp))};
-const cls=d=>d.payment_status==='approved'?'ok':isLive(d)?'pg':'cc';
-const LBL=d=>d.status==='cancelado'?'Cancelado':d.payment_status==='approved'?({enviado:'Enviado',entregue:'Entregue'}[d.status]||'Pago'):d.payment_status==='rejected'?'Pagamento recusado':isLive(d)?'Aguardando pagamento':'Não concluído';
-async function loadOrders(){
- if(!sb||S.demo)return S.ords=[];
- const fin=ls.get('oc',{});
- S.ords=(await Promise.all(refs().map(async r=>{
-  let d=fin[r.n];
-  if(!d)try{d=(await sb.rpc('get_order_payment',{p_order_number:r.n,p_token:r.t})).data;if(d&&(d.status==='cancelado'||d.status==='entregue'))fin[r.n]={...d,pix_qr_base64:null,pix_qr_code:null}}catch{}
-  return d&&{...r,d}}))).filter(Boolean);
- ls.set('oc',fin);return S.ords}
-function bdg(){const n=(S.ords||[]).filter(o=>cls(o.d)==='pg').length,b=$('#pfn');b.textContent=n;b.classList.toggle('hidden',!n)}
-function ocard({n,at,d}){const k=cls(d),it=(d.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join(', '),c={ok:'border-acc text-acc',pg:'border-yellow-500 text-yellow-500',cc:'border-red-400 text-red-400'}[k];
- return `<article class="rounded-2xl border border-bd bg-s3 p-4"><div class="flex items-start justify-between gap-3"><div><p class="font-semibold">Pedido #${d.order_number}</p><p class="text-xs text-mut">${at?new Date(at).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})+' · ':''}${esc(d.store_name)}</p></div><span class="whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-bold ${c}">${LBL(d)}</span></div>
- <p class="mt-2 line-clamp-2 text-sm text-mut">${it}</p>
- <div class="mt-3 flex items-center justify-between gap-3"><p class="font-display text-2xl font-bold">${R(d.total)}</p>${k==='pg'?`<p class="text-xs text-mut">expira em <b data-cd="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b></p>`:''}</div>
- ${k==='pg'?`<button data-a="ppay" data-id="${n}" class="glow mt-3 h-11 w-full rounded-xl bg-pri font-bold text-white">Pagar agora</button>`:''}</article>`}
-function plist(){
- const g={pg:[],ok:[],cc:[]};(S.ords||[]).forEach(o=>g[cls(o.d)].push(o));
- $('#ptabs').innerHTML=[['pg','A pagar'],['ok','Compras realizadas'],['cc','Canceladas']].map(([k,n])=>`<button data-a="ptab" data-id="${k}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.pt===k?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${n} (${g[k].length})</button>`).join('');
- $('#plist').innerHTML=g[S.pt].length?g[S.pt].map(ocard).join(''):`<p class="col-span-full py-12 text-center text-mut">${{pg:'Nenhum pagamento em aberto.',ok:'Você ainda não tem compras realizadas.',cc:'Nenhuma compra cancelada.'}[S.pt]}</p>`;
- bdg();tick()}
-function prof(){
- const F=S.f,inp=(i,l,v,t,a)=>`<label class="block text-sm"><span class="mb-1 block text-mut">${l}</span><input id="${i}" type="${t}" autocomplete="${a}" value="${esc(v)}" class="h-11 w-full px-3"></label>`;
- $('#prf').innerHTML=`<h1 class="font-display text-4xl font-bold">Meu perfil</h1>
- <div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
-  <section class="h-fit space-y-4 rounded-2xl border border-bd bg-s3 p-5"><h2 class="font-display text-2xl font-bold">Meus dados</h2>${inp('pnm','Nome',F.nm,'text','name')}${inp('pph','WhatsApp com DDD',F.ph,'tel','tel')}${inp('pem','E-mail',F.em,'email','email')}${inp('pad','Endereço de entrega',F.ad,'text','street-address')}<p class="text-xs text-mut">Salvo automaticamente neste aparelho e já preenchido no carrinho.</p></section>
-  <section><div id="ptabs" class="flex gap-2 overflow-x-auto"></div><div id="plist" class="mt-4 grid gap-3 xl:grid-cols-2"></div></section></div>`;
- $('#plist').innerHTML='<div class="sk h-28 rounded-2xl"></div>'.repeat(2);
- loadOrders().then(plist)}
-/* ---------- páginas institucionais (#/info/<tema>) ---------- */
-const MAIL='<a href="mailto:atendimento@plebeugames.com">atendimento@plebeugames.com</a>';
-const SERV=(c)=>`<h2>Produtos e Acessórios para Starlink</h2><p>A Plebeu Games também é referência em ${c} para quem usa ou vai instalar internet via satélite. Temos disponível:</p><ul><li>Cabos 12V para Starlink</li><li>Suportes para vidro, teto e para-brisa</li><li>Inversor de tensão para instalar o Starlink no carro</li><li>Demais acessórios de fixação e alimentação para o kit Starlink</li></ul><p>Ideal para quem viaja, mora em área rural ou quer levar a internet Starlink para o veículo com praticidade e segurança.</p>`;
-const POR=(c,end)=>`<h2>Por que escolher a Plebeu Games em ${c}?</h2><ul><li>Loja física com atendimento especializado</li><li>Orçamento rápido e sem compromisso</li><li>Peças de reposição originais e compatíveis</li><li>Atendimento tanto para quem quer comprar quanto para quem precisa de reparo</li><li>Referência em conserto de PS4, PS5, Xbox e controles na região</li></ul><p>Traga seu videogame, controle ou computador para um orçamento, ou venha conhecer nossa loja de acessórios e equipamentos no endereço: <b>${end}</b></p>`;
-const INFO={
-'trocas-e-devolucoes':{t:'Política de Trocas e Devoluções',h:`
-<p>Para trocar um produto, entre em contato por meio de nosso e-mail ${MAIL}, anexando as devidas evidências e iremos retornar com as instruções de troca no prazo de até 5 (cinco) dias úteis.</p>
-<h2>Formas de Restituição de Valores</h2>
-<p>Confira a seguir as opções disponíveis para restituição de valores:</p>
-<h3>Cupom de desconto</h3>
-<p>Você opta pelo cupom de desconto em qualquer situação referente a trocas por insatisfação.</p>
-<p>O cupom tem validade de 90 (noventa) dias e poderá ser utilizado exclusivamente pelo titular da conta na loja virtual, mediante uso de login e senha. Não é permitido vendê-lo para terceiros nem tampouco convertê-lo em dinheiro. Para utilizar o cupom, basta realizar uma nova compra e inseri-lo no momento de finalizar o pedido.</p>
-<h3>Estorno parcial ou integral - pagamento por cartão de crédito</h3>
-<p>Após o recebimento do produto em nosso Centro de Distribuição e aprovação da devolução mediante análise dos itens, a Plebeu Games e Informática envia a solicitação de estorno para a administradora do cartão de crédito em até 7 (sete) dias úteis; esta por sua vez tem o prazo para processar a requisição de acordo com a política de cada administradora de cartão de crédito.</p>
-<p>Exclusivo para pagamentos em cartão de crédito, o procedimento de estorno parcial ou integral do valor pago em seu pedido seguirá as regras da administradora do cartão, podendo demorar de um a dois meses para que o valor seja devolvido, dependendo da data de vencimento de sua fatura.</p>
-<h3>Estorno parcial ou integral - pagamento por Pix e transferência</h3>
-<p>Após o recebimento do produto em nosso Centro de Distribuição e aprovação da devolução mediante análise dos itens, a Plebeu Games e Informática irá realizar o estorno do valor em até 30 (trinta) dias para a conta do intermediador de pagamento e você poderá solicitar o saque do mesmo.</p>
-<h3>Estorno parcial ou integral - pagamento por boleto</h3>
-<p>Após o recebimento do produto em nosso Centro de Distribuição e aprovação da devolução mediante análise dos itens, a Plebeu Games e Informática irá realizar o estorno do valor em até 30 (trinta) dias para a conta do intermediador de pagamento e você poderá solicitar o saque do mesmo.</p>`},
-
-'seguranca-e-privacidade':{t:'Segurança e Privacidade',h:`
-<p>Sua compra está completamente assegurada pela plataforma de pagamentos Mercado Pago. Prezamos pela sua privacidade, não enviaremos mensagens a não ser que você, cliente, autorize expressamente.</p>`},
-
-'rio-branco':{t:'Plebeu Games Rio Branco',h:`
-<h2>Assistência técnica</h2>
-<ul><li>Problemas de HDMI</li><li>Conserto de Xbox One e Xbox Series — travamentos, erros de sistema, falhas de hardware</li><li>Reparo de controle (Dualshock, DualSense e controle Xbox)</li><li>Troca de analógico (correção de drift e perda de precisão)</li><li>Conserto de drift no controle PS4, PS5 e Xbox</li><li>Troca de bateria de controles sem fio</li><li>Troca de HD e upgrade de armazenamento em consoles</li><li>Reparo de problemas de vídeo (sem imagem, imagem cortada, HDMI com mau contato)</li></ul>
-<p>Se o seu controle está com o analógico "puxando sozinho" (drift) ou seu console não liga mais, traga para um orçamento sem compromisso.</p>
-${SERV('Rio Branco')}${POR('Rio Branco','Rua Isaura Parente, 409, Bosque')}`},
-
-'porto-velho':{t:'Plebeu Games Porto Velho',h:`
-<h2>Assistência técnica</h2>
-<ul><li>Troca de analógico (correção de drift e perda de precisão)</li><li>Conserto de drift no controle PS4, PS5 e Xbox</li><li>Troca de bateria de controles sem fio</li><li>Troca de HD e upgrade de armazenamento em consoles</li><li>Reparo de problemas de vídeo (sem imagem, imagem cortada, HDMI com mau contato)</li></ul>
-<p>Se o seu controle está com o analógico "puxando sozinho" (drift) ou seu console não liga mais, traga para um orçamento sem compromisso.</p>
-${SERV('Porto Velho')}${POR('Porto Velho','Avenida Calama, 4239, Bairro Embratel, Porto Velho - RO')}`},
-
-'quem-somos':{t:'Quem Somos',h:`
-<p>A Plebeu Games e Informática nasceu da paixão por videogames e tecnologia, com um objetivo simples: ser o lugar de confiança para quem ama jogar e para quem depende do seu equipamento no dia a dia. O que começou como uma loja focada em videogames cresceu e hoje somos referência em vendas e assistência técnica especializada, com unidades em Rio Branco - AC e Porto Velho - RO.</p>
-<h2>Nossa História</h2>
-<p>Fundada por quem entende do assunto na prática, a Plebeu Games surgiu para preencher uma lacuna: encontrar, na região Norte, uma loja que realmente entendesse de videogames — não só vendendo, mas também consertando, orientando e cuidando de cada equipamento como se fosse seu. Com o tempo, expandimos o catálogo para computadores, acessórios de informática e até produtos para internet via satélite (Starlink), sempre mantendo o mesmo compromisso com qualidade e atendimento próximo ao cliente.</p>
-<h2>O Que Fazemos</h2>
-<p>Hoje, a Plebeu Games atua em quatro grandes frentes:</p>
-<ul><li>Venda de videogames (PlayStation, Xbox e Nintendo), novos e seminovos</li><li>Venda de computadores montados sob medida para cada necessidade</li><li>Acessórios para videogame e informática — controles, headsets, SSDs, HDs, cabos e muito mais</li><li>Assistência técnica especializada em consoles PlayStation e Xbox, com reparo de placas, controles, drift, HDMI, bateria e mais</li><li>Produtos para Starlink, incluindo cabos, suportes e inversores para uso veicular</li></ul>
-<h2>Nosso Compromisso</h2>
-<p>Acreditamos que assistência técnica boa é aquela que é honesta, rápida e explicada em bom português — sem enrolação. Por isso, em cada orçamento, explicamos o problema, o que será feito e o prazo real, para que o cliente saiba exatamente no que está investindo.</p>
-<h2>Onde Estamos</h2>
-<ul><li><b>Rio Branco - AC:</b> nossa loja matriz, onde tudo começou: Rua Isaura Parente, 409, Bosque</li><li><b>Porto Velho - RO:</b> nossa filial, levando o mesmo padrão de atendimento e qualidade para mais uma cidade da região Norte: Avenida Calama, 4239, Embratel</li></ul>
-<p>Seja para comprar seu próximo console, montar um PC novo ou consertar aquele controle que não larga do drift, a Plebeu Games está pronta para atender você com quem realmente entende do assunto.</p>
-<p><b>Venha nos conhecer — Plebeu Games, tudo para vídeo game e informática.</b></p>`},
-
-'politica-de-vendas':{t:'Política de Vendas',h:`
-<h2>Garantia</h2>
-<ul><li>Garantia sobre a peça e o serviço executado, informada no momento da entrega do orçamento.</li><li>A garantia do reparo cobre exclusivamente o defeito reparado, não se estendendo a problemas não relacionados ao serviço prestado ou a mau uso posterior do equipamento.</li><li>Equipamentos não retirados após o prazo informado no orçamento poderão estar sujeitos a cobrança de armazenagem, conforme informado previamente ao cliente.</li></ul>
-<h2>Trocas e Devoluções</h2>
-<ul><li><b>Compras realizadas na loja física:</b> trocas por defeito seguem os prazos de garantia legal (30 ou 90 dias). Trocas por arrependimento (produto sem defeito) não são obrigatórias por lei em compras presenciais, mas podem ser avaliadas conforme política comercial da loja, mediante apresentação da nota fiscal e produto em condições de revenda.</li><li><b>Compras realizadas fora da loja física (site, WhatsApp, redes sociais ou telefone):</b> conforme o artigo 49 do Código de Defesa do Consumidor, o cliente tem direito de arrependimento em até 7 dias corridos a partir do recebimento do produto, sem necessidade de justificativa, com devolução integral do valor pago, incluindo frete quando aplicável.</li><li>Produtos devolvidos devem estar sem sinais de uso, com embalagem original e todos os acessórios inclusos, sempre que possível.</li></ul>
-<h2>Entrega e Retirada</h2>
-<ul><li>Produtos comprados presencialmente podem ser retirados imediatamente na loja, conforme disponibilidade.</li><li>Quando houver serviço de entrega, o prazo e o custo serão informados no momento da compra.</li></ul>
-<h2>Cancelamento de Pedidos</h2>
-<p>Pedidos ainda não retirados ou entregues podem ser cancelados mediante contato com a loja, respeitando eventuais taxas de operações já processadas (como taxas de cartão).</p>
-<h2>Atendimento ao Cliente</h2>
-<p>Em caso de dúvidas, reclamações ou solicitações relacionadas a garantia, troca ou devolução, entre em contato diretamente com a unidade onde a compra foi realizada (Rio Branco ou Porto Velho), pessoalmente, por telefone ou WhatsApp.</p>
-<p><i>Esta política tem caráter informativo e busca seguir as diretrizes do Código de Defesa do Consumidor. A Plebeu Games recomenda que o cliente sempre guarde a nota fiscal ou comprovante de compra, documento necessário para o exercício de qualquer direito de garantia ou devolução.</i></p>`},
-
-'assistencia-tecnica':{t:'Assistência Técnica',h:`
-<h3>Quanto tempo demora o conserto do meu PS4 ou Xbox?</h3>
-<p>O prazo varia conforme o tipo de defeito, mas a maioria dos reparos simples (como drift, HDMI ou troca de peça) é resolvida em poucos dias. Problemas mais complexos de placa podem levar um pouco mais, e o prazo estimado é sempre informado no orçamento.</p>
-<h3>Vocês consertam controle com drift?</h3>
-<p>Sim, o conserto de drift (quando o analógico se move sozinho) é um dos serviços mais procurados na nossa assistência técnica, tanto para controle de PS4 e PS5 quanto para Xbox.</p>
-<h3>Preciso levar o equipamento até a loja?</h3>
-<p>Sim, o diagnóstico é feito presencialmente em nossas unidades de Rio Branco ou Porto Velho, para garantir uma avaliação precisa do defeito.</p>
-<h3>O reparo tem garantia?</h3>
-<p>Sim, todo serviço realizado por nossa assistência técnica possui garantia sobre a peça e o serviço prestado, informada no momento da entrega do orçamento.</p>
-<p><b>Traga seu PlayStation, Xbox ou controle para um orçamento gratuito em uma das nossas lojas — Plebeu Games, referência em assistência técnica de videogames em Rio Branco e Porto Velho.</b></p>`},
-
-'fretes-e-prazos':{t:'Modalidades de Fretes e Prazos',h:`
-<h3>Correios</h3>
-<p>Nessa modalidade se encaixam PAC e SEDEX, ambos realizados pela empresa Correios com prazos e preços variáveis de acordo com o CEP do nosso cliente.</p>
-<h3>Motoboy</h3>
-<p>Essa forma de envio se aplica apenas nas cidades de Rio Branco/AC ou Porto Velho/RO. Para compras até às 15h (em dias úteis), a entrega será realizada no mesmo dia da compra.</p>
-<h3>Retirar na loja</h3>
-<p>Selecionando essa modalidade o cliente pode fazer o pagamento pelo site e ir em nossa loja física apenas para retirar o produto no mesmo dia.</p>`},
-
-'frete-gratis':{t:'Regras para Frete Grátis',h:`
-<h2>Política de Fretes — Plebeu Games</h2>
-<p>Na Plebeu Games, facilitamos para você receber seus produtos onde estiver. Confira abaixo as condições de frete para compras realizadas em nosso site.</p>
-<h3>Frete Grátis por Região</h3>
-<div class="overflow-x-auto"><table><thead><tr><th>Região</th><th>Valor mínimo para frete grátis</th></tr></thead><tbody><tr><td>Porto Velho (RO) e Rio Branco (AC)</td><td>A partir de {{GRATIS}}</td></tr><tr><td>Demais cidades da Região Norte</td><td>A partir de R$ 900,00</td></tr><tr><td>Restante do Brasil</td><td>A partir de R$ 2.000,00</td></tr></tbody></table></div>
-<ul><li>O frete grátis é aplicado automaticamente no fechamento do pedido quando o valor mínimo da região correspondente for atingido.</li><li>Para compras abaixo dos valores acima, o frete é calculado conforme o CEP de entrega e informado antes da finalização da compra.</li></ul>
-<h3>Prazo de Entrega</h3>
-<ul><li>Os prazos de entrega variam conforme a região e a transportadora responsável, sendo informados no momento da compra, antes do pagamento.</li><li>Pedidos para Porto Velho e Rio Branco, por serem nossas cidades de operação, tendem a ter prazos de entrega mais rápidos.</li></ul>
-<h3>Observações</h3>
-<ul><li>A condição de frete grátis é válida apenas para compras finalizadas em nosso site, não se aplicando a compras realizadas presencialmente na loja.</li><li>O valor de referência para o frete grátis considera o valor total dos produtos no carrinho, podendo haver exceções para itens muito grandes, pesados ou frágeis, que serão informadas antes da finalização da compra.</li><li>A Plebeu Games se reserva o direito de alterar os valores mínimos de frete grátis a qualquer momento, mediante atualização desta página.</li><li>Em caso de dúvidas sobre prazo ou valor de frete para o seu endereço, entre em contato com a nossa equipe antes de finalizar a compra.</li></ul>`}
-};
-$('#finfo').innerHTML=Object.entries(INFO).map(([k,v])=>`<a href="#/info/${k}" class="block py-0.5 hover:text-white hover:underline">${v.t}</a>`).join('');
-function info(k){const d=INFO[k];if(!d){location.hash='#/';return}
- document.title=`${d.t} | Plebeu Games`;
- $('#inf').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-fg">← Voltar à loja</a><article class="inf mt-5 rounded-3xl border border-bd bg-s3 p-6 md:p-10"><h1 class="font-display text-4xl font-bold text-fg">${d.t}</h1>${d.h.replace(/\{\{GRATIS\}\}/g,R(FRETE.gratis))}</article>`}
-/* ---------- rotas e eventos ---------- */
-function route(){
- const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil',ct=location.hash==='#/carrinho',inf=location.hash.match(/^#\/info\/(.+)$/),ad=location.hash==='#/admin';
- document.body.classList.toggle('adm',ad);$('#adm').classList.toggle('hidden',!ad);
- $('#home').classList.toggle('hidden',!!m||pf||ct||!!inf||ad);$('#inf').classList.toggle('hidden',!inf);pd.classList.toggle('hidden',!m);$('#prf').classList.toggle('hidden',!pf);$('#crt').classList.toggle('hidden',!ct);
- if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else if(pf){document.title='Meu perfil | Plebeu Games';prof();scrollTo(0,0)}else if(ct){document.title='Carrinho | Plebeu Games';renderCart(1);scrollTo(0,0)}else if(inf){info(decodeURIComponent(inf[1]));scrollTo(0,0)}else if(ad){document.title='Admin | Plebeu Games';ADM.enter();scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
-}
-document.addEventListener('click',e=>{
- if(!e.target.closest('#sug,#q'))$('#sug').classList.add('hidden');
- const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,id=t.dataset.id;
- if(a==='add'){if(add(id))toast('Adicionado ao carrinho')}
- else if(a==='buy'){if(add(id))cart(true)}
- else if(a==='fav'){S.favs=S.favs.includes(id)?S.favs.filter(x=>x!==id):S.favs.concat(id);save();render()}
- else if(a==='cat'){S.cat=id;S.fav=false;if(location.hash)location.hash='#/';render();$('#vitrine').scrollIntoView()}
- else if(a==='inc')add(id);
- else if(a==='dec'){const it=S.cart.find(x=>x.id===id);it.n--;if(it.n<1)S.cart=S.cart.filter(x=>x!==it);save();renderCart()}
- else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
- else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
- else if(a==='copy')navigator.clipboard.writeText(t.dataset.u).then(()=>toast('Código Pix copiado!'),()=>toast('Não foi possível copiar. Selecione o código e copie.'));
- else if(a==='payclose'){ls.set('pay',null);closePay();loadOrders().then(()=>{bdg();if(location.hash==='#/perfil')plist()})}
- else if(a==='payretry'){const o=$('#pay');startPay(+o.dataset.n,o.dataset.t,'').then(ok=>{if(!ok)toast(S.perr||'Ainda não foi possível gerar o pagamento. Tente de novo ou fale com a loja.')})}
- else if(a==='ptab'){S.pt=id;plist()}
- else if(a==='ppay'){const o=S.ords.find(x=>x.n==id);if(o)openPay(o.n,o.t)}
- else if(a==='img')$('#big').innerHTML=`<img src="${t.dataset.u}" alt="" class="h-full w-full object-contain p-6">`;
-});
-document.addEventListener('change',e=>{if(e.target.name==='pay'){S.pay=e.target.value;renderCart(1)}if(e.target.name==='ship'){S.ship=e.target.value;renderCart(1)}});
-document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em',pnm:'nm',pph:'ph',pad:'ad',pem:'em'}[e.target.id];if(m){S.f[m]=e.target.value;ls.set('prof',S.f)}});
-$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const r=S.q?S.prods.filter(p=>p.name.toLowerCase().includes(S.q)).slice(0,5):[];
- $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-bd"><span class="truncate">${esc(p.emoji||'🎮')} ${esc(p.name)}</span><b class="text-acc">${R(pix(p))}</b></a>`).join('');
- $('#sug').classList.toggle('hidden',!r.length);if(!location.hash.startsWith('#/p/'))render()});
-$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){location.hash='#/';$('#sug').classList.add('hidden');render();$('#vitrine').scrollIntoView()}});
-$('#sort').onchange=e=>{S.sort=e.target.value;render()};$('#onlys').onchange=e=>{S.only=e.target.checked;render()};
-$('#store').onchange=e=>{S.store=e.target.value;ls.set('store',S.store);shell();render();route();toast('Estoque de '+st().name)};
-$('#cartb').onclick=$('#mcart').onclick=()=>{location.hash='#/carrinho'};
-$('#favb').onclick=$('#mfav').onclick=()=>{S.fav=!S.fav;S.cat='';location.hash='#/';render();$('#vitrine').scrollIntoView()};
 addEventListener('hashchange',route);
-$('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(12);
-const CA=sb?ls.get('cache',null):null;
-if(CA&&CA.stores&&CA.stores.length){Object.assign(S,CA);S.store=st().id;shell();render();route()}
-load().then(()=>{if(refs().length)loadOrders().then(bdg);if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods,stock:S.stock,rev:S.rev});
- S.store=st().id;shell();render();CA?(location.hash.startsWith('#/p/')&&pdp(decodeURIComponent(location.hash.slice(4)))):route();setInterval(tick,1000);
- const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:null;
- if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);addRef(r.num,r.tok);openPay(r.num,r.tok,true,false)}
-});
-</script>
-<script>
-/* ---------- cabeçalho no celular ----------
-   topo da página: tudo (logo, busca, loja, botões e categorias)
-   rolando pra baixo: recolhe, fica só a logo
-   subindo um pouco (meio/fim da página): voltam logo + busca + loja + botões, SEM as categorias
-   categorias: só aparecem quando a pessoa está no topo da página ---------- */
+async function route(){
+  $('#modal').style.display='none';
+  if(location.hash==='#admin'){if(DEMO){$('#app').innerHTML='<div class="ad"><h1>Área do vendedor</h1><p class="mu">Configure o Supabase no início do arquivo para usar o painel.</p><p class=\"mu\" style=\"font-size:12px\">O arquivo está lendo: URL = '+esc(SUPABASE_URL.slice(0,45))+' | chave com '+SUPABASE_KEY.length+' caracteres</p><a class="btn red" href="#">Voltar ao site</a></div>';return}const{data}=await sb.auth.getSession();data.session?adm():login()}else{C='Todas';Q='';home();const d=/^#moto=(.+)/.exec(location.hash);if(d){const i=L.findIndex(x=>x.id===d[1]);if(i>=0)openM(i,soCon(L[i])?'con':'det')}}
+}
+
+/* ================= CLIENTE ================= */
+const IC={wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+ig:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>',
+se:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'};
+const chipsH=()=>K.map((c,i)=>`<button class="chip ${c===C?'on':''}" aria-pressed="${c===C}" onclick="setC(${i})">${esc(c)}</button>`).join('');
+function setC(i){C=K[i];$('#chips').innerHTML=chipsH();lista(1)}
+function cnt(){const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;document.querySelectorAll('[data-n]').forEach(e=>{const n=+e.dataset.n,m=e.dataset.m,t0=performance.now();
+  const f=t=>{const k=rm?1:Math.min(1,(t-t0)/1400),v=n*(1-Math.pow(1-k,3));e.textContent=m?brl(v):Math.round(v);k<1&&requestAnimationFrame(f)};requestAnimationFrame(f)})}
+function home(){
+  A=M.filter(m=>m.ativo);document.title=V.nome+' | Motos';
+  K=['Todas',...new Set(A.map(m=>m.categoria).filter(Boolean))];
+  const AM=A.filter(m=>!soCon(m)),vs=AM.flatMap(m=>(m.planos||[]).map(p=>p.valor)).filter(v=>v>0),mn=vs.length?Math.min(...vs):0;
+  const bxd=(()=>{try{return sessionStorage.getItem('bx')}catch(e){return''}})();
+  $('#app').innerHTML=`<header class="hero"><span class="glow"></span><div class="spd"><i></i><i></i><i></i><i></i></div>
+  <div class="hin ${V.logo_url?'':'nl'}">${av(V.foto_url)}
+  <div class="idt"><h1>${esc(V.nome)}<svg class="vf" viewBox="0 0 24 24" aria-label="Verificado" role="img"><circle cx="12" cy="12" r="11" fill="#1d9bf0"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></h1>${V.bio?`<p>${esc(V.bio)}</p>`:''}</div>
+  <div class="ctas"><a class="cta w" target="_blank" rel="noopener" href="${wa('Olá! Vim pelo seu site e quero uma moto.')}" onclick="return chatOpen(event)">${IC.wa}Fale comigo</a>${V.instagram?`<a class="cta" target="_blank" rel="noopener" href="https://instagram.com/${esc(V.instagram)}">${IC.ig}Instagram</a>`:''}</div>
+  ${V.logo_url?`<img class="hlogo" src="${esc(V.logo_url)}" alt="Logo da empresa" decoding="async">`:''}
+  <div class="stats"><div><b data-n="${AM.length}">${AM.length}</b><span>modelos para escolher</span></div>${mn?`<div><b data-n="${mn}" data-m="1">${brl(mn)}</b><span>parcela de consórcio a partir de</span></div>`:''}</div></div></header>
+  <main class="wrap"><div class="sec"><h2>Escolha sua moto</h2><span class="nc" id="nc"></span></div>
+  <div class="bar"><div class="sb">${IC.se}<input id="q" type="search" placeholder="Buscar moto" aria-label="Buscar moto" autocomplete="off" value="${esc(Q)}" oninput="Q=this.value;lista()"></div>
+  <div class="chips" id="chips">${chipsH()}</div></div><div id="ls" class="grid"></div></main>
+  <footer class="foot2"><b>${esc(V.nome)}</b><br>${tel()}${V.instagram?' · @'+esc(V.instagram):''}
+  <div class="fl"><a class="fp" target="_blank" rel="noopener" href="https://fichacdc.vercel.app/">Ficha CDC<small>Financiamento</small></a><a class="fp" target="_blank" rel="noopener" href="https://fichacnh.vercel.app/">Ficha CNH<small>Consórcio</small></a></div>
+  <a class="mk" target="_blank" rel="noopener" href="https://wa.me/5568974005458?text=${encodeURIComponent('Olá! Vi o site do vendedor e quero criar o meu.')}">Crie seu site do vendedor<b>Clique aqui</b></a></footer>
+  ${bxd?'':`<div class="bw"><a class="bubble" target="_blank" rel="noopener" href="${wa('Olá! Vim pelo seu site.')}" onclick="return chatOpen(event)">${av(V.foto_url)}Estou online. Fale agora!</a><button class="bx" aria-label="Fechar" onclick="try{sessionStorage.setItem('bx',1)}catch(e){}this.closest('.bw').remove()">×</button></div>`}`;
+  lista(1);cnt();
+}
+function ytId(u){const r=/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/.exec(u||'');return r&&r[1]}
+function vid(u){if(!u)return'';const y=ytId(u);return y?`<iframe class="vid" src="https://www.youtube.com/embed/${y}" allowfullscreen></iframe>`:`<video class="vid" controls playsinline src="${esc(u)}"></video>`}
+function openM(i,v){
+  cur=i;G=0;const m=L[i],f=m.fotos||[];let b='';
+  const how=t=>`<div id="hw" class="hw" style="display:none">${t}</div>`;
+  if(v==='det')b=`<div class="gal"><div id="gmain"><img id="gm" src="${esc(f[0]||'')}" onclick="zoom()" alt="${esc(m.nome)}"></div>
+    ${f.length>1||m.video_url?`<div class="th">${f.length>1?f.map((u,k)=>`<img src="${esc(u)}" onclick="gShow(${k})">`).join(''):''}${m.video_url?`<button class="vb" onclick="gVid()" aria-label="Vídeo">▶</button>`:''}</div>`:''}</div>
+    <div class="acts"><button class="btn red" onclick="openM(cur,'con')">Consórcio</button><button class="btn red" onclick="openM(cur,'fin')">Financiamento</button>
+    <a class="btn wa" target="_blank" onclick="lead('whatsapp')" href="${wa('Olá! Tenho interesse na '+m.nome+(m.modelo?' '+m.modelo:'')+' e gostaria de saber sobre a compra à vista.')}">Whatsapp</a></div>
+    ${m.descricao?`<div class="ft">Especificações/Ficha Técnica</div><div class="desc">${fmtDesc(m.descricao)}</div>`:''}
+    <button class="btn" onclick="shareM()">Compartilhar esta moto</button>`;
+  if(v==='con'){const p=m.planos||[];b=`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3>Tabela de consórcio</h3><button class="btn red pill" onclick="howT()">▶ Como funciona?</button></div>
+    ${how('Você entra em um grupo e paga parcelas mensais sem juros (há taxa de administração). A moto é liberada por sorteio ou lance. Fale com o vendedor para tirar suas dúvidas.')}
+    ${f[0]?`<div style="border:1px solid var(--bd);border-radius:14px;margin:12px 0;overflow:hidden"><img src="${esc(f[0])}" alt="${esc(m.nome)}" style="display:block;width:100%;${soCon(m)?'max-height:340px':'height:230px'};object-fit:contain"></div>`:''}
+    <h3 style="text-align:center">${esc(m.emplacamento||'Com emplacamento')}</h3><div class="pl">${p.map((x,k)=>`<label><input type="radio" name="pl" value="${k}" ${k?'':'checked'}>${x.parcelas}x <b>${brl(x.valor)}</b></label>`).join('')||'<p class="mu">Consulte os planos com o vendedor.</p>'}</div>
+    <p class="mu" style="font-size:13px">*Os valores podem ser ajustados conforme tabela do consórcio.</p>
+    <button class="btn wa" onclick="conWa(0)">Chamar no Whatsapp</button><button class="btn or" onclick="conWa(1)">QUERO UM REPASSE DE CONSÓRCIO</button>`}
+  if(v==='fin')b=`<div class="fin"><div><h3>Financiamento</h3><p class="mu">Preencha o formulário abaixo para que o vendedor possa trazer pra você as melhores cotações do mercado.</p><button class="btn red pill" onclick="howT()">▶ Como funciona?</button></div><img src="${esc(f[0]||'')}"></div>
+    ${how('O vendedor simula seu financiamento em vários bancos e te responde pelo WhatsApp com as melhores parcelas.')}
+    <input id="f_ent" placeholder="Valor de entrada" inputmode="numeric" oninput="msk(this,'rs')"><input id="f_nas" placeholder="Data de Nascimento" inputmode="numeric" oninput="msk(this,'dt')">
+    <input id="f_cpf" placeholder="CPF:" inputmode="numeric" oninput="msk(this,'cpf')"><input id="f_nom" placeholder="Nome:" autocomplete="name"><input id="f_tel" placeholder="Telefone:" inputmode="tel" oninput="msk(this,'tel')">
+    <label class="l" style="margin-bottom:-6px">Possui habilitação?</label><select id="f_hab"><option>Sim</option><option>Não</option></select>
+    <p class="mu" style="font-size:12px;border-top:1px solid var(--bd);padding-top:12px">Ao enviar, você concorda com nossa <a href="#" onclick="priv();return false">Política de Privacidade</a>.</p>
+    <button class="btn wa" onclick="finSend()">Enviar para o vendedor</button>`;
+  const mo=$('#modal');if(mo.style.display!=='block')history.pushState({m:1},'');
+  const lg=V.logo_url?`<img class="ava s" style="object-fit:contain;background:#fff" src="${esc(V.logo_url)}">`:'';
+  mo.innerHTML=`<div class="sheet"><div class="mh"><div class="mp">${lg}${av(V.foto_url,'s')}<div><small style="color:var(--tx)">${tel()}</small><br><small>${V.instagram?'@'+esc(V.instagram):''}</small></div></div><a class="wab" target="_blank" href="${wa('Olá!')}">WhatsApp</a></div>
+  <div class="mt"><h2>${esc(m.nome)}</h2><span><b onclick="nav(-1)">‹</b><b onclick="nav(1)">›</b><b onclick="closeM()">✕</b></span></div>${b}</div>`;
+  mo.style.display='block';mo.scrollTop=0;bindSwipe();
+}
+const nav=d=>{const j=(cur+d+L.length)%L.length;openM(j,soCon(L[j])?'con':'det')};
+const closeM=()=>history.state&&history.state.m?history.back():$('#modal').style.display='none';
+async function lead(tipo,x={}){const m=L[cur];try{await sb.from('leads').insert({tipo,moto_id:m.id,moto_nome:m.nome,...x})}catch(e){}}
+function conWa(rep){
+  const m=L[cur],r=document.querySelector('input[name=pl]:checked'),p=r&&(m.planos||[])[r.value];
+  const t=rep?`Olá! Quero um repasse de consórcio da ${m.nome}.`:`Olá! Tenho interesse no consórcio da ${m.nome}${p?` em ${p.parcelas}x de ${brl(p.valor)}`:''}.`;
+  lead('consorcio',{detalhes:t});window.open(wa(t),'_blank');
+}
+async function finSend(){
+  const g=i=>$('#'+i).value.trim(),m=L[cur];
+  if(!g('f_nom')||!g('f_tel'))return toast('Preencha nome e telefone');
+  const d={entrada:g('f_ent'),nascimento:g('f_nas'),cpf:g('f_cpf'),nome:g('f_nom'),telefone:g('f_tel'),habilitacao:$('#f_hab').value};
+  await lead('financiamento',d);
+  const t=`Olá! Quero financiar a ${m.nome}.\nNome: ${d.nome}\nTelefone: ${d.telefone}\nCPF: ${d.cpf}\nNascimento: ${d.nascimento}\nEntrada: ${d.entrada}\nPossui habilitação: ${d.habilitacao}`;
+  window.open(wa(t),'_blank');toast('Enviado ao vendedor!');
+}
+
+/* ================= ADMIN ================= */
+function login(){
+  $('#app').innerHTML=`<div class="ad" style="max-width:380px"><h1>Área do vendedor</h1><input id="em" type="email" placeholder="E-mail"><input id="se" type="password" placeholder="Senha">
+  <button class="btn red" onclick="doLogin()">Entrar</button><p class="foot"><a href="#">← Voltar ao site</a></p></div>`;
+}
+async function doLogin(){
+  const{error}=await sb.auth.signInWithPassword({email:$('#em').value,password:$('#se').value});
+  if(error)return toast('E-mail ou senha incorretos');await init();adm();
+}
+async function out(){await sb.auth.signOut();location.hash='';home()}
+async function up(file){
+  const p=`${Date.now()}-${Math.random().toString(36).slice(2,7)}-${file.name.replace(/[^\w.]/g,'_')}`;
+  const{error}=await sb.storage.from('midia').upload(p,file);if(error)throw error;
+  return sb.storage.from('midia').getPublicUrl(p).data.publicUrl;
+}
+function adm(t){
+  if(t)T=t;
+  const tabs=['perfil','motos','leads'].map(k=>`<button class="btn ${T===k?'on':''}" onclick="adm('${k}')">${{perfil:'Perfil',motos:'Motos',leads:'Contatos'}[k]}</button>`).join('');
+  $('#app').innerHTML=`<div class="ad"><div style="display:flex;justify-content:space-between;align-items:center"><h1 style="margin:0">Painel</h1>
+  <span><a class="sm" href="#" style="text-decoration:none;color:inherit">Ver site</a> <button class="sm" onclick="out()">Sair</button></span></div><div class="tabs">${tabs}</div><div id="pn"></div></div>`;
+  ({perfil:pPerfil,motos:pMotos,leads:pLeads})[T]();
+}
+function pPerfil(){
+  $('#pn').innerHTML=`<div style="display:flex;gap:14px;align-items:center">${av(V.foto_url)}<div><label class="l">Foto de perfil</label><input type="file" accept="image/*" onchange="upV('foto_url',this)"></div></div>
+  <div style="display:flex;gap:14px;align-items:center;margin-top:10px">${V.logo_url?`<img class="logo" src="${esc(V.logo_url)}">`:''}<div><label class="l">Logo da empresa</label><input type="file" accept="image/*" onchange="upV('logo_url',this)"></div></div>
+  <label class="l">Nome do vendedor</label><input id="v_n" value="${esc(V.nome)}">
+  <label class="l">Frase / bio</label><input id="v_b" value="${esc(V.bio)}">
+  <label class="l">WhatsApp (55 + DDD + número, só números)</label><input id="v_w" value="${esc(V.whatsapp)}" inputmode="numeric">
+  <label class="l">Instagram (sem @)</label><input id="v_i" value="${esc(V.instagram)}">
+  <button class="btn red" onclick="saveV()">Salvar perfil</button>`;
+}
+async function upV(k,el){
+  try{toast('Enviando...');V[k]=await up(el.files[0]);await sb.from('vendedor').upsert({id:1,...V});toast('Salvo!');pPerfil()}catch(e){toast('Erro: '+e.message)}
+}
+async function saveV(){
+  V={...V,nome:$('#v_n').value,bio:$('#v_b').value,whatsapp:$('#v_w').value.replace(/\D/g,''),instagram:$('#v_i').value.replace('@','')};
+  const{error}=await sb.from('vendedor').upsert({id:1,...V});toast(error?'Erro: '+error.message:'Perfil salvo!');
+}
+const CAT=[['POP 110I ES +10%', 'Street', 'C', '80:216.59,60:280.54,48:345.55,36:455.23,24:669.58,18:887.60,12:1323.66'], ['BIZ 125 ES', 'Street', 'C', '80:273.75,60:354.56,48:436.72,36:575.35,24:846.25,18:1121.80,12:1672.91'], ['ELITE 125', 'Street', 'C', '80:287.34,60:372.16,48:458.40,36:603.92,24:888.27,18:1177.49,12:1755.97'], ['BIZ 125 EX', 'Street', 'C', '80:339.18,60:439.31,48:541.12,36:712.89,24:1048.54,18:1389.96,12:2072.81'], ['CG 160 START', 'Street', 'C', '80:349.24,60:452.34,48:557.16,36:734.03,24:1079.64,18:1431.17,12:2134.28'], ['PCX CBS', 'Street', 'C', '80:374.60,60:485.19,48:597.62,36:787.33,24:1158.04,18:1535.11,12:2289.27'], ['CG 160 FAN', 'Street', 'C', '80:381.06,60:493.56,48:607.93,36:800.91,24:1178.01,18:1561.58,12:2328.74'], ['CG 160 TITAN', 'Street', 'C', '80:404.82,60:524.33,48:645.83,36:850.85,24:1251.46,18:1658.94,12:2473.95'], ['PCX ABS', 'Street', 'C', '80:410.87,60:532.17,48:655.49,36:863.56,24:1270.17'], ['NXR160 BROS CBS', 'Adventure', 'C', '80:447.90,60:580.12,48:714.55,36:941.38,24:1384.62'], ['NXR160 BROS ABS', 'Adventure', 'C', '80:469.53,60:608.14,48:749.07,36:986.85,24:1451.51'], ['CRF 300F', 'Off Road', 'S', '80:439.74,60:569.56,48:701.54,36:924.24,24:1359.41'], ['XRE 190', 'Adventure', 'C', '80:469.31,60:607.86,48:748.72,36:986.40,24:1450.83'], ['HONDA ADV', 'Adventure', 'C', '80:504.99,60:654.08,48:805.64,36:1061.39,24:1561.13'], ['CB300F TWISTER ABS', 'Street', 'C', '80:512.68,60:664.03,48:817.90,36:1077.53,24:1584.88'], ['XR 300L TORNADO', 'Adventure', 'C', '80:602.02,60:779.75,48:960.44,36:1265.32,24:1861.08'], ['SAHARA 300', 'Adventure', 'C', '80:618.12,60:800.59,48:986.11,36:1299.14,24:1910.83'], ['SAHARA 300 ADV', 'Adventure', 'C', '80:638.80,60:827.38,48:1019.11,36:1342.61,24:1974.77'], ['CB 500 HORNET', 'Street', 'S', '72:779.89'], ['NX 500', 'Adventure', 'S', '72:829.67'], ['CB1000 HORNET ABS (70% DO VALOR)', 'Street', 'S', '72:955.38'], ['CB 750 HORNET', 'Street', 'S', '72:961.23'], ['TRX 420FM (4X4)', 'Off Road', 'S', '72:998.13'], ['NC 750X ABS MT', 'Adventure', 'S', '72:1014.82'], ['CB 650R E-CLUTCH', 'Street', 'S', '72:1065.03'], ['CRF 1100L AFRICA TWIN MT (70% DO VALOR)', 'Adventure', 'S', '72:1067.64'], ['XL 750 TRANSALP', 'Big Trail', 'S', '72:1171.81'], ['M&M ESSENCIAL', 'Motores e Máquinas', 'S', '18:126.04'], ['M&M ESSENCIAL+', 'Motores e Máquinas', 'S', '18:163.51'], ['M&M AVANÇADO', 'Motores e Máquinas', 'S', '18:204.39'], ['M&M AVANÇADO+', 'Motores e Máquinas', 'S', '18:245.27']];
+const pl=t=>t.split(',').map(x=>{const[p,v]=x.split(':');return{parcelas:+p,valor:+v}}),emp=c=>c[2]==='C'?'Com emplacamento':'Sem emplacamento';
+function pMotos(){
+  const tem=new Set(M.map(m=>(m.nome||'').trim().toUpperCase())),falta=CAT.filter(c=>!tem.has(c[0])),sem=M.filter(m=>CAT.some(c=>c[0]===(m.nome||'').trim().toUpperCase())&&!(m.planos||[]).length);
+  $('#pn').innerHTML=`<button class="btn red" onclick="edit()">+ Nova moto</button>`+M.map(m=>`<div class="it">${img0(m)?`<img src="${esc(img0(m))}">`:'<div style="width:70px"></div>'}<div class="g"><b>${esc(m.nome)}</b><br><small>${esc(m.modelo||'')} ${m.ativo?'':'(oculta no site)'}</small></div>
+  <button onclick="tog('${m.id}')">${m.ativo?'Ocultar':'Publicar'}</button><button onclick="edit('${m.id}')">Editar</button><button onclick="del('${m.id}')">Excluir</button></div>`).join('')+
+  (sem.length?`<button class="btn or" onclick="aplicarPlanos()">Aplicar planos de consórcio do catálogo (${sem.length} motos sem plano)</button>`:'')+
+  (falta.length?`<h3 style="margin-top:26px">Catálogo Honda pronto (${falta.length} motos)</h3><p class="mu" style="font-size:13px">Toque em "+ Adicionar": a moto entra no seu cadastro com nome e categoria, oculta no site até você completar e tocar em Publicar.</p>
+  <button class="btn" onclick="addAll()">Adicionar todas (${falta.length})</button>`+falta.map(c=>`<div class="it"><div class="g"><b>${esc(c[0])}</b><br><small>${esc(c[1])}</small></div><button onclick="addCat(${CAT.indexOf(c)})">+ Adicionar</button></div>`).join(''):'');
+}
+async function addCat(i){const c=CAT[i];
+  const{data,error}=await sb.from('motos').insert({nome:c[0],categoria:c[1],emplacamento:emp(c),planos:pl(c[3]),ativo:false,ordem:M.length}).select().single();
+  if(error)return toast('Erro: '+error.message);M.push(data);edit(data.id)}
+async function addAll(){
+  const tem=new Set(M.map(m=>(m.nome||'').trim().toUpperCase())),rows=CAT.filter(c=>!tem.has(c[0])).map((c,k)=>({nome:c[0],categoria:c[1],emplacamento:emp(c),planos:pl(c[3]),ativo:false,ordem:M.length+k}));
+  const{data,error}=await sb.from('motos').insert(rows).select();
+  if(error)return toast('Erro: '+error.message);M.push(...data);toast(data.length+' motos adicionadas!');pMotos()}
+async function aplicarPlanos(){let n=0;
+  for(const m of M){const c=CAT.find(x=>x[0]===(m.nome||'').trim().toUpperCase());if(!c||(m.planos||[]).length)continue;
+    const d={planos:pl(c[3]),emplacamento:emp(c)};const{error}=await sb.from('motos').update(d).eq('id',m.id);if(error)return toast('Erro: '+error.message);Object.assign(m,d);n++}
+  toast(n+' motos atualizadas!');pMotos()}
+async function tog(id){const m=M.find(x=>x.id===id);m.ativo=!m.ativo;await sb.from('motos').update({ativo:m.ativo}).eq('id',id);pMotos()}
+function edit(id){
+  E=id?JSON.parse(JSON.stringify(M.find(m=>m.id===id))):{nome:'',modelo:'',categoria:'Street',descricao:'',fotos:[],video_url:'',planos:[],ordem:M.length,ativo:true};
+  fm();
+}
+function fm(){
+  const f=(k,l,ph)=>`<label class="l">${l}</label><input value="${esc(E[k])}" placeholder="${ph||''}" oninput="E.${k}=this.value">`;
+  $('#pn').innerHTML=`<button class="sm" onclick="adm('motos')">← Voltar</button>${f('nome','Nome da moto','Ex: CB300F TWISTER ABS')}${f('modelo','Versão (ex: ABS, ES, CBS)')}
+  <label class="l">Categoria</label><select onchange="E.categoria=this.value">${['Street','Adventure','Off Road','Big Trail','Scooter','Esportiva','Motores e Máquinas'].map(c=>`<option ${E.categoria===c?'selected':''}>${c}</option>`).join('')}</select>
+  <label class="l">Ficha técnica: clique em pesquisar, copie do Google e cole aqui (uma linha por item, ex: Cilindrada: 109,5 cc)</label>
+  <textarea oninput="E.descricao=this.value">${esc(E.descricao)}</textarea>
+  <button class="sm" style="margin-top:8px" onclick="window.open('https://www.google.com/search?q='+encodeURIComponent((E.nome+' '+(E.modelo||'')+' ficha técnica descrição Honda').trim()))">🔎 Pesquisar essa moto no Google</button>
+  <label class="l">Fotos (a primeira é a capa; toque numa foto para torná-la capa, × remove)</label><input type="file" accept="image/*" multiple onchange="upF(this)">
+  <div class="ph">${E.fotos.map((u,i)=>`<div><img src="${esc(u)}" onclick="E.fotos.unshift(E.fotos.splice(${i},1)[0]);fm()"><i onclick="E.fotos.splice(${i},1);fm()">×</i></div>`).join('')}</div>
+  <label class="l">Vídeo: link do YouTube ou envie o arquivo</label><input value="${esc(E.video_url)}" placeholder="https://youtube.com/watch?v=..." oninput="E.video_url=this.value">
+  <input type="file" accept="video/*" onchange="upVid(this)">
+  <label class="l">Planos de consórcio (parcelas e valor)</label><select onchange="E.emplacamento=this.value">${['Com emplacamento','Sem emplacamento'].map(o=>`<option ${(E.emplacamento||'Com emplacamento')===o?'selected':''}>${o}</option>`).join('')}</select>
+  ${E.planos.map((p,i)=>`<div class="pr"><input type="number" value="${p.parcelas}" placeholder="Parcelas" oninput="E.planos[${i}].parcelas=+this.value"><input type="number" step="0.01" value="${p.valor}" placeholder="Valor R$" oninput="E.planos[${i}].valor=+this.value"><button class="sm" onclick="E.planos.splice(${i},1);fm()">×</button></div>`).join('')}
+  <button class="sm" style="margin-top:8px" onclick="E.planos.push({parcelas:80,valor:0});fm()">+ Adicionar plano</button>
+  <label class="l"><input type="checkbox" style="width:auto" ${E.ativo?'checked':''} onchange="E.ativo=this.checked"> Mostrar no site</label>
+  <button class="btn red" onclick="saveM()">Salvar moto</button>`;
+}
+async function upF(el){try{toast('Enviando fotos...');for(const f of el.files)E.fotos.push(await up(f));fm()}catch(e){toast('Erro: '+e.message)}}
+async function upVid(el){try{toast('Enviando vídeo...');E.video_url=await up(el.files[0]);fm();toast('Vídeo enviado')}catch(e){toast('Erro: '+e.message)}}
+async function saveM(){
+  if(!E.nome.trim())return toast('Informe o nome da moto');
+  const{error}=await sb.from('motos').upsert(E);if(error)return toast('Erro: '+error.message);
+  toast('Moto salva!');await init();adm('motos');
+}
+async function del(id){if(!confirm('Excluir esta moto?'))return;await sb.from('motos').delete().eq('id',id);await init();adm('motos')}
+async function pLeads(){
+  const{data}=await sb.from('leads').select().order('created_at',{ascending:false}).limit(100);
+  $('#pn').innerHTML=(data||[]).map(l=>`<div class="it"><div class="g"><b>${esc(l.nome||'Cliente')}</b> · ${esc(l.tipo)}<br><small>${esc(l.moto_nome||'')} · ${new Date(l.created_at).toLocaleString('pt-BR')}</small>
+  <br><small>${esc(l.telefone||'')} ${esc(l.cpf?'CPF '+l.cpf:'')} ${esc(l.entrada?'Entrada '+l.entrada:'')}</small><br><small style="white-space:pre-line">${esc(l.detalhes||'')}</small></div><button onclick="delL('${l.id}')">Excluir</button></div>`).join('')||'<p class="mu">Nenhum contato ainda.</p>';
+}
+async function delL(id){await sb.from('leads').delete().eq('id',id);pLeads()}
+const minP=m=>(m.planos||[]).filter(p=>p.valor>0).sort((a,b)=>a.valor-b.valor)[0];
+function lista(an){
+  const q=Q.toLowerCase();
+  L=A.filter(m=>(C==='Todas'||m.categoria===C)&&((m.nome||'')+' '+(m.modelo||'')+' '+(m.categoria||'')).toLowerCase().includes(q));
+  L=[...L.filter(m=>!soCon(m)),...L.filter(soCon)];
+  const fm=L.findIndex(soCon),dv=fm>0;
+  const g=$('#ls');g.className='grid'+(an?' an':'');
+  g.innerHTML=L.map((m,i)=>{const p=minP(m),sc=soCon(m),vw=sc?'con':'det';return `${dv&&i===fm?'<div class="dvs" role="separator"><span>Motores e Máquinas</span></div>':''}<article class="cd" style="--i:${Math.min(i,11)}">${m.selo?`<span class="selo">${esc(m.selo)}</span>`:''}
+   <div class="im${sc?' mm':''}" onclick="openM(${i},'${vw}')">${img0(m)?`<img src="${esc(img0(m))}" alt="${esc(m.nome)}" ${i<2?'fetchpriority="high"':'loading="lazy"'} decoding="async" onload="this.classList.add('ok')" onerror="this.style.visibility='hidden'">`:'<span class="nof">Foto em breve</span>'}</div>
+   <div class="cb"><small>${esc(m.categoria)}</small><h3>${esc(m.nome)}</h3>
+   <p class="par">${p?`Consórcio a partir de<b>${p.parcelas}x ${brl(p.valor)}</b>`:'Consulte as condições'}</p>
+   ${sc?`<button class="btn red" onclick="openM(${i},'con')">Planos de consórcio</button>`:`<button class="btn red" onclick="openM(${i},'det')">Detalhes da moto</button>
+   <div class="two"><button class="btn" onclick="openM(${i},'con')">Consórcio</button><button class="btn" onclick="openM(${i},'fin')">Financiamento</button></div>`}</div></article>`}).join('')
+   ||`<div class="empty"><b>Nenhuma moto encontrada</b>Tente outro nome ou escolha outra categoria.<br><button class="btn red" onclick="Q='';C='Todas';home()">Ver todas as motos</button></div>`;
+  const n=$('#nc');if(n)n.textContent=L.length+(L.length===1?' moto':' motos');
+}
+if(matchMedia('(hover:hover)').matches){
+  document.addEventListener('mousemove',e=>{const c=e.target.closest&&e.target.closest('.cd');if(!c)return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty('--rx',((y-.5)*-8).toFixed(1)+'deg');c.style.setProperty('--ry',((x-.5)*10).toFixed(1)+'deg');c.style.setProperty('--mx',(x*100)+'%');c.style.setProperty('--my',(y*100)+'%')});
+  document.addEventListener('mouseout',e=>{const c=e.target.closest&&e.target.closest('.cd');if(c&&!c.contains(e.relatedTarget)){c.style.removeProperty('--rx');c.style.removeProperty('--ry')}});
+}
+function msk(e,t){let v=e.value.replace(/\D/g,'');
+  if(t==='cpf')v=v.slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  if(t==='tel')v=v.slice(0,11).replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d{1,4})$/,'$1-$2');
+  if(t==='dt')v=v.slice(0,8).replace(/(\d{2})(\d)/,'$1/$2').replace(/(\d{2})(\d)/,'$1/$2');
+  if(t==='rs')v=v?brl(v/100):'';
+  e.value=v}
+function gShow(k){const f=L[cur].fotos||[];G=k;$('#gmain').innerHTML=`<img id="gm" src="${esc(f[k]||'')}" onclick="zoom()">`;bindSwipe()}
+function gal(d){const f=L[cur].fotos||[];if(f.length)gShow((G+d+f.length)%f.length)}
+function gVid(){$('#gmain').innerHTML=vid(L[cur].video_url)}
+function bindSwipe(){const g=$('#gm');if(!g)return;let x0=0;g.ontouchstart=e=>x0=e.touches[0].clientX;g.ontouchend=e=>{const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>40)gal(d<0?1:-1)}}
+const howT=()=>{const e=$('#hw');e.style.display=e.style.display==='none'?'block':'none'};
+function fmtDesc(t){return esc(t).split('\n').map(l=>{const x=l.trim();if(!x)return'<div style="height:8px"></div>';
+  if(x.length>8&&x===x.toUpperCase()&&/[A-ZÀ-Ú]{3}/.test(x))return`<div class="hl">${x}</div>`;
+  const m=/^([^:]{2,40}):(.*)$/.exec(x);return m?`<div><b>${m[1]}:</b>${m[2]}</div>`:`<div>${x}</div>`}).join('')}
+function priv(){const d=document.createElement('div');d.className='lb';d.innerHTML=`<div style="background:#fff;border-radius:16px;padding:22px;max-width:420px;margin:16px;line-height:1.5;font-size:14px"><b>Política de Privacidade</b><p>Os dados informados neste formulário (nome, telefone, CPF, data de nascimento e valor de entrada) são usados somente para a cotação do seu financiamento e para o contato do vendedor. Você pode pedir a exclusão dos seus dados ao vendedor a qualquer momento.</p><button class="btn red" onclick="this.closest('.lb').remove()">Entendi</button></div>`;d.onclick=e=>{if(e.target===d)d.remove()};document.body.appendChild(d)}
+function zoom(){const u=(L[cur].fotos||[])[G];if(!u)return;const d=document.createElement('div');d.className='lb';d.innerHTML=`<img src="${esc(u)}">`;d.onclick=()=>d.remove();document.body.appendChild(d)}
+function shareM(){const m=L[cur],u=location.origin+location.pathname+'#moto='+m.id;
+  if(navigator.share)navigator.share({title:m.nome,text:m.nome+' - '+V.nome,url:u}).catch(()=>{});
+  else navigator.clipboard.writeText(u).then(()=>toast('Link copiado!'))}
+addEventListener('popstate',()=>{document.querySelectorAll('.lb').forEach(x=>x.remove());$('#modal').style.display='none'});
+addEventListener('keydown',e=>{if(e.key==='Escape'){const l=document.querySelectorAll('.lb');l.length?l[l.length-1].remove():closeM()}});
+/* fechar tocando fora + foto do vendedor ampliada */
+function fotoV(){if(!V.foto_url||document.querySelector('.lb.fv'))return;const d=document.createElement('div');d.className='lb fv';d.setAttribute('role','dialog');d.setAttribute('aria-label','Foto do vendedor');
+  d.innerHTML=`<img src="${esc(V.foto_url)}" alt="${esc(V.nome)}">`;d.onclick=()=>d.remove();document.body.appendChild(d)}
+(()=>{const mo=$('#modal');let dn=null;
+  mo.addEventListener('pointerdown',e=>{dn=e.target});
+  mo.addEventListener('click',e=>{if(e.target===mo&&dn===mo)closeM()});
+  document.addEventListener('click',e=>{const f=e.target.closest&&e.target.closest('img[data-foto]');if(f&&!f.closest('.bubble')){e.preventDefault();fotoV()}});
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('img[data-foto]')&&!e.target.closest('.bubble'))fotoV()})})();
+(()=>{let y=0,t=0;addEventListener('scroll',()=>{if(t)return;t=requestAnimationFrame(()=>{t=0;const b=document.querySelector('.bar');if(!b)return;const c=scrollY,d=c-y;
+  if(innerWidth<720){if(d>8&&c>420)b.classList.add('hd');else if(d<-8||c<200)b.classList.remove('hd')}else b.classList.remove('hd');if(Math.abs(d)>8)y=c})},{passive:true})})();
+/* ===== VENDEDOR VIRTUAL: chat guiado (sem IA, só programação) ===== */
 (()=>{
- const h=document.getElementById('hdr'),row=document.getElementById('hrow'),lg=row&&row.querySelector('.logo');
- if(!h||!row||!lg)return;
- const mq=matchMedia('(max-width:767px)'),R=document.documentElement,tb=document.getElementById('top'),home=document.getElementById('home'),
-  q=document.getElementById('q'),thm=document.getElementById('thm'),thb=document.getElementById('thb'),sug=document.getElementById('sug');
- let st=0,lastY=scrollY,acc=0,lock=0,tm=0,tk=0,hl=75,hm=130,hd='';   // st: 0 = completo, 1 = sem categorias, 2 = só a logo
- const measure=()=>{
-  if(!mq.matches){['--hl','--hm','--hd'].forEach(v=>R.style.removeProperty(v));hd='';return}
-  const hr=h.getBoundingClientRect(),lr=lg.getBoundingClientRect(),rr=row.getBoundingClientRect();
-  hl=Math.round(lr.bottom-hr.top+(parseFloat(getComputedStyle(row).paddingBottom)||0));
-  hm=Math.round(rr.bottom-hr.top);
-  const nd=Math.max(0,Math.round(hr.height-hl))+'px';
-  R.style.setProperty('--hl',hl+'px');R.style.setProperty('--hm',hm+'px');
-  if(nd!==hd){hd=nd;R.style.setProperty('--hd',nd);dispatchEvent(new Event('resize'))}
- };
- const go=n=>{
-  if(st===n)return;
-  clearTimeout(tm);
-  if(n===0){st=0;h.classList.remove('mini','mid');tm=setTimeout(()=>{if(!st)h.classList.remove('clip')},500)}
-  else{
-   if(!st){h.classList.add('clip');void h.offsetWidth}
-   st=n;h.classList.toggle('mini',n===2);h.classList.toggle('mid',n===1);
-  }
-  lock=Date.now()+350;
- };
- const busy=()=>document.activeElement===q||(thm&&!thm.classList.contains('hidden'))||(sug&&!sug.classList.contains('hidden'));
- const limit=()=>home&&home.offsetHeight>0?40:(tb?tb.offsetHeight:0)+h.offsetHeight-hl;
- const tick=()=>{
-  tk=0;if(!mq.matches)return;
-  const y=Math.max(0,scrollY),dy=y-lastY;lastY=y;
-  if(Date.now()<lock)return;
-  if(y<=8){acc=0;go(0);return}          // topo da página: mostra tudo, inclusive as categorias
-  if(!dy||busy())return;                 // busca/menu aberto: não mexe no cabeçalho
-  acc=(dy>0)===(acc>0)?acc+dy:dy;
-  if(acc>12&&y>limit()){go(2);acc=0}     // descendo: recolhe tudo
-  else if(acc<-10){go(1);acc=0}          // subindo fora do topo: volta tudo, menos as categorias
- };
- // tocar na busca ou no menu de tema com o cabeçalho sem categorias: mostra o completo (evita cortar menu/sugestões)
- const open=()=>{if(st===1&&busy())go(0)};
- if(q)q.addEventListener('focus',open);
- if(thb)thb.addEventListener('click',()=>setTimeout(open,0));
- addEventListener('scroll',()=>{if(!tk)tk=requestAnimationFrame(tick)},{passive:true});
- const onMq=()=>{st=0;clearTimeout(tm);h.classList.remove('mini','mid','clip');measure()};
- mq.addEventListener?mq.addEventListener('change',onMq):mq.addListener(onMq);
- addEventListener('resize',measure);addEventListener('load',measure);
- if('ResizeObserver' in window)new ResizeObserver(measure).observe(h);
- if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measure);
- measure();
+const EMP='STAR MOTOS'; /* nome da loja na mensagem de boas-vindas */
+const CH={ans:{},hist:[],tk:0,busy:false,saved:false,part:false,started:false,step:null,opts:[]};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const dg=s=>String(s||'').replace(/\D/g,'');
+const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+const cap=s=>s.trim().replace(/\s+/g,' ').toLowerCase().replace(/(^|\s)(\S)/g,(m,a,b)=>a+b.toUpperCase()).replace(/ (Da|De|Do|Das|Dos|E) /g,x=>x.toLowerCase());
+const fTel=d=>d.length<3?d:`(${d.slice(0,2)}) ${d.slice(2,d.length>10?7:6)}${d.length>(d.length>10?7:6)?'-'+d.slice(d.length>10?7:6):''}`;
+const fCpf=d=>d.slice(0,3)+(d.length>3?'.'+d.slice(3,6):'')+(d.length>6?'.'+d.slice(6,9):'')+(d.length>9?'-'+d.slice(9,11):'');
+const fNas=d=>d.slice(0,2)+(d.length>2?'/'+d.slice(2,4):'')+(d.length>4?'/'+d.slice(4,8):'');
+function okCpf(c){if(c.length!==11||/^(\d)\1+$/.test(c))return false;for(const n of[9,10]){let s=0;for(let i=0;i<n;i++)s+=c[i]*(n+1-i);if((s*10%11)%10!=c[n])return false}return true}
+function money(v){let s=norm(v),m=/(\d[\d.,]*)/.exec(s);if(!m)return 0;let n=parseFloat(m[1].replace(/\./g,'').replace(',','.'));if(isNaN(n))return 0;if(/\bmil\b/.test(s)&&n<1000)n*=1000;return n}
+function opt(v,o){const n=norm(v);let i=o.findIndex(x=>norm(x)===n);if(i>=0)return i;return o.findIndex(x=>{const a=norm(x);return(n.length>=3&&a.includes(n))||(a.split(' ')[0].length>=4&&n.includes(a.split(' ')[0]))})}
+const motos=()=>(typeof M!=='undefined'?M:[]).filter(m=>m.ativo&&!soCon(m));
+const moto=()=>(typeof M!=='undefined'?M:[]).find(m=>m.id===CH.ans.motoId);
+function achar(v){const n=norm(v),l=motos();let r=l.filter(m=>norm(m.nome)===n);if(r.length)return r;r=l.filter(m=>norm(m.nome).includes(n)||n.includes(norm(m.nome)));if(r.length)return r;const t=n.split(/\s+/).filter(x=>x.length>1);return t.length?l.filter(m=>t.every(x=>norm(m.nome).includes(x))):[]}
+const pn=()=>CH.ans.primeiro||'';
+const nasc=v=>{const d=dg(v);if(d.length!==8)return{err:'Digite a data no formato DD/MM/AAAA, por exemplo 09/10/1998.'};const dd=+d.slice(0,2),mo=+d.slice(2,4),y=+d.slice(4);const t=new Date(y,mo-1,dd);if(t.getMonth()!==mo-1||t.getDate()!==dd||y<1920||t>new Date())return{err:'Essa data não parece válida. Confere e digita de novo (DD/MM/AAAA).'};const h=new Date();let a=h.getFullYear()-y;if(h<new Date(h.getFullYear(),mo-1,dd))a--;if(a<18)return{err:'Para essa modalidade é preciso ter 18 anos ou mais.'};return{show:fNas(d),set:{nasc:`${d.slice(0,2)}/${d.slice(2,4)}/${y}`}}};
+
+const ST={
+nome:{q:()=>'Qual o seu nome?',ph:'Digite seu nome',run(v){const n=cap(v);if(n.length<2||/\d/.test(n))return{err:'Digite seu nome, por favor 🙂'};return{show:n,set:{nome:n,primeiro:n.split(' ')[0]},next:'tel'}}},
+tel:{q:()=>'Qual seu WhatsApp com DDD?',ph:'(00) 00000-0000',mode:'tel',mask:'tel',run(v){let d=dg(v);if(d.length>11&&d.startsWith('55'))d=d.slice(2);if(d.length<10||d.length>11||(d.length===11&&d[2]!=='9'))return{err:'Esse número não parece válido. Digite com DDD, por exemplo (69) 98467-9744.'};return{show:fTel(d),set:{tel:'55'+d},next:'moto'}}},
+moto:{q:a=>a.cand?'Encontrei mais de uma. Qual delas?':`${pn()}, qual moto Honda do seu interesse?`,ph:'Digite ou toque na moto',opts:a=>(a.cand?a.cand:motos().map(m=>m.nome)).slice(0,40),run(v){if(norm(v).length<2)return{err:'Me diga qual moto você quer 🙂'};const r=achar(v);
+ if(r.length>1&&r.length<=10)return{say:()=>[],next:'moto',_c:r};
+ if(r.length===1||r.length>10&&0){const m=r[0],p=(m.planos||[]).map(x=>x.valor).filter(x=>x>0),mn=p.length?Math.min(...p):0;return{show:m.nome,set:{moto:m.nome,motoId:m.id,cand:null},say:()=>[img0(m)?{img:img0(m)}:null,`Boa escolha, ${pn()}! A ${m.nome} é uma ótima opção.`,mn?`O consórcio dela começa em ${brl(mn)} por mês.`:null].filter(Boolean),next:'pag'}}
+ return{set:{moto:cap(v),motoId:null,cand:null},say:()=>['Anotado! O vendedor confirma a disponibilidade pra você.'],next:'pag'}}},
+pag:{q:()=>'Qual modalidade de pagamento você prefere?',opts:()=>['Consórcio','Financiamento','À vista','Cartão de crédito'],run(v){const i=opt(v,['Consórcio','Financiamento','À vista','Cartão de crédito']);if(i<0)return{err:'Toque em uma das opções abaixo 👇'};return{show:['Consórcio','Financiamento','À vista','Cartão de crédito'][i],set:{pag:['consorcio','financiamento','avista','cartao'][i]},say:()=>[`Certo, ${pn()}!`],next:['con_plano','fin_tem','av_forma','cc_parc'][i]}}},
+fin_tem:{q:()=>'Você tem entrada para o financiamento?',opts:()=>['Sim','Não'],run(v){const n=money(v);if(/\d/.test(v)&&n>0)return{show:v,set:{entrada:brl(n)},say:()=>['Anotado!'],next:'nomec'};const i=opt(v,['Sim','Não']);if(i<0)return{err:'Toque em Sim ou Não 👇'};return i===0?{show:'Sim',next:'fin_val'}:{show:'Não',set:{entrada:'Sem entrada'},say:()=>['Tudo bem, dá pra tentar o financiamento mesmo sem entrada. Vamos fazer uma pré-análise e o resultado final é passado pelo vendedor.'],next:'nomec'}}},
+fin_val:{q:()=>'Qual o valor da entrada?',ph:'Ex.: 3000',mode:'decimal',run(v){const n=money(v);if(n<=0)return{err:'Digite só o valor, por exemplo 3000.'};return{show:brl(n),set:{entrada:brl(n)},say:()=>['Anotado!'],next:'nomec'}}},
+con_plano:{q:()=>moto()&&(moto().planos||[]).length?'Qual parcela do consórcio cabe melhor no seu bolso?':'Qual valor de parcela por mês cabe no seu bolso?',ph:'Ex.: 500',mode:'decimal',opts:()=>{const p=moto()?(moto().planos||[]):[];return p.length?[...p.map(x=>`${x.parcelas}x de ${brl(x.valor)}`),'Outro valor']:[]},run(v){const o=CH.opts,i=o.length?opt(v,o):-1;if(i>=0&&o[i]!=='Outro valor')return{show:o[i],set:{parcela:o[i]},next:'nomec'};if(i>=0)return{show:v,next:'con_outro'};const n=money(v);if(n<=0)return{err:'Toque em uma opção ou digite o valor da parcela 👇'};return{show:brl(n),set:{parcela:brl(n)+' por mês'},next:'nomec'}}},
+con_outro:{q:()=>'Digite o valor da parcela mensal que você prefere:',ph:'Ex.: 450',mode:'decimal',run(v){const n=money(v);if(n<=0)return{err:'Digite só o valor, por exemplo 450.'};return{show:brl(n),set:{parcela:brl(n)+' por mês'},next:'nomec'}}},
+av_forma:{q:()=>'Como pretende pagar?',opts:()=>['Pix','Dinheiro','Transferência'],run(v){const o=['Pix','Dinheiro','Transferência'],i=opt(v,o);if(i<0)return{err:'Toque em uma das opções abaixo 👇'};return{show:o[i],set:{forma:o[i]},next:'av_troca'}}},
+av_troca:{q:()=>'Tem moto para dar na troca?',opts:()=>['Sim','Não'],run(v){const i=opt(v,['Sim','Não']);if(i<0)return{err:'Toque em Sim ou Não 👇'};return i===0?{show:'Sim',next:'troca'}:{show:'Não',set:{troca:'Não'},next:'fim'}}},
+troca:{q:()=>'Qual moto e de que ano ela é?',ph:'Ex.: CG 160 2020',run(v){if(norm(v).length<2)return{err:'Me diga qual moto é 🙂'};return{show:v,set:{troca:v.trim()},next:'fim'}}},
+cc_parc:{q:()=>'Em quantas vezes você pretende parcelar?',opts:()=>['1x','Até 6x','Até 12x','Mais de 12x'],run(v){const o=['1x','Até 6x','Até 12x','Mais de 12x'],i=opt(v,o);if(i<0)return{err:'Toque em uma das opções abaixo 👇'};return{show:o[i],set:{cartao:o[i]},next:'fim'}}},
+nomec:{q:()=>'Qual é o seu nome completo?',ph:'Nome e sobrenome',run(v){const n=cap(v);if(n.split(' ').length<2||/\d/.test(n))return{err:'Preciso do nome completo (nome e sobrenome).'};return{show:n,set:{nomec:n},next:'cpf'}}},
+cpf:{q:()=>'Agora me informe seu CPF, somente os números.',ph:'000.000.000-00',mode:'numeric',mask:'cpf',run(v){const d=dg(v);if(!okCpf(d))return{err:'Esse CPF não parece válido. Confere e digita de novo, só os números.'};return{show:fCpf(d),set:{cpf:d},next:'nasc'}}},
+nasc:{q:()=>'Qual é a sua data de nascimento, no formato DD/MM/AAAA?',ph:'DD/MM/AAAA',mode:'numeric',mask:'nas',run(v){const r=nasc(v);if(r.err)return r;r.next=CH.ans.pag==='financiamento'?'hab':'fim';return r}},
+hab:{q:()=>'Você já tem CNH (habilitação)?',opts:()=>['Tenho CNH','Estou tirando','Ainda não tenho'],run(v){const o=['Tenho CNH','Estou tirando','Ainda não tenho'],i=opt(v,o);if(i<0)return{err:'Toque em uma das opções abaixo 👇'};return{show:o[i],set:{hab:o[i]},next:'fim'}}}
+};
+
+const $c=s=>document.getElementById(s);
+const avH=()=>V.foto_url?`<img class="cha" src="${esc(V.foto_url)}" alt="">`:`<div class="cha">${esc((V.nome||'?')[0])}</div>`;
+const bot=()=>$c('chl').scrollTo({top:1e6,behavior:'smooth'});
+function addB(it){const l=$c('chl'),d=document.createElement('div');d.className='chm';let h;
+ if(typeof it==='string')h=`<div>${esc(it)}</div>`;else if(it.html)h=`<div>${it.html}</div>`;else if(it.img)h=`<div class="im"><img src="${esc(it.img)}" alt="" onload="document.getElementById('chl').scrollTo({top:1e6})" onerror="this.closest('.chm').remove()"></div>`;else if(it.wa)h=`<div class="wb"><a class="chw" target="_blank" rel="noopener" href="${esc(wa(it.wa))}">${IC.wa}Clique aqui e fale comigo no WhatsApp</a></div>`;else if(it.err){d.className='chm e';h=`<div>${esc(it.err)}</div>`}
+ d.innerHTML=avH()+h;l.appendChild(d);bot()}
+function addU(t){const d=document.createElement('div');d.className='chm u';d.innerHTML=`<div>${esc(t)}</div>`;$c('chl').appendChild(d);bot()}
+async function say(items){const tk=CH.tk;CH.busy=true;chBk();for(const it of items){const l=$c('chl'),t=document.createElement('div');t.className='chm chty';t.innerHTML=avH()+'<div><span></span><span></span><span></span></div>';l.appendChild(t);bot();const len=typeof it==='string'?it.length:30;await sleep(400+Math.min(len*12,800));t.remove();if(tk!==CH.tk)return false;addB(it)}CH.busy=false;chBk();return true}
+function lock(b,f){$c('chi').disabled=b;$c('chf').querySelector('button').disabled=b;if(!b&&f&&innerWidth>720)$c('chi').focus()}
+function chBk(){const b=$c('chbk');if(b)b.disabled=CH.busy||CH.hist.length<2||CH.step==='fim'}
+function opts(o){CH.opts=o;$c('chq').innerHTML=o.map((x,i)=>`<button type="button" data-i="${i}" style="animation-delay:${Math.min(i,10)*40}ms">${esc(x)}</button>`).join('')}
+async function ask(id){const s=ST[id];CH.step=id;CH.hist.push({id,ans:{...CH.ans},n:$c('chl').children.length});opts([]);lock(true);chBk();const q=s.q(CH.ans);if(await say([q])===false)return;const o=s.opts?s.opts(CH.ans):[];opts(o);const i=$c('chi');i.value='';i.placeholder=s.ph||'Digite aqui';i.inputMode=s.mode||'text';lock(false,!o.length)}
+async function submit(v){v=String(v||'').trim();if(!v||CH.busy||!ST[CH.step])return;const s=ST[CH.step],r=s.run(v);
+ if(r.err){addU(v);$c('chi').value='';addB({err:r.err});return}
+ addU(r.show||v);$c('chi').value='';opts([]);lock(true);
+ Object.assign(CH.ans,r.set||{});if(r._c)CH.ans.cand=r._c.map(m=>m.nome);
+ const items=r.say?r.say(CH.ans):[];if(items.length&&await say(items)===false)return;
+ const n=typeof r.next==='function'?r.next(CH.ans):r.next;n==='fim'?fim():ask(n)}
+const T={financiamento:'FINANCIAMENTO',consorcio:'CONSÓRCIO',avista:'COMPRA À VISTA',cartao:'COMPRA NO CARTÃO DE CRÉDITO'};
+function resumo(){const a=CH.ans,l=[];a.moto&&l.push('Moto: '+a.moto);a.pag&&l.push('Pagamento: '+T[a.pag]);a.entrada&&l.push('Entrada: '+a.entrada);a.parcela&&l.push('Parcela desejada: '+a.parcela);a.forma&&l.push('Forma: '+a.forma);a.troca&&l.push('Troca: '+a.troca);a.cartao&&l.push('Cartão: '+a.cartao);return l.join('\n')}
+function msg(){const a=CH.ans,nd=a.pag==='financiamento'||a.pag==='consorcio',l=[`Olá, vim do seu site e quero as condições de ${T[a.pag]} da ${(a.moto||'moto').toUpperCase()} que vi no seu site.`,nd?'Seguem os dados para APROVACAO:':'Seguem meus dados:'];
+ if(a.pag==='financiamento')l.push('Entrada: '+(a.entrada||'Sem entrada'));if(a.pag==='consorcio'&&a.parcela)l.push('Parcela desejada: '+a.parcela);if(a.pag==='avista'){l.push('Forma de pagamento: '+a.forma);l.push('Moto na troca: '+a.troca)}if(a.pag==='cartao')l.push('Parcelamento: '+a.cartao);
+ if(nd){l.push('Data de nascimento: '+a.nasc);l.push('CPF: '+a.cpf)}l.push('Nome: '+(a.nomec||a.nome));l.push('Celular: +'+a.tel);if(a.hab)l.push('Habilitação: '+a.hab);l.push('IA VENDEDOR VIRTUAL');return l.join('\n')}
+async function save(tipo,det){if(!sb)return;const a=CH.ans,row={tipo,moto_id:/^[0-9a-f-]{36}$/i.test(a.motoId||'')?a.motoId:null,moto_nome:a.moto||null,nome:a.nomec||a.nome||null,telefone:a.tel?'+'+a.tel:null,cpf:a.cpf||null,nascimento:a.nasc||null,entrada:a.entrada||null,habilitacao:a.hab||null,detalhes:det};
+ try{const r=await sb.from('leads').insert({...row,pagamento:a.pag||null,origem:'chat'});if(r.error)await sb.from('leads').insert(row)}catch(e){}}
+async function fim(){CH.step='fim';opts([]);lock(true);const a=CH.ans,m=msg(),nd=a.pag==='financiamento'||a.pag==='consorcio';CH.saved=true;save(a.pag,m);
+ if(await say([nd?`Fechado, ${pn()}! Recebi seus dados para a pré-análise. O resultado final é passado pelo vendedor.`:`Fechado, ${pn()}! Já anotei tudo por aqui. O vendedor te passa os valores e as condições.`,'Clique no botão abaixo para continuar com o vendedor pelo WhatsApp.',{wa:m}])===false)return;opts(['Nova conversa']);CH.step='fim';chBk()}
+function partial(){const a=CH.ans;if(CH.saved||CH.part||!a.tel)return;CH.part=true;save('chat_incompleto','Conversa não concluída\n'+resumo())}
+function start(){CH.tk++;CH.ans={};CH.hist=[];CH.saved=false;CH.part=false;CH.step=null;CH.busy=false;CH.started=true;$c('chl').innerHTML='';opts([]);(async()=>{lock(true);if(await say([{html:`Bem-vindo à ${esc(EMP)}! Sou ${esc(V.nome)} e vou te ajudar a escolher sua próxima moto. Ao avançar você concorda com os nossos Termos de Uso.<br><br><a class="ln" href="https://vendedor.site/termos/lgpd" target="_blank" rel="noopener">https://vendedor.site/termos/lgpd</a>`}])===false)return;ask('nome')})()}
+function build(){if($c('ch'))return;document.body.insertAdjacentHTML('beforeend',`<div class="ch" id="ch" role="dialog" aria-label="Chat com o vendedor"><div class="chh"><button class="chb" id="chbk" type="button" aria-label="Voltar uma pergunta" title="Voltar">‹</button>${avH()}<div><b>${esc(V.nome)}</b><small><i></i>Online agora</small></div><button class="chb" id="chrs" type="button" aria-label="Recomeçar" title="Recomeçar">↻</button><button class="chb" id="chx" type="button" aria-label="Fechar">✕</button></div><div class="chl" id="chl" aria-live="polite"></div><div class="chq" id="chq"></div><form class="chf" id="chf" autocomplete="off"><input id="chi" placeholder="Digite aqui" enterkeyhint="send" aria-label="Sua resposta"><button>Enviar</button></form></div>`);
+ $c('chf').onsubmit=e=>{e.preventDefault();submit($c('chi').value)};
+ $c('chq').onclick=e=>{const b=e.target.closest('button');if(!b)return;const v=CH.opts[+b.dataset.i];if(CH.step==='fim'){start();return}submit(v)};
+ $c('chx').onclick=close;$c('chrs').onclick=()=>{partial();start()};
+ $c('chbk').onclick=()=>{if(CH.busy||CH.hist.length<2||CH.step==='fim')return;CH.tk++;CH.hist.pop();const h=CH.hist.pop(),l=$c('chl');while(l.children.length>h.n)l.lastChild.remove();CH.ans={...h.ans};CH.busy=false;ask(h.id)};
+ $c('chi').oninput=function(){const s=ST[CH.step],k=s&&s.mask;if(!k)return;let d=dg(this.value);if(k==='tel'){if(d.length>11&&d.startsWith('55'))d=d.slice(2);this.value=fTel(d.slice(0,11))}else if(k==='cpf')this.value=fCpf(d.slice(0,11));else this.value=fNas(d.slice(0,8))};
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$c('ch').classList.contains('on'))close()});addEventListener('pagehide',partial)}
+function open(e){if(e&&e.preventDefault)e.preventDefault();build();$c('ch').classList.add('on');document.body.classList.add('chopen');if(innerWidth<=720)document.documentElement.style.overflow='hidden';if(!CH.started)start();return false}
+function close(){const c=$c('ch');if(c)c.classList.remove('on');document.body.classList.remove('chopen');document.documentElement.style.overflow='';partial()}
+window.chatOpen=open;window.chatClose=close;
 })();
+
+init();
 </script>
 </body>
 </html>
