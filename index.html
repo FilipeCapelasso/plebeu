@@ -231,7 +231,7 @@ async function enter(){
  if(!ok){await sb.auth.signOut();$('#err').textContent='Esta conta não tem permissão de administrador.';return}
  $('#login').classList.add('hidden');$('#app').classList.remove('hidden');
  [{data:stores},{data:cats}]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position')]);
- stores=stores||[];cats=cats||[];nav();show();
+ stores=stores||[];cats=cats||[];await lockInfo();nav();show();
 }
 $('#go').onclick=async()=>{$('#err').textContent='';
  const{error}=await sb.auth.signInWithPassword({email:$('#aem').value.trim(),password:$('#pw').value});
@@ -257,10 +257,10 @@ async function prod(){
  const q=(id,st)=>(s||[]).find(x=>x.product_id===id&&x.store_id===st)?.qty??0;
  $('#main').innerHTML=`<div class="mb-3 flex gap-2"><input id="f" placeholder="Buscar produto…" class="max-w-xs"><button class="b" onclick="ADM.edit()">+ Novo produto</button></div>`+
  tbl(['','Produto','Preço','Promoção','Estoque',''],(p||[]).map(x=>`<tr data-n="${esc(x.name.toLowerCase())}" class="${x.active?'':'opacity-50'}"><td>${x.image_url?`<img src="${esc(x.image_url)}" class="h-12 w-12 rounded-lg object-contain bg-s2">`:esc(x.emoji||'🎮')}</td>
- <td><b>${esc(x.name)}</b><br><span class="text-xs text-mut">${esc(x.category_slug||'')} · ${x.sold_count} vendidos${x.active?'':' · INATIVO'}</span></td>
+ <td><b>${esc(x.name)}</b><br><span class="text-xs text-mut">${esc(x.category_slug||'')} · ${x.sold_count} vendidos${x.bling_id?' · 🔗 Bling':''}${x.active?'':' · INATIVO'}</span></td>
  <td>${R(x.price)}<br><span class="text-xs text-acc">Pix ${R(pxOf(x))}</span></td>
  <td>${x.old_price?`de ${R(x.old_price)}`:'—'}<br><span class="text-xs text-mut">${x.max_installments}x sem juros</span></td>
- <td>${stores.map(t=>`<label class="mb-1 flex items-center gap-1 text-xs">${esc(t.name)} <input type="number" min="0" value="${q(x.id,t.id)}" class="w-20 !py-1" onchange="ADM.setQty('${x.id}','${t.id}',this.value)"></label>`).join('')}</td>
+ <td>${stores.map(t=>`<label class="mb-1 flex items-center gap-1 text-xs">${esc(t.name)} <input type="number" min="0" value="${q(x.id,t.id)}" class="w-20 !py-1" ${x.bling_id&&LOCK?'disabled title="Estoque controlado pelo Bling"':''} onchange="ADM.setQty('${x.id}','${t.id}',this.value)"></label>`).join('')}</td>
  <td class="whitespace-nowrap"><button class="g rounded-lg px-2 py-1" onclick="ADM.edit('${x.id}')">Editar</button> <button class="g rounded-lg px-2 py-1" onclick="ADM.del('${x.id}')">🗑️</button></td></tr>`).join(''));
  $('#f').oninput=e=>document.querySelectorAll('tr[data-n]').forEach(r=>r.hidden=!r.dataset.n.includes(e.target.value.toLowerCase()));
 }
@@ -280,7 +280,7 @@ async function edit(id){
  <div class="md:col-span-2"><p class="text-xs text-mut">Imagens do produto <span>(a 1ª é a principal; use ← → para reordenar)</span></p><div id="pgl" class="mt-2 flex flex-wrap gap-3"></div><input id="p_file" type="file" accept="image/*" multiple class="mt-2"></div>
  <label class="block text-xs text-mut md:col-span-2">Descrição<textarea id="p_description" rows="3">${esc(p.description||'')}</textarea></label>
  <label class="block text-xs text-mut md:col-span-2">Características (uma por linha)<textarea id="p_features" rows="3">${esc((p.features||[]).join('\n'))}</textarea></label>
- <div class="md:col-span-2"><p class="text-xs text-mut">Estoque por loja</p><div class="flex gap-3">${stores.map(t=>`<label class="text-xs">${esc(t.name)}<input type="number" min="0" data-st="${t.id}" value="${st[t.id]??0}"></label>`).join('')}</div></div>
+ <div class="md:col-span-2"><p class="text-xs text-mut">Estoque por loja${p.bling_id&&LOCK?' — controlado pelo Bling (somente leitura)':''}</p><div class="flex gap-3">${stores.map(t=>`<label class="text-xs">${esc(t.name)}<input type="number" min="0" data-st="${t.id}" value="${st[t.id]??0}" ${p.bling_id&&LOCK?'disabled':''}></label>`).join('')}</div></div>
  <label class="flex items-center gap-2 text-sm"><input id="p_active" type="checkbox" ${p.active?'checked':''}> Ativo (aparece no site)</label>
  <label class="flex items-center gap-2 text-sm"><input id="p_featured" type="checkbox" ${p.featured?'checked':''}> Destaque</label></div>
  <div class="mt-4 flex justify-end gap-2"><button class="g rounded-lg px-4 py-2" onclick="ADM.closeM()">Cancelar</button><button id="sv" class="b" onclick="ADM.saveP('${id||''}')">Salvar</button></div>`;
@@ -319,8 +319,8 @@ async function saveP(id){
  if(!id)row.slug=slug(n)+'-'+Math.random().toString(36).slice(2,6);
  const r=id?await sb.from('products').update(row).eq('id',id).select('id').single():await sb.from('products').insert(row).select('id').single();
  if(r.error){bt.disabled=false;bt.textContent='Salvar';return toast('Erro: '+r.error.message)}
- const rows=[...document.querySelectorAll('[data-st]')].map(x=>({product_id:r.data.id,store_id:x.dataset.st,qty:Math.max(0,+x.value||0)}));
- const e2=(await sb.from('product_stock').upsert(rows)).error;
+ const rows=[...document.querySelectorAll('[data-st]')].filter(x=>!x.disabled).map(x=>({product_id:r.data.id,store_id:x.dataset.st,qty:Math.max(0,+x.value||0)}));
+ const e2=rows.length?(await sb.from('product_stock').upsert(rows)).error:null;
  toast(e2?'Produto salvo, erro no estoque: '+e2.message:'Produto salvo!');closeM();prod();
 }
 
@@ -365,45 +365,61 @@ async function togC(c,v){await sb.from('coupons').update({active:v}).eq('code',c
 async function delC(c){if(confirm('Excluir cupom '+c+'?')){await sb.from('coupons').delete().eq('code',c);cup()}}
 
 /* ---------- bling ---------- */
+let LOCK=false,DEPS=[],OUT='';
+async function lockInfo(){try{const{data}=await sb.from('bling_settings').select('enabled,sync_stock').eq('id',1).maybeSingle();LOCK=!!(data&&data.enabled&&data.sync_stock)}catch(e){LOCK=false}}
 const blCell=x=>`<td class="text-xs">${x.bling_order_id?'✅ #'+esc(x.bling_order_id):x.bling_error?`<span class="text-red-400" title="${esc(x.bling_error)}">⚠️ erro</span><br><button class="g mt-1 rounded px-2 py-0.5" onclick="ADM.reBl(${+x.order_number})">Reenviar</button>`:'—'}</td>`;
-async function blCall(a){const{data,error}=await sb.functions.invoke('bling',{body:{action:a}});if(error||!data||data.ok===false){toast('Bling: '+((data&&data.error)||(error&&error.message)||'sem resposta da função'));return null}return data}
+async function blCall(a,extra){const{data,error}=await sb.functions.invoke('bling',{body:{action:a,...(extra||{})}});if(error||!data||data.ok===false){toast('Bling: '+((data&&data.error)||(error&&error.message)||'sem resposta da função'));return null}return data}
 async function reBl(n){const{error}=await sb.rpc('bling_retry_order',{p_order:n});toast(error?'Erro: '+error.message:`Pedido #${n} reenviado ao Bling`);setTimeout(ped,2500)}
-async function blAct(a,msg){toast(msg);const d=await blCall(a);if(!d)return;
+async function blAct(a,msg,extra){
+ const bt=document.querySelector('#adm [data-act="'+a+'"]');if(bt)bt.disabled=true;toast(msg);
+ const d=await blCall(a,a==='connect'?{return_url:location.origin+location.pathname}:extra);if(bt)bt.disabled=false;if(!d)return;
  if(a==='connect')return void(location.href=d.url);
- toast(a==='import_products'?`Importação: ${d.created} produtos novos (inativos) e ${d.linked} ligados`:a==='test'?'Conexão OK. Exemplo: '+d.amostra:'Concluído');bl()}
+ if(a==='list_depositos'){DEPS=d.depositos||[];toast(DEPS.length+' depósitos encontrados')}
+ else if(a==='probe')OUT=JSON.stringify({produtos:d.produtos,saldos:d.saldos,depositos:d.depositos},null,1).slice(0,6000);
+ else if(a==='import_all')OUT=`Novos: ${d.created} · ligados pelo SKU: ${d.linked} · preços atualizados: ${d.updated} · estoque sincronizado em ${d.stock} produtos.`+(d.partial?'\n⚠ Parou pelo limite de tempo: clique de novo para continuar de onde parou.':'')+(d.sem_deposito?'\n⚠ Nenhum depósito escolhido: faça o passo 3 e sincronize de novo.':'');
+ else toast(a==='test'?'Conexão OK. Exemplo: '+d.amostra:'Concluído');
+ await lockInfo();bl()}
+async function saveCreds(){const id=$('#b_cid').value.trim(),sc=$('#b_csec').value.trim();if(id.length<8||sc.length<8)return toast('Cole o Client ID e o Client Secret completos.');
+ if(await blCall('save_credentials',{client_id:id,client_secret:sc})){toast('Credenciais salvas');bl()}}
+async function saveDeps(){const r=await Promise.all([...document.querySelectorAll('#adm [data-dep]')].map(i=>sb.from('stores').update({bling_deposito_id:i.value===''?null:+i.value}).eq('id',i.dataset.dep)));
+ const e=r.map(x=>x.error).find(Boolean);toast(e?'Erro: '+e.message:'Depósitos salvos');if(!e)bl()}
 async function saveBl(){
  const m=$('#b_mode').value,n=k=>$('#b_'+k).value.trim()===''?null:+$('#b_'+k).value;
- const r=await sb.from('bling_settings').update({enabled:$('#b_enabled').checked,push_orders:$('#b_push_orders').checked,sync_stock:$('#b_sync_stock').checked,
-  bling_reserves_stock:m!=='late',stock_movement:m==='mov',situacao_id:n('situacao_id'),loja_id:n('loja_id'),forma_pagamento_pix:n('forma_pagamento_pix'),forma_pagamento_cartao:n('forma_pagamento_cartao')}).eq('id',1);
- const r2=await Promise.all([...document.querySelectorAll('#adm [data-dep]')].map(i=>sb.from('stores').update({bling_deposito_id:i.value.trim()===''?null:+i.value}).eq('id',i.dataset.dep)));
- const e=r.error||r2.map(x=>x.error).find(Boolean);toast(e?'Erro: '+e.message:'Configuração do Bling salva');if(!e)bl()}
+ const{error}=await sb.from('bling_settings').update({enabled:$('#b_enabled').checked,push_orders:$('#b_push_orders').checked,sync_stock:$('#b_sync_stock').checked,sync_price:$('#b_sync_price').checked,
+  bling_reserves_stock:m!=='late',stock_movement:m==='mov',safety_stock:n('safety_stock')||0,situacao_id:n('situacao_id'),loja_id:n('loja_id'),forma_pagamento_pix:n('forma_pagamento_pix'),forma_pagamento_cartao:n('forma_pagamento_cartao')}).eq('id',1);
+ toast(error?'Erro: '+error.message:'Regras salvas');if(!error){await lockInfo();bl()}}
 async function bl(){
- const[{data:s,error},{data:st}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*')]);stores=st||stores;
+ const[{data:s,error},{data:st},{data:cf}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*'),sb.from('admin_bling_stock').select('*').limit(10)]);stores=st||stores;
  if(error||!s)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Módulo Bling ainda não está no banco.</p><p class="mt-1 text-mut">Rode o arquivo plebeu_banco_completo.sql no SQL Editor do Supabase e recarregue. ${esc(error?error.message:'')}</p></div>`;
  const c=s.settings,q=s.queue,mode=c.stock_movement?'mov':c.bling_reserves_stock?'auto':'late',
   chk=(k,l)=>`<label class="flex items-center gap-2 text-sm"><input type="checkbox" id="b_${k}" ${c[k]?'checked':''}> ${l}</label>`,
   num=(k,l)=>`<label class="block text-xs text-mut">${l}<input id="b_${k}" type="number" value="${esc(c[k]??'')}"></label>`,
-  btn=(a,t,m,cl='g')=>`<button class="${cl} rounded-lg px-3 py-2 text-sm font-semibold" onclick="ADM.blAct('${a}','${m}')">${t}</button>`;
+  btn=(a,t,m,cl='g')=>`<button data-act="${a}" class="${cl} rounded-lg px-3 py-2 text-sm font-semibold" onclick="ADM.blAct('${a}','${m}')">${t}</button>`,
+  card=(n,t,ok,b,w='')=>`<section class="g rounded-2xl p-4 ${w}"><h2 class="font-bold"><span class="${ok?'text-acc':'text-mut'}">${ok?'✔':n}</span> ${t}</h2>${b}</section>`,
+  credForm=`<label class="mt-2 block text-xs text-mut">Client ID<input id="b_cid" autocomplete="off"></label><label class="mt-2 block text-xs text-mut">Client Secret<input id="b_csec" type="password" autocomplete="off"></label><button class="b mt-3" onclick="ADM.saveCreds()">Salvar credenciais</button>`,
+  depSel=t=>{const cur=t.bling_deposito_id,ops=[...DEPS];if(cur&&!ops.find(x=>x.id==cur))ops.unshift({id:cur,nome:'Depósito '+cur});
+   return `<label class="text-xs text-mut">${esc(t.name)}<select data-dep="${esc(t.id)}" class="min-w-56"><option value="">— não sincronizar —</option>${ops.map(x=>`<option value="${x.id}" ${x.id==cur?'selected':''}>${esc(x.nome)}${x.padrao?' (padrão)':''}</option>`).join('')}</select></label>`};
  $('#main').innerHTML=`<div class="grid gap-4 lg:grid-cols-2">
- <section class="g rounded-2xl p-4"><h2 class="font-bold">Conexão</h2>
-  <p class="mt-1 text-sm ${s.connected?'text-acc':'text-red-400'}">${s.connected?'● Conectado ao Bling desde '+D(s.connected_at):'● Não conectado'}</p>
+ ${card(1,'Credenciais do aplicativo',s.has_credentials,s.has_credentials?`<p class="mt-1 text-sm text-mut">Client ID e Secret salvos (o Secret não é mais exibido).</p><details class="mt-2 text-sm"><summary class="cursor-pointer text-mut">Trocar credenciais</summary>${credForm}</details>`:`<p class="mt-1 text-sm text-mut">Cole os dados do aplicativo criado no Bling.</p>${credForm}`)}
+ ${card(2,'Conexão',s.connected,`<p class="mt-1 text-sm ${s.connected?'text-acc':'text-mut'}">${s.connected?'Conectado desde '+D(s.connected_at):'Ainda não conectado.'}</p>${s.token_error?`<p class="mt-1 text-xs text-red-400">${esc(s.token_error)}</p>`:''}
   <div class="mt-3 flex flex-wrap gap-2">${btn('connect',s.connected?'Reconectar':'Conectar ao Bling','Abrindo o Bling…','b')}${s.connected?btn('test','Testar conexão','Testando…')+btn('disconnect','Desconectar','Desconectando…'):''}</div>
-  <label class="mt-4 block text-xs text-mut">Endereço do webhook (cole no app do Bling)<input readonly value="${esc(SB_URL+'/functions/v1/bling')}" onfocus="this.select()"></label>
-  <p class="mt-3 text-xs text-mut">Produtos ligados ao Bling pelo SKU: <b class="text-acc">${s.linked}</b> de ${s.total}.${c.last_stock_sync?' Última conferência de estoque: '+D(c.last_stock_sync)+'.':''}</p></section>
- <section class="g rounded-2xl p-4"><h2 class="font-bold">Fila de sincronização</h2>
-  <p class="mt-1 text-sm text-mut">${q.pending} na fila · ${q.done24} concluídas em 24 h · <span class="${q.error?'font-bold text-red-400':''}">${q.error} com erro</span></p>
-  <div class="mt-3 flex flex-wrap gap-2">${btn('sync_stock','Sincronizar estoque agora','Sincronizando estoque…')}${btn('import_products','Importar produtos do Bling','Importando…')}${btn('retry_errors','Reprocessar erros','Reprocessando…')}</div>
-  ${(s.errors||[]).length?`<ul class="mt-3 space-y-1 text-xs text-red-400">${s.errors.map(e=>`<li><b>${esc(e.kind)} ${esc(e.ref)}</b> (${e.attempts}x): ${esc(e.last_error)}</li>`).join('')}</ul>`:''}</section>
- <section class="g rounded-2xl p-4 lg:col-span-2"><h2 class="font-bold">Regras</h2><div class="mt-3 grid gap-3 md:grid-cols-2">
-  <div class="space-y-2">${chk('enabled','<b>Integração ligada</b>')}${chk('push_orders','Enviar pedidos pagos do site ao Bling')}${chk('sync_stock','Receber estoque do Bling')}</div>
-  <label class="block text-xs text-mut">Como o estoque dos pedidos do site é baixado no Bling
-   <select id="b_mode"><option value="auto" ${mode==='auto'?'selected':''}>O Bling baixa sozinho ao receber o pedido</option><option value="mov" ${mode==='mov'?'selected':''}>O site lança a saída no depósito da loja</option><option value="late" ${mode==='late'?'selected':''}>Só quando o pedido for atendido no Bling</option></select></label>
-  ${num('situacao_id','ID da situação inicial do pedido (opcional)')}${num('loja_id','ID da loja/canal de venda no Bling (opcional)')}${num('forma_pagamento_pix','ID da forma de pagamento Pix (opcional)')}${num('forma_pagamento_cartao','ID da forma de pagamento Cartão (opcional)')}</div>
-  <h3 class="mt-4 text-sm font-semibold">Depósito do Bling de cada loja</h3><div class="mt-2 flex flex-wrap gap-3">${stores.map(t=>`<label class="text-xs text-mut">${esc(t.name)}<input type="number" data-dep="${esc(t.id)}" value="${esc(t.bling_deposito_id??'')}" class="w-44"></label>`).join('')}</div>
-  <p class="mt-2 text-xs text-mut">O estoque de cada loja só é atualizado pelo Bling quando o depósito dela está preenchido. Preencha o SKU dos produtos em Produtos.</p>
-  <div class="mt-4 text-right"><button class="b" onclick="ADM.saveBl()">Salvar regras</button></div></section></div>`}
+  <label class="mt-3 block text-xs text-mut">Endereço do webhook (opcional, cadastrar no app do Bling)<input readonly value="${esc(SB_URL+'/functions/v1/bling')}" onfocus="this.select()"></label>`)}
+ ${card(3,'Depósito de cada loja',stores.length>0&&stores.every(t=>t.bling_deposito_id),`<p class="mt-1 text-sm text-mut">Escolha qual depósito do Bling abastece cada loja. Sem depósito escolhido, a loja não é sincronizada.</p>
+  <div class="mt-3">${btn('list_depositos','Carregar depósitos do Bling','Buscando depósitos…')}</div><div class="mt-3 flex flex-wrap gap-3">${stores.map(depSel).join('')}</div><button class="b mt-3" onclick="ADM.saveDeps()">Salvar depósitos</button>`)}
+ ${card(4,'Produtos e estoque',s.linked>0&&!!c.last_stock_sync,`<p class="mt-1 text-sm text-mut">Ligados ao Bling: <b class="text-acc">${s.linked}</b> de ${s.total}.${c.last_stock_sync?' Última sincronização de estoque: '+D(c.last_stock_sync)+'.':''} Depois disso o estoque se atualiza sozinho (a cada 5 min e por webhook).</p>
+  <label class="mt-3 block text-xs text-mut">Produtos novos vindos do Bling<select id="b_pub"><option value="">Entram INATIVOS (você revisa e publica)</option><option value="1">Entram ATIVOS (publicar direto)</option></select></label>
+  <div class="mt-3 flex flex-wrap gap-2"><button data-act="import_all" class="b" onclick="ADM.blAct('import_all','Importando… pode levar alguns minutos',{publish:document.querySelector('#adm #b_pub').value==='1'})">Importar produtos e sincronizar estoque</button>${btn('sync_stock','Só sincronizar estoque','Sincronizando estoque…')}${btn('probe','Testar com 2 produtos','Consultando o Bling…')}</div>
+  ${OUT?`<pre class="mt-3 max-h-72 overflow-auto whitespace-pre-wrap rounded-lg bg-s2 p-3 text-xs">${esc(OUT)}</pre>`:''}`)}
+ ${card(5,'Fila e erros',q.error===0,`<p class="mt-1 text-sm text-mut">${q.pending} na fila · ${q.done24} concluídas em 24 h · <span class="${q.error?'font-bold text-red-400':''}">${q.error} com erro</span></p>
+  <div class="mt-3">${btn('retry_errors','Reprocessar erros','Reprocessando…')}</div>${(s.errors||[]).length?`<ul class="mt-3 space-y-1 text-xs text-red-400">${s.errors.map(e=>`<li><b>${esc(e.kind)} ${esc(e.ref)}</b> (${e.attempts}x): ${esc(e.last_error)}</li>`).join('')}</ul>`:''}`)}
+ <section class="g rounded-2xl p-4 lg:col-span-2"><h2 class="font-bold">Conferência (últimos produtos sincronizados)</h2>${(cf||[]).length?tbl(['Produto','Loja','Saldo no Bling','Estoque no site','Atualizado'],cf.map(x=>`<tr><td>${esc(x.product)}<br><span class="text-xs text-mut">SKU ${esc(x.sku)} · Bling #${esc(x.bling_id)}</span></td><td>${esc(x.store)}</td><td>${x.bling_qty??'—'}</td><td>${x.qty}</td><td class="text-xs">${D(x.updated_at)}</td></tr>`).join('')):'<p class="mt-1 text-sm text-mut">Nada sincronizado ainda.</p>'}</section>
+ <details class="g rounded-2xl p-4 lg:col-span-2"><summary class="cursor-pointer font-bold">Regras avançadas</summary><div class="mt-3 grid gap-3 md:grid-cols-2">
+  <div class="space-y-2">${chk('enabled','<b>Integração ligada</b>')}${chk('sync_stock','Receber estoque do Bling (trava a edição manual dos produtos ligados)')}${chk('sync_price','O preço do Bling atualiza o preço do site')}${chk('push_orders','Enviar pedidos <b>pagos</b> do site ao Bling (ligue só depois de testar)')}</div>
+  <label class="block text-xs text-mut">Como o estoque dos pedidos do site é baixado no Bling<select id="b_mode"><option value="auto" ${mode==='auto'?'selected':''}>O Bling baixa sozinho ao receber o pedido</option><option value="mov" ${mode==='mov'?'selected':''}>O site lança a saída no depósito da loja</option><option value="late" ${mode==='late'?'selected':''}>Só quando o pedido for atendido no Bling</option></select></label>
+  ${num('safety_stock','Estoque de segurança (mostra no site o saldo menos N)')}${num('situacao_id','ID da situação inicial do pedido (opcional)')}${num('loja_id','ID do canal de venda no Bling (opcional)')}${num('forma_pagamento_pix','ID da forma de pagamento Pix (opcional)')}${num('forma_pagamento_cartao','ID da forma de pagamento Cartão (opcional)')}</div>
+  <div class="mt-4 text-right"><button class="b" onclick="ADM.saveBl()">Salvar regras</button></div></details></div>`}
 
-return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl,blAct,saveBl,reBl};
+return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveDeps,reBl};
 })();
 </script>
 <script>
@@ -666,11 +682,11 @@ $('#faq').innerHTML=[['Como funciona a entrega no mesmo dia?','Pedidos feitos at
 const TH={m:ls.get('mode','light'),a:ls.get('ac','oceano')};
 function theme(){const h=document.documentElement,on=['ring-2','ring-fg','ring-offset-2','ring-offset-s3'];h.classList.toggle('light',TH.m==='light');h.dataset.ac=TH.a;
  $('meta[name=theme-color]').content=TH.m==='light'?'#f4f5fa':'#000000';
- document.querySelectorAll('button[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
- document.querySelectorAll('button[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
+ document.querySelectorAll('[data-th]').forEach(b=>b.classList[b.dataset.th===TH.m?'add':'remove'](...on));
+ document.querySelectorAll('[data-ac]').forEach(b=>b.classList[b.dataset.ac===TH.a?'add':'remove'](...on));
  window.PC=`rgb(${getComputedStyle(h).getPropertyValue('--pr').trim()} / .7)`}
 theme();
-document.addEventListener('click',e=>{const t=e.target.closest('button[data-th],button[data-ac],#thb'),p=$('#thm');
+document.addEventListener('click',e=>{const t=e.target.closest('[data-th],[data-ac],#thb'),p=$('#thm');
  if(t&&t.id==='thb')p.classList.toggle('hidden');
  else if(t){if(t.dataset.th)TH.m=t.dataset.th;else TH.a=t.dataset.ac;ls.set('mode',TH.m);ls.set('ac',TH.a);theme()}
  else if(!e.target.closest('#thm'))p.classList.add('hidden')});
@@ -799,7 +815,7 @@ ${SERV('Porto Velho')}${POR('Porto Velho','Avenida Calama, 4239, Bairro Embratel
 <h2>Política de Fretes — Plebeu Games</h2>
 <p>Na Plebeu Games, facilitamos para você receber seus produtos onde estiver. Confira abaixo as condições de frete para compras realizadas em nosso site.</p>
 <h3>Frete Grátis por Região</h3>
-<div class="overflow-x-auto"><table><thead><tr><th>Região</th><th>Valor mínimo para frete grátis</th></tr></thead><tbody><tr><td>Porto Velho (RO) e Rio Branco (AC)</td><td>A partir de {{GRATIS}}</td></tr><tr><td>Demais cidades da Região Norte</td><td>A partir de R$ 900,00</td></tr><tr><td>Restante do Brasil</td><td>A partir de R$ 2.000,00</td></tr></tbody></table></div>
+<div class="overflow-x-auto"><table><thead><tr><th>Região</th><th>Valor mínimo para frete grátis</th></tr></thead><tbody><tr><td>Porto Velho (RO) e Rio Branco (AC)</td><td>A partir de R$ 200,00</td></tr><tr><td>Demais cidades da Região Norte</td><td>A partir de R$ 900,00</td></tr><tr><td>Restante do Brasil</td><td>A partir de R$ 2.000,00</td></tr></tbody></table></div>
 <ul><li>O frete grátis é aplicado automaticamente no fechamento do pedido quando o valor mínimo da região correspondente for atingido.</li><li>Para compras abaixo dos valores acima, o frete é calculado conforme o CEP de entrega e informado antes da finalização da compra.</li></ul>
 <h3>Prazo de Entrega</h3>
 <ul><li>Os prazos de entrega variam conforme a região e a transportadora responsável, sendo informados no momento da compra, antes do pagamento.</li><li>Pedidos para Porto Velho e Rio Branco, por serem nossas cidades de operação, tendem a ter prazos de entrega mais rápidos.</li></ul>
@@ -809,7 +825,7 @@ ${SERV('Porto Velho')}${POR('Porto Velho','Avenida Calama, 4239, Bairro Embratel
 $('#finfo').innerHTML=Object.entries(INFO).map(([k,v])=>`<a href="#/info/${k}" class="block py-0.5 hover:text-white hover:underline">${v.t}</a>`).join('');
 function info(k){const d=INFO[k];if(!d){location.hash='#/';return}
  document.title=`${d.t} | Plebeu Games`;
- $('#inf').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-fg">← Voltar à loja</a><article class="inf mt-5 rounded-3xl border border-bd bg-s3 p-6 md:p-10"><h1 class="font-display text-4xl font-bold text-fg">${d.t}</h1>${d.h.replace(/\{\{GRATIS\}\}/g,R(FRETE.gratis))}</article>`}
+ $('#inf').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-fg">← Voltar à loja</a><article class="inf mt-5 rounded-3xl border border-bd bg-s3 p-6 md:p-10"><h1 class="font-display text-4xl font-bold text-fg">${d.t}</h1>${d.h}</article>`}
 /* ---------- rotas e eventos ---------- */
 function route(){
  const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil',ct=location.hash==='#/carrinho',inf=location.hash.match(/^#\/info\/(.+)$/),ad=location.hash==='#/admin';
