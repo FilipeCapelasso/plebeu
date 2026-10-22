@@ -6,8 +6,10 @@
 <title>Plebeu Games | Sua loja gamer no Acre e Rondônia</title>
 <meta name="description" content="Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho. Pix com desconto e até 5x sem juros.">
 <meta name="theme-color" content="#f4f5fa">
+<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Plebeu Games"><meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Plebeu Games","description":"Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho.","areaServed":["Rio Branco, AC","Porto Velho, RO"],"paymentAccepted":"Pix, Cartão de crédito","currenciesAccepted":"BRL"}</script>
 <script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m!=='dark')d.classList.add('light');d.dataset.ac=a||'oceano'}catch(e){document.documentElement.classList.add('light');document.documentElement.dataset.ac='oceano'}</script>
-<link rel="preconnect" href="https://xescguuoutqzqiwevlcb.supabase.co" crossorigin><link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://hlanjhafrhebmheozkmt.supabase.co" crossorigin><link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
 <meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
@@ -86,10 +88,13 @@ html.light .bg-acc.text-black{color:#fff}
 #adm .g{background:rgb(var(--s3));border:1px solid rgb(var(--bd))}
 #adm .tab.on{background:rgb(var(--pr));color:#fff}
 body.adm{padding-bottom:0}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+:focus-visible{outline:2px solid rgb(var(--ac));outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;z-index:100;background:rgb(var(--pr));color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}.skip:focus{left:0}
 body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:none!important}
 </style>
 </head>
-<body>
+<body><a href="#vitrine" class="skip">Ir para os produtos</a><noscript><p style="padding:1rem;text-align:center">Ative o JavaScript para ver a loja.</p></noscript>
 <div id="top" class="bg-s3 border-b border-bd py-2 text-center text-xs text-mut px-3"></div>
 
 <header id="hdr" class="glass sticky top-0 z-30 border-b border-bd">
@@ -113,6 +118,7 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
  </div>
  <nav class="border-t border-bd"><div id="nav" class="mx-auto flex max-w-[1920px] gap-2 overflow-x-auto px-4 py-2"></div></nav>
 </header>
+<div id="offl" class="hidden bg-red-500/10 px-4 py-3 text-center text-sm" role="alert">Não conseguimos carregar o catálogo agora. <button id="offr" class="font-bold underline">Tentar de novo</button></div>
 
 <main id="home">
  <section class="hbg relative overflow-hidden border-b border-bd"><div class="hgrid absolute inset-0"></div>
@@ -218,7 +224,7 @@ const R=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const toast=m=>{const t=$('#atoast');t.textContent=m;t.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('hidden'),2800)};
 const slug=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const TABS=[['res','Resumo'],['prod','Produtos'],['ped','Pedidos'],['cli','Clientes'],['vis','Visualizações'],['cup','Cupons'],['bl','Bling']];
+const TABS=[['res','Resumo'],['prod','Produtos'],['ped','Pedidos'],['cli','Clientes'],['vis','Visualizações'],['cup','Cupons'],['log','Atividade'],['bl','Bling']];
 const ST=['novo','confirmado','pago','enviado','entregue','cancelado'];
 const pxOf=x=>x.pix_price!=null?+x.pix_price:Math.round(x.price*(1-(x.pix_discount||0)/100)*100)/100;
 let tab='res',stores=[],cats=[],PI=[];   /* PI = fotos do produto em edição: {u:url} já enviada | {f:File,u:blob} nova; a 1ª é a principal */
@@ -240,31 +246,74 @@ $('#pw').onkeydown=e=>{if(e.key==='Enter')$('#go').click()};
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
 function nav(){$('#tabs').innerHTML=TABS.map(([k,n])=>`<button data-t="${k}" class="tab g rounded-lg px-3 py-2 text-sm ${k===tab?'on':''}">${n}</button>`).join('')}
 $('#tabs').onclick=e=>{const t=e.target.dataset.t;if(t){tab=t;nav();show()}};
-const show=()=>({res,prod,ped,cli,vis,cup,bl}[tab])();
+const show=()=>({res,prod,ped,cli,vis,cup,log,bl}[tab])();
 const card=(t,v)=>`<div class="g rounded-2xl p-4"><p class="text-sm text-mut">${t}</p><p class="text-2xl font-bold text-acc">${v}</p></div>`;
 const tbl=(h,rows)=>`<div class="g overflow-x-auto rounded-2xl"><table class="w-full text-sm"><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows||`<tr><td colspan="${h.length}" class="text-mut">Nada por aqui ainda.</td></tr>`}</table></div>`;
 
+/* ---------- util ---------- */
+const csv=(name,head,rows)=>{const q=v=>{v=String(v??'');if(/^[=+\-@\t\r]/.test(v)&&isNaN(Number(v)))v="'"+v;return /[";\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+ const t='\ufeff'+[head,...rows].map(r=>r.map(q).join(';')).join('\r\n'),a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([t],{type:'text/csv;charset=utf-8'}));a.download=name+'-'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
+const go=(t,f)=>{tab=t;if(f)PF=f;nav();show()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').classList.contains('hidden'))closeM()});
+
 /* ---------- resumo ---------- */
 async function res(){
- const[{data:o},{data:c},{data:v},{data:ls}]=await Promise.all([sb.from('orders').select('total,status,created_at'),sb.from('admin_customers').select('phone'),sb.from('admin_product_views').select('views'),sb.from('admin_low_stock').select('*')]);
- const ok=(o||[]).filter(x=>['pago','enviado','entregue'].includes(x.status)),hoje=new Date().toDateString();
- $('#main').innerHTML=`<div class="grid grid-cols-2 gap-3 md:grid-cols-4">${card('Pedidos',(o||[]).length)}${card('Faturamento pago',R(ok.reduce((t,x)=>t+ +x.total,0)))}${card('Clientes',(c||[]).length)}${card('Visualizações',(v||[]).reduce((t,x)=>t+x.views,0))}${card('Pedidos hoje',(o||[]).filter(x=>new Date(x.created_at).toDateString()===hoje).length)}</div>
- <h2 class="mb-2 mt-5 font-bold">⚠️ Estoque baixo</h2>${tbl(['Produto','Loja','Qtd'],(ls||[]).map(x=>`<tr><td>${esc(x.product)}</td><td>${esc(x.store)}</td><td class="font-bold text-red-400">${x.qty}</td></tr>`).join(''))}`}
+ const[{data:d,error},{data:b}]=await Promise.all([sb.rpc('admin_dashboard',{p_days:30}),sb.rpc('bling_status')]);
+ if(error||!d)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Atualize o banco para ver o painel.</p><p class="mt-1 text-mut">Rode o arquivo plebeu_banco_completo.sql no SQL Editor do Supabase e recarregue. ${esc(error?error.message:'')}</p></div>`;
+ const dia=d.diario||[],mx=Math.max(1,...dia.map(x=>+x.receita)),n=dia.length||1,bw=720/n,fd=x=>new Date(x+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}),
+  bars=dia.map((x,i)=>{const h=Math.max(2,Math.round(+x.receita/mx*112));return `<rect x="${(i*bw+bw*.14).toFixed(1)}" y="${136-h}" width="${(bw*.72).toFixed(1)}" height="${h}" rx="3" fill="rgb(var(--pr))" opacity="${+x.receita>0?1:.2}"><title>${fd(x.d)}: ${R(x.receita)} · ${x.pedidos} pedido(s)</title></rect>`}).join(''),
+  K=(t,v,s,c='text-acc')=>`<div class="g rounded-2xl p-4"><p class="text-sm text-mut">${t}</p><p class="text-2xl font-bold ${c}">${v}</p><p class="text-xs text-mut">${s}</p></div>`,
+  f=d.fila,cg=d.catalogo,
+  al=(q,t,fl)=>q>0?`<li><button class="g w-full rounded-lg px-3 py-2 text-left text-sm" onclick="ADM.go('prod','${fl}')"><b class="text-amber-400">${q}</b> ${t} <span class="text-mut">→ ver</span></button></li>`:'',
+  alerts=[al(cg.sem_foto,'produtos ativos sem foto','semfoto'),al(cg.sem_categoria,'produtos ativos sem categoria','semcat'),al(cg.sem_sku,'produtos ativos sem SKU (não ligam ao Bling)','semsku'),al(cg.sem_preco,'produtos ativos com preço zerado','ativos'),al(cg.estoque_baixo,'produtos com estoque baixo (≤ 3)','baixo'),al(cg.inativos,'produtos inativos (ex.: recém-importados)','inativos')].join('');
+ $('#main').innerHTML=`<div class="grid grid-cols-2 gap-3 md:grid-cols-4">${K('Hoje',R(d.hoje.receita),d.hoje.pedidos+' pedido(s) pago(s)')}${K('Últimos 7 dias',R(d.d7.receita),d.d7.pedidos+' pedido(s)')}${K('Últimos 30 dias',R(d.periodo.receita),d.periodo.pedidos+' pedidos · ticket '+R(d.periodo.ticket))}${K('A enviar',f.a_enviar,f.atrasados?'⏰ '+f.atrasados+' há mais de 24 h':'em dia',f.atrasados?'text-red-400':'text-acc')}</div>
+ <section class="g mt-4 rounded-2xl p-4"><div class="flex items-baseline justify-between"><h2 class="font-bold">Vendas pagas — últimos ${n} dias</h2><span class="text-xs text-mut">${d.views} visualizações de produtos</span></div>
+  <svg viewBox="0 0 720 160" class="mt-2 w-full" role="img" aria-label="Gráfico de vendas por dia"><line x1="0" y1="136.5" x2="720" y2="136.5" stroke="rgb(var(--bd))"/>${bars}<text x="2" y="154" font-size="11" fill="rgb(var(--mut))">${fd(dia[0].d)}</text><text x="360" y="154" font-size="11" text-anchor="middle" fill="rgb(var(--mut))">${fd(dia[Math.floor(n/2)].d)}</text><text x="718" y="154" font-size="11" text-anchor="end" fill="rgb(var(--mut))">${fd(dia[n-1].d)}</text></svg></section>
+ <div class="mt-4 grid gap-4 lg:grid-cols-2">
+  <section class="g rounded-2xl p-4"><h2 class="font-bold">Fila de pedidos</h2><div class="mt-3 grid grid-cols-3 gap-2 text-center">
+   <button class="g rounded-xl p-3" onclick="ADM.go('ped');ADM.ofl('novo')"><b class="text-xl text-acc">${f.aguardando_pagamento}</b><br><span class="text-xs text-mut">aguardando pagamento</span></button>
+   <button class="g rounded-xl p-3" onclick="ADM.go('ped');ADM.ofl('pago')"><b class="text-xl text-acc">${f.a_enviar}</b><br><span class="text-xs text-mut">a enviar</span></button>
+   <button class="g rounded-xl p-3" onclick="ADM.go('ped');ADM.ofl('atrasados')"><b class="text-xl ${f.atrasados?'text-red-400':'text-acc'}">${f.atrasados}</b><br><span class="text-xs text-mut">atrasados (+24 h)</span></button></div>
+   ${b&&b.settings?`<button class="g mt-3 w-full rounded-xl p-3 text-left text-sm" onclick="ADM.go('bl')">🔗 Bling: <b class="${b.connected?'text-acc':'text-amber-400'}">${b.connected?'conectado':'não conectado'}</b> · ${b.queue.pending} na fila · <span class="${b.queue.error?'font-bold text-red-400':''}">${b.queue.error} com erro</span></button>`:''}</section>
+  <section class="g rounded-2xl p-4"><h2 class="font-bold">Pendências do catálogo</h2><ul class="mt-3 space-y-2">${alerts||'<li class="text-sm text-acc">✔ Catálogo em ordem.</li>'}</ul></section></div>
+ <h2 class="mb-2 mt-5 font-bold">Mais vendidos (${n} dias)</h2>${tbl(['Produto','Unidades','Receita'],(d.top||[]).map(x=>`<tr><td>${esc(x.nome)}</td><td class="font-bold">${x.qtd}</td><td>${R(x.receita)}</td></tr>`).join(''))}`}
 
 /* ---------- produtos ---------- */
+let PD={p:[],s:[]},PF='todos',PQ='',PSEL=new Set(),PSHOW=60;
+const stk=id=>PD.s.filter(x=>x.product_id===id),qOf=(id,st)=>(PD.s.find(x=>x.product_id===id&&x.store_id===st)||{}).qty??0;
+const PFLT={todos:()=>true,ativos:x=>x.active,inativos:x=>!x.active,semfoto:x=>x.active&&!x.image_url,semcat:x=>x.active&&!x.category_slug,semsku:x=>!x.sku,
+ semestoque:x=>x.active&&stk(x.id).every(r=>r.qty===0),baixo:x=>x.active&&stk(x.id).some(r=>r.qty>0&&r.qty<=3),bling:x=>!!x.bling_id,site:x=>!x.bling_id};
+const PCH=[['todos','Todos'],['ativos','Ativos'],['inativos','Inativos'],['semfoto','Sem foto'],['semcat','Sem categoria'],['semsku','Sem SKU'],['semestoque','Sem estoque'],['baixo','Estoque baixo'],['bling','Do Bling'],['site','Só do site']];
+const pcur=()=>{const q=PQ.trim().toLowerCase(),f=PFLT[PF]||PFLT.todos;return PD.p.filter(x=>f(x)&&(!q||(x.name+' '+(x.sku||'')+' '+(x.brand||'')).toLowerCase().includes(q)))};
 async function prod(){
  const[{data:p},{data:s}]=await Promise.all([sb.from('products').select('*').order('created_at',{ascending:false}),sb.from('product_stock').select('*')]);
- const q=(id,st)=>(s||[]).find(x=>x.product_id===id&&x.store_id===st)?.qty??0;
- $('#main').innerHTML=`<div class="mb-3 flex gap-2"><input id="f" placeholder="Buscar produto…" class="max-w-xs"><button class="b" onclick="ADM.edit()">+ Novo produto</button></div>`+
- tbl(['','Produto','Preço','Promoção','Estoque',''],(p||[]).map(x=>`<tr data-n="${esc(x.name.toLowerCase())}" class="${x.active?'':'opacity-50'}"><td>${x.image_url?`<img src="${esc(x.image_url)}" class="h-12 w-12 rounded-lg object-contain bg-s2">`:esc(x.emoji||'🎮')}</td>
- <td><b>${esc(x.name)}</b><br><span class="text-xs text-mut">${esc(x.category_slug||'')} · ${x.sold_count} vendidos${x.bling_id?' · 🔗 Bling':''}${x.active?'':' · INATIVO'}</span></td>
+ PD={p:p||[],s:s||[]};PSEL.clear();
+ $('#main').innerHTML=`<div class="mb-3 flex flex-wrap items-center gap-2"><input id="f" placeholder="Buscar por nome, SKU ou marca…" class="max-w-xs" value="${esc(PQ)}"><button class="b" onclick="ADM.edit()">+ Novo produto</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expP()">Exportar CSV</button></div><div id="ap_chips" class="mb-3 flex flex-wrap gap-2"></div><div id="ap_bulk"></div><div id="ap_list"></div>`;
+ $('#f').oninput=e=>{PQ=e.target.value;PSHOW=60;prodList()};prodList()}
+function prodList(){
+ const L=pcur(),sel=PSEL.size,row=x=>`<tr class="${x.active?'':'opacity-60'}"><td><input type="checkbox" ${PSEL.has(x.id)?'checked':''} onchange="ADM.psel('${x.id}',this.checked)"></td>
+ <td>${x.image_url?`<img src="${esc(x.image_url)}" loading="lazy" class="h-12 w-12 rounded-lg object-contain bg-s2">`:esc(x.emoji||'🎮')}</td>
+ <td><b>${esc(x.name)}</b><br><span class="text-xs text-mut">${x.sku?'SKU '+esc(x.sku):'<span class="text-amber-400">sem SKU</span>'} · ${esc(x.category_slug||'sem categoria')} · ${x.sold_count||0} vendidos${x.bling_id?' · 🔗 Bling':''}${x.active?'':' · INATIVO'}</span></td>
  <td>${R(x.price)}<br><span class="text-xs text-acc">Pix ${R(pxOf(x))}</span></td>
  <td>${x.old_price?`de ${R(x.old_price)}`:'—'}<br><span class="text-xs text-mut">${x.max_installments}x sem juros</span></td>
- <td>${stores.map(t=>`<label class="mb-1 flex items-center gap-1 text-xs">${esc(t.name)} <input type="number" min="0" value="${q(x.id,t.id)}" class="w-20 !py-1" ${x.bling_id&&LOCK?'disabled title="Estoque controlado pelo Bling"':''} onchange="ADM.setQty('${x.id}','${t.id}',this.value)"></label>`).join('')}</td>
- <td class="whitespace-nowrap"><button class="g rounded-lg px-2 py-1" onclick="ADM.edit('${x.id}')">Editar</button> <button class="g rounded-lg px-2 py-1" onclick="ADM.del('${x.id}')">🗑️</button></td></tr>`).join(''));
- $('#f').oninput=e=>document.querySelectorAll('tr[data-n]').forEach(r=>r.hidden=!r.dataset.n.includes(e.target.value.toLowerCase()));
-}
-async function setQty(p,s,v){const{error}=await sb.from('product_stock').upsert({product_id:p,store_id:s,qty:Math.max(0,+v||0)});toast(error?'Erro: '+error.message:'Estoque atualizado')}
+ <td>${stores.map(t=>`<label class="mb-1 flex items-center gap-1 text-xs">${esc(t.name)} <input type="number" min="0" value="${qOf(x.id,t.id)}" class="w-20 !py-1" ${x.bling_id&&LOCK?'disabled title="Estoque controlado pelo Bling"':''} onchange="ADM.setQty('${x.id}','${t.id}',this.value)"></label>`).join('')}</td>
+ <td class="whitespace-nowrap"><button class="g rounded-lg px-2 py-1" onclick="ADM.edit('${x.id}')">Editar</button> <button class="g rounded-lg px-2 py-1" onclick="ADM.del('${x.id}')">🗑️</button></td></tr>`;
+ $('#ap_chips').innerHTML=PCH.map(([k,l])=>`<button class="tab g rounded-full px-3 py-1 text-xs ${k===PF?'on':''}" onclick="ADM.pf('${k}')">${l} <span class="opacity-70">${PD.p.filter(PFLT[k]).length}</span></button>`).join('');
+ $('#ap_bulk').innerHTML=sel?`<div class="g mb-3 flex flex-wrap items-center gap-2 rounded-2xl p-3"><b>${sel} selecionado(s)</b><button class="b" onclick="ADM.bulk('active',true)">Ativar</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.bulk('active',false)">Desativar</button><select id="bcat" class="max-w-52"><option value="">Definir categoria…</option>${cats.map(c=>`<option value="${esc(c.slug)}">${esc(c.name)}</option>`).join('')}</select><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.bulk('cat')">Aplicar</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.psel(null,false)">Limpar seleção</button></div>`:'';
+ $('#ap_list').innerHTML=tbl([`<input type="checkbox" title="Selecionar todos os ${L.length} filtrados" ${L.length&&L.every(x=>PSEL.has(x.id))?'checked':''} onchange="ADM.pselAll(this.checked)">`,'','Produto','Preço','Promoção','Estoque',''],L.slice(0,PSHOW).map(row).join(''))+
+  `<p class="mt-2 text-xs text-mut">${L.length} produto(s)${L.length>PSHOW?` · mostrando ${PSHOW} <button class="g ml-2 rounded px-2 py-0.5" onclick="ADM.pmore()">Mostrar mais</button>`:''}</p>`}
+const pf=k=>{PF=k;PSHOW=60;PSEL.clear();prodList()},pmore=()=>{PSHOW+=60;prodList()},
+ psel=(id,c)=>{if(id===null)PSEL.clear();else c?PSEL.add(id):PSEL.delete(id);prodList()},pselAll=c=>{pcur().forEach(x=>c?PSEL.add(x.id):PSEL.delete(x.id));prodList()};
+async function bulk(op,val){
+ let ids=[...PSEL],patch,extra='';if(!ids.length)return;
+ if(op==='cat'){val=$('#bcat').value;if(!val)return toast('Escolha a categoria.');patch={category_slug:val}}
+ else{patch={active:val};if(val){const ok=ids.filter(id=>+(PD.p.find(x=>x.id===id)||{}).price>0);if(ok.length<ids.length)extra=` (${ids.length-ok.length} sem preço foram ignorados)`;ids=ok}}
+ if(!ids.length)return toast('Nenhum produto elegível: '+(extra||'sem seleção'));
+ if(ids.length>20&&!confirm(`Alterar ${ids.length} produtos de uma vez?`))return;
+ const{error}=await sb.from('products').update(patch).in('id',ids);toast(error?'Erro: '+error.message:`${ids.length} produto(s) atualizado(s)${extra}`);if(!error)prod()}
+function expP(){csv('produtos',['SKU','Nome','Marca','Categoria','Preço','Preço Pix','Ativo','Bling ID',...stores.map(t=>'Estoque '+t.name)],pcur().map(x=>[x.sku,x.name,x.brand,x.category_slug,x.price,pxOf(x),x.active?'sim':'não',x.bling_id,...stores.map(t=>qOf(x.id,t.id))]))}
+async function setQty(p,s,v){const q=Math.max(0,+v||0),{error}=await sb.from('product_stock').upsert({product_id:p,store_id:s,qty:q});if(!error){const r=PD.s.find(x=>x.product_id===p&&x.store_id===s);r?r.qty=q:PD.s.push({product_id:p,store_id:s,qty:q})}toast(error?'Erro: '+error.message:'Estoque atualizado')}
 async function del(id){if(!confirm('Excluir este produto? (para só esconder do site, edite e desmarque "Ativo")'))return;const{error}=await sb.from('products').delete().eq('id',id);toast(error?'Erro: '+error.message:'Produto excluído');prod()}
 async function edit(id){
  let p={active:true,pix_discount:0,max_installments:5,features:[],price:'',pix_price:'',old_price:'',emoji:'🎮'},st={};
@@ -325,21 +374,44 @@ async function saveP(id){
 }
 
 /* ---------- pedidos ---------- */
+let OD=[],OF='todos',OQ='';
+const OLATE=x=>['pago','confirmado'].includes(x.status)&&Date.now()-new Date(x.created_at)>864e5,
+ OFLT={todos:()=>true,novo:x=>x.status==='novo',pago:x=>['pago','confirmado'].includes(x.status),enviado:x=>x.status==='enviado',entregue:x=>x.status==='entregue',cancelado:x=>x.status==='cancelado',atrasados:OLATE,foradobling:x=>['pago','enviado','entregue'].includes(x.status)&&!x.bling_order_id},
+ OCH=[['todos','Todos'],['novo','Aguardando pagamento'],['pago','A enviar'],['enviado','Enviados'],['entregue','Entregues'],['cancelado','Cancelados'],['atrasados','⏰ Atrasados'],['foradobling','Fora do Bling']],
+ sn=id=>(stores.find(x=>x.id===id)||{}).name||id,
+ WA=x=>{const n=String(x.customer_name||'').split(' ')[0],t={novo:`Olá ${n}! Recebemos seu pedido #${x.order_number} na Plebeu Games e estamos aguardando o pagamento.`,confirmado:`Olá ${n}! Seu pedido #${x.order_number} foi confirmado. Já estamos separando tudo por aqui.`,pago:`Olá ${n}! O pagamento do pedido #${x.order_number} foi confirmado. Já estamos separando tudo por aqui.`,
+  enviado:x.delivery_type==='entrega'?`Olá ${n}! Seu pedido #${x.order_number} saiu para entrega.`:`Olá ${n}! Seu pedido #${x.order_number} está pronto para retirada na loja.`,entregue:`Olá ${n}! Seu pedido #${x.order_number} foi entregue. Obrigado pela compra na Plebeu Games! 🎮`,cancelado:`Olá ${n}! O pedido #${x.order_number} foi cancelado. Se precisar de ajuda, é só responder esta mensagem.`}[x.status]||`Olá ${n}!`;
+  return 'https://wa.me/55'+String(x.customer_phone).replace(/\D/g,'').replace(/^55/,'')+'?text='+encodeURIComponent(t)};
+const ocur=()=>{const q=OQ.trim().toLowerCase().replace(/^#/,''),f=OFLT[OF]||OFLT.todos;return OD.filter(x=>f(x)&&(!q||(x.order_number+' '+x.customer_name+' '+x.customer_phone).toLowerCase().includes(q)))};
 async function ped(){
- const{data:o}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(200);
- const sn=id=>stores.find(x=>x.id===id)?.name||id;
- $('#main').innerHTML=tbl(['#','Data','Cliente','Itens','Total','Pagamento','Status','Bling'],(o||[]).map(x=>`<tr><td>${x.order_number}</td><td>${D(x.created_at)}<br><span class="text-xs text-mut">${esc(sn(x.store_id))}</span></td>
- <td>${esc(x.customer_name)}<br><a class="text-xs text-acc" target="_blank" href="https://wa.me/55${esc(String(x.customer_phone).replace(/^55/,''))}">${esc(x.customer_phone)}</a><br><span class="text-xs text-mut">${x.delivery_type==='entrega'?esc(x.address):'Retirada'}</span></td>
+ const{data:o}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(500);OD=o||[];
+ $('#main').innerHTML=`<div class="mb-3 flex flex-wrap items-center gap-2"><input id="ao_q" placeholder="Buscar nº, nome ou WhatsApp…" class="max-w-xs" value="${esc(OQ)}"><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expO()">Exportar CSV</button></div><div id="ao_chips" class="mb-3 flex flex-wrap gap-2"></div><div id="ao_list"></div>`;
+ $('#ao_q').oninput=e=>{OQ=e.target.value;ordList()};ordList()}
+function ordList(){
+ const L=ocur();$('#ao_chips').innerHTML=OCH.map(([k,l])=>`<button class="tab g rounded-full px-3 py-1 text-xs ${k===OF?'on':''}" onclick="ADM.ofl('${k}')">${l} <span class="opacity-70">${OD.filter(OFLT[k]).length}</span></button>`).join('');
+ const tot=L.filter(x=>x.status!=='cancelado').reduce((t,x)=>t+ +x.total,0);
+ $('#ao_list').innerHTML=tbl(['#','Data','Cliente','Itens','Total','Pagamento','Status','Bling'],L.map(x=>`<tr class="${OLATE(x)?'bg-red-500/5':''}"><td>${x.order_number}</td><td>${D(x.created_at)}<br><span class="text-xs text-mut">${esc(sn(x.store_id))}</span>${OLATE(x)?'<br><span class="text-xs font-bold text-red-400">⏰ +24 h</span>':''}</td>
+ <td>${esc(x.customer_name)}<br><a class="text-xs text-acc" target="_blank" rel="noopener noreferrer" href="${WA(x)}" title="Avisar o cliente pelo WhatsApp">💬 ${esc(x.customer_phone)}</a><br><span class="text-xs text-mut">${x.delivery_type==='entrega'?esc(x.address):'Retirada'}</span></td>
  <td class="text-xs">${(x.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join('<br>')}</td><td>${R(x.total)}${x.coupon_code?`<br><span class="text-xs text-mut">cupom ${esc(x.coupon_code)}</span>`:''}</td>
  <td class="text-xs">${esc(x.payment)} · ${esc(x.payment_status)}</td>
- <td><select onchange="ADM.setSt('${x.id}',this.value)">${ST.map(s=>`<option ${s===x.status?'selected':''}>${s}</option>`).join('')}</select></td>${blCell(x)}</tr>`).join(''))}
-async function setSt(id,v){const{error}=await sb.from('orders').update({status:v}).eq('id',id);toast(error?'Erro: '+error.message:'Status atualizado')}
+ <td><select onchange="ADM.setSt('${x.id}',this.value)">${ST.map(s=>`<option ${s===x.status?'selected':''}>${s}</option>`).join('')}</select></td>${blCell(x)}</tr>`).join(''))+
+ `<p class="mt-2 text-xs text-mut">${L.length} pedido(s) · ${R(tot)} (sem cancelados)</p>`}
+const ofl=k=>{OF=k;if(document.querySelector('#adm #ao_list'))ordList()};
+async function setSt(id,v){
+ const o=OD.find(x=>x.id===id);
+ if(v==='cancelado'&&!confirm('Cancelar este pedido? Se ainda não foi pago, o estoque reservado volta para a loja.')){ordList();return}
+ const{error}=await sb.from('orders').update({status:v}).eq('id',id);if(!error&&o)o.status=v;toast(error?'Erro: '+error.message:'Status atualizado');ordList()}
+function expO(){csv('pedidos',['Pedido','Data','Loja','Cliente','WhatsApp','Entrega','Endereço','Itens','Subtotal','Desconto','Frete','Total','Cupom','Pagamento','Status pagamento','Status','Bling'],ocur().map(x=>[x.order_number,D(x.created_at),sn(x.store_id),x.customer_name,x.customer_phone,x.delivery_type,x.address,(x.items||[]).map(i=>`${i.qty}x ${i.name}`).join(' | '),x.subtotal,x.discount,x.delivery_fee,x.total,x.coupon_code,x.payment,x.payment_status,x.status,x.bling_order_id]))}
 
 /* ---------- clientes ---------- */
+let CD=[];
 async function cli(){
- const{data:c}=await sb.from('admin_customers').select('*').order('last_order',{ascending:false});
- $('#main').innerHTML=tbl(['Cliente','WhatsApp','Pedidos','Total gasto','Primeira compra','Última',''],(c||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${D(x.first_order)}</td><td>${D(x.last_order)}</td>
- <td><button class="g rounded-lg px-2 py-1" onclick="ADM.cliDet('${esc(x.phone)}','${esc(x.name)}')">Detalhes</button></td></tr>`).join(''))}
+ const{data:c}=await sb.from('admin_customers').select('*').order('last_order',{ascending:false});CD=c||[];
+ $('#main').innerHTML=`<div class="mb-3 flex flex-wrap gap-2"><input id="ac_q" placeholder="Buscar por nome ou WhatsApp…" class="max-w-xs"><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expC()">Exportar CSV</button></div><div id="ac_list"></div>`;$('#ac_q').oninput=cliList;cliList()}
+function cliList(){const q=($('#ac_q').value||'').toLowerCase(),L=CD.filter(x=>!q||((x.name||'')+' '+(x.phone||'')).toLowerCase().includes(q));
+ $('#ac_list').innerHTML=tbl(['Cliente','WhatsApp','Pedidos','Total gasto','Primeira compra','Última',''],L.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${D(x.first_order)}</td><td>${D(x.last_order)}</td>
+ <td><button class="g rounded-lg px-2 py-1" onclick="ADM.cliDet('${esc(x.phone)}','${esc(x.name)}')">Detalhes</button></td></tr>`).join(''))+`<p class="mt-2 text-xs text-mut">${L.length} cliente(s)</p>`}
+function expC(){csv('clientes',['Nome','WhatsApp','Pedidos','Total gasto','Primeira compra','Última compra'],CD.map(x=>[x.name,x.phone,x.orders,x.spent,D(x.first_order),D(x.last_order)]))}
 async function cliDet(ph,nm){
  const[{data:o},{data:v}]=await Promise.all([sb.from('orders').select('order_number,created_at,total,status,items').eq('customer_phone',ph).order('created_at',{ascending:false}),sb.from('admin_customer_views').select('*').eq('phone',ph).order('views',{ascending:false})]);
  $('#mc').innerHTML=`<h2 class="text-lg font-bold">${esc(nm)} <span class="text-sm text-mut">${esc(ph)}</span></h2><h3 class="mb-1 mt-4 font-semibold">Histórico de compras</h3>`+
@@ -363,6 +435,16 @@ async function addC(){const code=$('#c_code').value.trim().toUpperCase(),pct=+$(
  const{error}=await sb.from('coupons').insert({code,percent:pct,min_subtotal:+$('#c_min').value||0,max_uses:+$('#c_max').value||null});toast(error?'Erro: '+error.message:'Cupom criado');cup()}
 async function togC(c,v){await sb.from('coupons').update({active:v}).eq('code',c);toast('Cupom atualizado')}
 async function delC(c){if(confirm('Excluir cupom '+c+'?')){await sb.from('coupons').delete().eq('code',c);cup()}}
+
+/* ---------- atividade ---------- */
+async function log(){
+ const{data:l,error}=await sb.from('audit_log').select('*').order('at',{ascending:false}).limit(150);
+ if(error)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Atualize o banco para ativar a auditoria.</p><p class="mt-1 text-mut">Rode o plebeu_banco_completo.sql no SQL Editor do Supabase. ${esc(error.message)}</p></div>`;
+ const nm={products:'produto',coupons:'cupom',categories:'categoria',stores:'loja',store_settings:'configuração da loja',bling_settings:'configuração do Bling',orders:'pedido'},op={INSERT:'criou',UPDATE:'alterou',DELETE:'excluiu'},
+  fmt=v=>{const t=v!==null&&typeof v==='object'?JSON.stringify(v):String(v??'∅');return t.length>40?t.slice(0,40)+'…':t},
+  ch=x=>x.op==='UPDATE'?Object.entries(x.diff||{}).slice(0,4).map(([k,v])=>`<span class="text-mut">${esc(k)}:</span> ${esc(fmt(v.de))} → <b>${esc(fmt(v.para))}</b>`).join('<br>'):'';
+ $('#main').innerHTML=tbl(['Quando','Quem','O quê','Mudanças'],(l||[]).map(x=>`<tr><td class="text-xs">${D(x.at)}</td><td class="text-xs">${esc(x.actor_email||'—')}</td><td>${esc(op[x.op]||x.op)} ${esc(nm[x.table_name]||x.table_name)}<br><span class="text-xs text-mut">${esc(x.summary||'')}</span></td><td class="text-xs">${ch(x)}</td></tr>`).join(''))+
+  `<p class="mt-2 text-xs text-mut">Registra o que administradores logados alteram (produtos, cupons, pedidos, configurações). Guardado por 1 ano.</p>`}
 
 /* ---------- bling ---------- */
 let LOCK=false,DEPS=[],OUT='';
@@ -389,7 +471,7 @@ async function saveBl(){
   bling_reserves_stock:m!=='late',stock_movement:m==='mov',safety_stock:n('safety_stock')||0,situacao_id:n('situacao_id'),loja_id:n('loja_id'),forma_pagamento_pix:n('forma_pagamento_pix'),forma_pagamento_cartao:n('forma_pagamento_cartao')}).eq('id',1);
  toast(error?'Erro: '+error.message:'Regras salvas');if(!error){await lockInfo();bl()}}
 async function bl(){
- const[{data:s,error},{data:st},{data:cf}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*'),sb.from('admin_bling_stock').select('*').limit(10)]);stores=st||stores;
+ const[{data:s,error},{data:st},{data:cf},{data:dg}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*'),sb.from('admin_bling_stock').select('*').limit(10),sb.rpc('plb_diagnostics')]);stores=st||stores;
  if(error||!s)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Módulo Bling ainda não está no banco.</p><p class="mt-1 text-mut">Rode o arquivo plebeu_banco_completo.sql no SQL Editor do Supabase e recarregue. ${esc(error?error.message:'')}</p></div>`;
  const c=s.settings,q=s.queue,mode=c.stock_movement?'mov':c.bling_reserves_stock?'auto':'late',
   chk=(k,l)=>`<label class="flex items-center gap-2 text-sm"><input type="checkbox" id="b_${k}" ${c[k]?'checked':''}> ${l}</label>`,
@@ -412,6 +494,7 @@ async function bl(){
   ${OUT?`<pre class="mt-3 max-h-72 overflow-auto whitespace-pre-wrap rounded-lg bg-s2 p-3 text-xs">${esc(OUT)}</pre>`:''}`)}
  ${card(5,'Fila e erros',q.error===0,`<p class="mt-1 text-sm text-mut">${q.pending} na fila · ${q.done24} concluídas em 24 h · <span class="${q.error?'font-bold text-red-400':''}">${q.error} com erro</span></p>
   <div class="mt-3">${btn('retry_errors','Reprocessar erros','Reprocessando…')}</div>${(s.errors||[]).length?`<ul class="mt-3 space-y-1 text-xs text-red-400">${s.errors.map(e=>`<li><b>${esc(e.kind)} ${esc(e.ref)}</b> (${e.attempts}x): ${esc(e.last_error)}</li>`).join('')}</ul>`:''}`)}
+ ${dg?card('i','Diagnóstico do sistema',dg.pg_cron&&dg.pg_net&&(dg.cron_jobs||[]).length>=3,`<ul class="mt-2 space-y-1 text-sm"><li>${dg.pg_cron?'✔':'✖'} pg_cron (tarefas agendadas)</li><li>${dg.pg_net?'✔':'✖'} pg_net (avisos instantâneos ao Bling)</li><li>${(dg.cron_jobs||[]).length} tarefas agendadas</li><li>${(dg.triggers_de_terceiros||[]).length?'⚠ Triggers de terceiros em pedidos/estoque: '+esc(dg.triggers_de_terceiros.join(', ')):'✔ Nenhum trigger de terceiros em pedidos/estoque'}</li></ul>${!dg.pg_cron||!dg.pg_net?'<p class="mt-2 text-xs text-amber-400">Ative pg_cron e pg_net em Database → Extensions e rode o SQL de novo.</p>':''}`,'lg:col-span-2'):''}
  <section class="g rounded-2xl p-4 lg:col-span-2"><h2 class="font-bold">Conferência (últimos produtos sincronizados)</h2>${(cf||[]).length?tbl(['Produto','Loja','Saldo no Bling','Estoque no site','Atualizado'],cf.map(x=>`<tr><td>${esc(x.product)}<br><span class="text-xs text-mut">SKU ${esc(x.sku)} · Bling #${esc(x.bling_id)}</span></td><td>${esc(x.store)}</td><td>${x.bling_qty??'—'}</td><td>${x.qty}</td><td class="text-xs">${D(x.updated_at)}</td></tr>`).join('')):'<p class="mt-1 text-sm text-mut">Nada sincronizado ainda.</p>'}</section>
  <details class="g rounded-2xl p-4 lg:col-span-2"><summary class="cursor-pointer font-bold">Regras avançadas</summary><div class="mt-3 grid gap-3 md:grid-cols-2">
   <div class="space-y-2">${chk('enabled','<b>Integração ligada</b>')}${chk('sync_stock','Receber estoque do Bling (trava a edição manual dos produtos ligados)')}${chk('sync_price','O preço do Bling atualiza o preço do site')}${chk('push_orders','Enviar pedidos <b>pagos</b> do site ao Bling (ligue só depois de testar)')}</div>
@@ -419,12 +502,12 @@ async function bl(){
   ${num('safety_stock','Estoque de segurança (mostra no site o saldo menos N)')}${num('situacao_id','ID da situação inicial do pedido (opcional)')}${num('loja_id','ID do canal de venda no Bling (opcional)')}${num('forma_pagamento_pix','ID da forma de pagamento Pix (opcional)')}${num('forma_pagamento_cartao','ID da forma de pagamento Cartão (opcional)')}</div>
   <div class="mt-4 text-right"><button class="b" onclick="ADM.saveBl()">Salvar regras</button></div></details></div>`}
 
-return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveDeps,reBl};
+return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl};
 })();
 </script>
 <script>
 /* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
-const SB_URL='https://xescguuoutqzqiwevlcb.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhlc2NndXVvdXRxenFpd2V2bGNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDY3NDgsImV4cCI6MjEwODEyMjc0OH0.MbUSq9HZaFXpWS0pKi1nPHn_MlnQ0CHZ4sxf_zXMf9w';
+const SB_URL='https://hlanjhafrhebmheozkmt.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsYW5qaGFmcmhlYm1oZW96a210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNzQyNjksImV4cCI6MjEwNzk1MDI2OX0.KlVSEGBdhgQ7OPnNsajb7CrYjCrCrR-kQipSchpmCeE';
 const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
 /* ====================================================================================== */
 const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):null;
@@ -435,17 +518,30 @@ const VID=(()=>{let v=ls.get('vid',null);if(!v){v=(crypto.randomUUID?crypto.rand
 const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,pt:'pg',ords:[],cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:Object.assign({nm:'',ph:'',ad:'',em:''},ls.get('prof',{}))};
 
 const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
+/* estoque sempre fresco: ao voltar para a aba depois de 3 min (ou ao voltar a conexão) recarrega o catálogo */
+function refresh(){if(!sb||S.demo||S.rl)return;S.rl=1;return load().then(()=>{S.store=st().id;shell();render();const m=location.hash.match(/^#\/p\/(.+)$/);if(m)pdp(decodeURIComponent(m[1]))}).finally(()=>{S.rl=0})}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.lt&&Date.now()-S.lt>18e4)refresh()});addEventListener('online',()=>refresh());
+$('#offr').onclick=()=>{$('#offl').classList.add('hidden');refresh()};
+/* foto quebrada (ex.: link expirado) vira ícone, sem deixar buraco na vitrine */
+document.addEventListener('error',e=>{const t=e.target;if(t&&t.tagName==='IMG'&&!t.dataset.err&&!/QR/.test(t.alt||'')){t.dataset.err=1;t.style.display='none';const f=document.createElement('span');f.textContent='🎮';f.className='text-5xl';t.after(f)}},true);
+/* dados estruturados do produto (Google) */
+function ld(p){let e=document.getElementById('ld');if(!e){e=document.createElement('script');e.type='application/ld+json';e.id='ld';document.head.appendChild(e)}
+ const n=S.stores.reduce((t,s)=>t+(S.stock[p.id+'|'+s.id]||0),0),im=[p.image_url,...(p.gallery||[])].filter(Boolean);
+ e.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Product',name:p.name,...(im.length?{image:im}:{}),...(p.description?{description:p.description}:{}),...(p.sku?{sku:p.sku}:{}),...(p.brand?{brand:{'@type':'Brand',name:p.brand}}:{}),
+  offers:{'@type':'Offer',priceCurrency:'BRL',price:String(p.price),url:location.href.split('#')[0]+'#/p/'+p.slug,availability:'https://schema.org/'+(n>0?'InStock':'OutOfStock'),itemCondition:'https://schema.org/NewCondition'}}).replace(/</g,'\u003c')}
 async function load(){
  if(sb)try{
   const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
   if(a.error||b.error||c.error)throw 0;
-  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
+  Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});S.lt=Date.now();$('#offl').classList.add('hidden');S.stock={};(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
   if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
-  sb.channel('stock').on('postgres_changes',{event:'*',schema:'public',table:'product_stock'},({new:n})=>{
+  if(!S.ch)S.ch=sb.channel('stock').on('postgres_changes',{event:'*',schema:'public',table:'product_stock'},({new:n})=>{
    if(!n||!n.product_id||!S.stores.length)return;S.stock[n.product_id+'|'+n.store_id]=n.qty;clearTimeout(S.rt);S.rt=setTimeout(render,200);
    const m=location.hash.match(/^#\/p\/(.+)$/);if(m)pdp(decodeURIComponent(m[1]))}).subscribe();
   return;
- }catch(e){console.warn('Supabase indisponível');if(S.stores.length)return}
+ }catch(e){console.warn('Supabase indisponível');if(S.stores.length)return;
+  /* com Supabase configurado, nunca mostra produtos de demonstração: avisa e deixa tentar de novo */
+  S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];S.cats=[];S.prods=[];$('#offl').classList.remove('hidden');return}
  S.demo=true;
  S.stores=[{id:'rb',name:'Rio Branco',kind:'Matriz',whatsapp:'5568992116920'},{id:'pv',name:'Porto Velho',kind:'Filial',whatsapp:'5569999895007'}];
  S.cats=[['consoles','Consoles','🎮'],['jogos','Jogos','💿'],['perifericos','Periféricos','🎧'],['informatica','Informática','💻']].map(([slug,name,emoji])=>({slug,name,emoji}));
@@ -489,10 +585,10 @@ function pdp(slug){
  {const _p=S.prods.find(x=>x.slug===slug);if(sb&&!S.demo&&_p&&S.vw!==slug){S.vw=slug;sb.rpc('track_view',{p_product:_p.id,p_visitor:VID}).then(()=>{},()=>{})}}
  const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
  const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,6);
- document.title=p.name+' | Plebeu Games';
+ document.title=p.name+' | Plebeu Games';ld(p);
  $('#pdp').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-white">← Voltar para a loja</a>
  <div class="mt-5 grid gap-8 lg:grid-cols-[minmax(0,680px)_minmax(0,1fr)] lg:gap-12">
-  <div class="lg:sticky lg:top-40 lg:self-start"><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd rg text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
+  <div class="lg:sticky lg:top-40 lg:self-start"><div id="big" class="grid aspect-square place-items-center overflow-hidden rounded-3xl border border-bd rg text-[9rem]">${imgs.length?`<img src="${esc(imgs[0])}" alt="${esc(p.name)}" fetchpriority="high" decoding="async" class="h-full w-full object-contain p-6">`:esc(p.emoji||'🎮')}</div>
   ${imgs.length>1?`<div class="mt-3 flex gap-2">${imgs.map(u=>`<button data-a="img" data-u="${esc(u)}" class="h-16 w-16 overflow-hidden rounded-xl border border-bd"><img src="${esc(u)}" alt="" class="h-full w-full object-cover"></button>`).join('')}</div>`:''}</div>
   <div class="space-y-4"><p class="text-sm text-mut">${esc(p.brand||'')}</p><h1 class="font-display text-4xl font-bold leading-tight">${esc(p.name)}</h1>
    ${p.sold_count>9?`<p class="text-sm text-mut">🔥 ${p.sold_count} vendidos</p>`:''}
@@ -829,7 +925,7 @@ function info(k){const d=INFO[k];if(!d){location.hash='#/';return}
 /* ---------- rotas e eventos ---------- */
 function route(){
  const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil',ct=location.hash==='#/carrinho',inf=location.hash.match(/^#\/info\/(.+)$/),ad=location.hash==='#/admin';
- document.body.classList.toggle('adm',ad);$('#adm').classList.toggle('hidden',!ad);
+ if(!m){const l=document.getElementById('ld');if(l)l.remove()}document.body.classList.toggle('adm',ad);$('#adm').classList.toggle('hidden',!ad);
  $('#home').classList.toggle('hidden',!!m||pf||ct||!!inf||ad);$('#inf').classList.toggle('hidden',!inf);pd.classList.toggle('hidden',!m);$('#prf').classList.toggle('hidden',!pf);$('#crt').classList.toggle('hidden',!ct);
  if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else if(pf){document.title='Meu perfil | Plebeu Games';prof();scrollTo(0,0)}else if(ct){document.title='Carrinho | Plebeu Games';renderCart(1);scrollTo(0,0)}else if(inf){info(decodeURIComponent(inf[1]));scrollTo(0,0)}else if(ad){document.title='Admin | Plebeu Games';ADM.enter();scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
 }
