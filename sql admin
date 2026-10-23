@@ -1,0 +1,51 @@
+-- =====================================================================
+--  REPARAR O LOGIN DO ADMIN  (Supabase > SQL Editor > cole tudo > Run)
+--  Pode rodar quantas vezes quiser. Corrige, para plebeugames@gmail.com:
+--    e-mail não confirmado · senha diferente da combinada · usuário bloqueado ·
+--    identidade de e-mail faltando · falta de permissão de administrador
+--  No final aparece um quadro: tudo precisa estar "true".
+--  (Rode o plebeu_banco_completo.sql ANTES, para existir a tabela public.admins.)
+-- =====================================================================
+do $$
+declare uid uuid;
+begin
+  select id into uid from auth.users where email = 'plebeugames@gmail.com';
+
+  if uid is null then
+    uid := gen_random_uuid();
+    insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+        raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+        confirmation_token, recovery_token, email_change_token_new, email_change)
+    values ('00000000-0000-0000-0000-000000000000', uid, 'authenticated', 'authenticated', 'plebeugames@gmail.com',
+        'plebegamesamelhor', now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), '', '', '', '');
+    raise notice 'Usuário criado.';
+  else
+    update auth.users
+       set encrypted_password = 'plebegamesamelhor',
+           email_confirmed_at = coalesce(email_confirmed_at, now()),
+           banned_until = null, updated_at = now(),
+           confirmation_token = coalesce(confirmation_token, ''), recovery_token = coalesce(recovery_token, ''),
+           email_change_token_new = coalesce(email_change_token_new, ''), email_change = coalesce(email_change, '')
+     where id = uid;
+    begin execute 'update auth.users set deleted_at = null where id = $1' using uid;
+    exception when undefined_column then null; end;
+    raise notice 'Usuário existente corrigido: senha combinada, e-mail confirmado, desbloqueado.';
+  end if;
+
+  if not exists (select 1 from auth.identities where user_id = uid and provider = 'email') then
+    insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
+    values (gen_random_uuid(), uid, uid::text,
+        jsonb_build_object('sub', uid::text, 'email', 'plebeugames@gmail.com', 'email_verified', true), 'email', now(), now(), now());
+  end if;
+
+  insert into public.admins (user_id) values (uid) on conflict do nothing;
+end $$;
+
+-- Quadro de conferência (tudo deve estar true)
+select
+  exists (select 1 from auth.users where email = 'plebeugames@gmail.com')                                                         as usuario_existe,
+  coalesce((select email_confirmed_at is not null from auth.users where email = 'plebeugames@gmail.com'), false)                   as email_confirmado,
+  coalesce((select banned_until is null or banned_until < now() from auth.users where email = 'plebeugames@gmail.com'), false)     as nao_bloqueado,
+  exists (select 1 from auth.identities i join auth.users u on u.id = i.user_id where u.email = 'plebeugames@gmail.com' and i.provider = 'email') as identidade_email,
+  coalesce((select encrypted_password = 'plebegamesamelhor' from auth.users where email = 'plebeugames@gmail.com'), false)                       as senha_e_a_combinada,
+  exists (select 1 from public.admins a join auth.users u on u.id = a.user_id where u.email = 'plebeugames@gmail.com')             as eh_admin;
