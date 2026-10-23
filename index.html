@@ -564,7 +564,7 @@ return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl
 </script>
 <script>
 /* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
-const CFG=window.PLEBEU_CONFIG||{},SB_URL=CFG.url||'https://hlanjhafrhebmheozkmt.supabase.co',SB_KEY=(CFG.key&&!/^COLE_/.test(CFG.key))?CFG.key:(CFG.key?'':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsYW5qaGFmcmhlYm1oZW96a210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNzQyNjksImV4cCI6MjEwNzk1MDI2OX0.KlVSEGBdhgQ7OPnNsajb7CrYjCrCrR-kQipSchpmCeE');
+const CFG=window.PLEBEU_CONFIG||{},SB_URL=CFG.url||'https://xescguuoutqzqiwevlcb.supabase.co',SB_KEY=(CFG.key&&!/^COLE_/.test(CFG.key))?CFG.key:(CFG.key?'':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhlc2NndXVvdXRxenFpd2V2bGNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDY3NDgsImV4cCI6MjEwODEyMjc0OH0.MbUSq9HZaFXpWS0pKi1nPHn_MlnQ0CHZ4sxf_zXMf9w');
 if(CFG.key&&/^COLE_/.test(CFG.key))document.body.insertAdjacentHTML('afterbegin','<div role="alert" style="background:#b91c1c;color:#fff;padding:12px;text-align:center">Falta colar a chave do Supabase (anon key) no arquivo config.js.</div>');
 document.head.insertAdjacentHTML('beforeend','<link rel="preconnect" href="'+SB_URL+'" crossorigin>');
 const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
