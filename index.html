@@ -251,7 +251,7 @@ $('#go').onclick=async()=>{$('#err').textContent='';$('#go').disabled=true;
    :error.status===429||/rate limit|too many|over_request/.test(m)?'Muitas tentativas. Aguarde alguns minutos e tente de novo.'
    :/api key|apikey|jwt|invalid.*key/.test(m)?'A chave do Supabase (SB_KEY) deste site foi recusada.'
    :/disabled|not allowed|provider/.test(m)?'O login por e-mail está desativado no Supabase (Authentication → Sign In / Providers → Email).'
-   :/fetch|network|failed|load/.test(m)||!error.status?'Sem conexão com o Supabase. Verifique a internet e o endereço do projeto.'
+   :/fetch|network|failed|load/.test(m)||!error.status?'Sem conexão com o Supabase. Causas comuns: projeto pausado (restaure em supabase.com/dashboard), bloqueador de anúncios ou VPN, internet instável.'
    :'Não foi possível entrar.')+`<br><small class="text-mut">detalhe técnico: ${esc(error.message||c||'sem detalhe')}</small>`;$('#go').disabled=false;return}
  $('#go').disabled=false;enter()};
 $('#showpw').onchange=e=>{$('#pw').type=e.target.checked?'text':'password'};
