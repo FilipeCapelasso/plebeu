@@ -9,9 +9,10 @@
 <meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Plebeu Games"><meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Plebeu Games","description":"Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho.","areaServed":["Rio Branco, AC","Porto Velho, RO"],"paymentAccepted":"Pix, Cartão de crédito","currenciesAccepted":"BRL"}</script>
 <script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m!=='dark')d.classList.add('light');d.dataset.ac=a||'oceano'}catch(e){document.documentElement.classList.add('light');document.documentElement.dataset.ac='oceano'}</script>
-<link rel="preconnect" href="https://hlanjhafrhebmheozkmt.supabase.co" crossorigin><link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
 <meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
+<script src="config.js"></script>
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>const tc=n=>`rgb(var(--${n}) / <alpha-value>)`;tailwind.config={theme:{extend:{colors:{bg:tc('bg'),s2:tc('s2'),s3:tc('s3'),bd:tc('bd'),pri:tc('pr'),acc:tc('ac'),mut:tc('mut'),fg:tc('fg')},fontFamily:{display:["Rajdhani","system-ui","sans-serif"],sans:["Inter","system-ui","sans-serif"]}}}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -247,7 +248,7 @@ $('#go').onclick=async()=>{$('#err').textContent='';$('#go').disabled=true;
  const{error}=await sb.auth.signInWithPassword({email:$('#aem').value.trim(),password:$('#pw').value});
  if(error){const m=String(error.message||'').toLowerCase(),c=error.code||'';console.warn('login:',error);
   $('#err').innerHTML=(/invalid login credentials/.test(m)||c==='invalid_credentials'?'E-mail ou senha incorretos.'
-   :/not confirmed/.test(m)||c==='email_not_confirmed'?'Este e-mail ainda não foi confirmado no Supabase. Rode o reparar_admin.sql ou use Confirm email em Authentication → Users.'
+   :/not confirmed/.test(m)||c==='email_not_confirmed'?'Este e-mail ainda não foi confirmado no Supabase. Rode o criar_admin.sql no SQL Editor do Supabase (ele confirma o e-mail).'
    :error.status===429||/rate limit|too many|over_request/.test(m)?'Muitas tentativas. Aguarde alguns minutos e tente de novo.'
    :/api key|apikey|jwt|invalid.*key/.test(m)?'A chave do Supabase (SB_KEY) deste site foi recusada.'
    :/disabled|not allowed|provider/.test(m)?'O login por e-mail está desativado no Supabase (Authentication → Sign In / Providers → Email).'
@@ -502,7 +503,10 @@ async function log(){
 let LOCK=false,DEPS=[],OUT='';
 async function lockInfo(){try{const{data}=await sb.from('bling_settings').select('enabled,sync_stock').eq('id',1).maybeSingle();LOCK=!!(data&&data.enabled&&data.sync_stock)}catch(e){LOCK=false}}
 const blCell=x=>`<td class="text-xs">${x.bling_order_id?'✅ #'+esc(x.bling_order_id):x.bling_error?`<span class="text-red-400" title="${esc(x.bling_error)}">⚠️ erro</span><br><button class="g mt-1 rounded px-2 py-0.5" onclick="ADM.reBl(${+x.order_number})">Reenviar</button>`:'—'}</td>`;
-async function blCall(a,extra){const{data,error}=await sb.functions.invoke('bling',{body:{action:a,...(extra||{})}});if(error||!data||data.ok===false){toast('Bling: '+((data&&data.error)||(error&&error.message)||'sem resposta da função'));return null}return data}
+async function blCall(a,extra){const{data,error}=await sb.functions.invoke('bling',{body:{action:a,...(extra||{})}});
+ if(error||!data||data.ok===false){const st=error&&error.context&&error.context.status,m=String((error&&error.message)||'');
+  const hint=(st===404||/failed to send a request|failed to fetch/i.test(m))?'a função "bling" não está publicada NESTE projeto Supabase. Em Edge Functions → Deploy a new function: nome bling, cole o index.ts, Deploy, e desligue "Verify JWT".':st===401?'desligue "Verify JWT" nas configurações da função bling.':'';
+  toast('Bling: '+(hint||(data&&data.error)||m||'sem resposta da função'));return null}return data}
 async function reBl(n){const{error}=await sb.rpc('bling_retry_order',{p_order:n});toast(error?'Erro: '+error.message:`Pedido #${n} reenviado ao Bling`);setTimeout(ped,2500)}
 async function blAct(a,msg,extra){
  const bt=document.querySelector('#adm [data-act="'+a+'"]');if(bt)bt.disabled=true;toast(msg);
@@ -524,6 +528,7 @@ async function saveBl(){
  toast(error?'Erro: '+error.message:'Regras salvas');if(!error){await lockInfo();bl()}}
 async function bl(){
  const[{data:s,error},{data:st},{data:cf},{data:dg}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*'),sb.from('admin_bling_stock').select('*').limit(10),sb.rpc('plb_diagnostics')]);stores=st||stores;
+ try{const w=SB_URL+'/functions/v1';if(s&&s.settings&&s.settings.functions_url!==w)sb.from('bling_settings').update({functions_url:w}).eq('id',1).then(()=>{})}catch(e){}
  if(error||!s)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Módulo Bling ainda não está no banco.</p><p class="mt-1 text-mut">Rode o arquivo plebeu_banco_completo.sql no SQL Editor do Supabase e recarregue. ${esc(error?error.message:'')}</p></div>`;
  const c=s.settings,q=s.queue,mode=c.stock_movement?'mov':c.bling_reserves_stock?'auto':'late',
   chk=(k,l)=>`<label class="flex items-center gap-2 text-sm"><input type="checkbox" id="b_${k}" ${c[k]?'checked':''}> ${l}</label>`,
@@ -559,7 +564,9 @@ return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,addC,togC,delC,bl
 </script>
 <script>
 /* ===== CONFIGURE (Supabase > Project Settings > API). Vazio = modo demonstração ===== */
-const SB_URL='https://xescguuoutqzqiwevlcb.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhlc2NndXVvdXRxenFpd2V2bGNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDY3NDgsImV4cCI6MjEwODEyMjc0OH0.MbUSq9HZaFXpWS0pKi1nPHn_MlnQ0CHZ4sxf_zXMf9w';
+const CFG=window.PLEBEU_CONFIG||{},SB_URL=CFG.url||'https://hlanjhafrhebmheozkmt.supabase.co',SB_KEY=(CFG.key&&!/^COLE_/.test(CFG.key))?CFG.key:(CFG.key?'':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsYW5qaGFmcmhlYm1oZW96a210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNzQyNjksImV4cCI6MjEwNzk1MDI2OX0.KlVSEGBdhgQ7OPnNsajb7CrYjCrCrR-kQipSchpmCeE');
+if(CFG.key&&/^COLE_/.test(CFG.key))document.body.insertAdjacentHTML('afterbegin','<div role="alert" style="background:#b91c1c;color:#fff;padding:12px;text-align:center">Falta colar a chave do Supabase (anon key) no arquivo config.js.</div>');
+document.head.insertAdjacentHTML('beforeend','<link rel="preconnect" href="'+SB_URL+'" crossorigin>');
 const FRETE={taxa:12,gratis:300,corte:15};   // taxa de entrega local, frete grátis acima de, horário de corte
 /* ====================================================================================== */
 const sb=(SB_URL&&SB_KEY&&window.supabase)?supabase.createClient(SB_URL,SB_KEY):null;
