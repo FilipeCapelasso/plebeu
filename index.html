@@ -88,6 +88,8 @@ html.light .bg-acc.text-black{color:#fff}
 #adm .g{background:rgb(var(--s3));border:1px solid rgb(var(--bd))}
 #adm .tab.on{background:rgb(var(--pr));color:#fff}
 #adm #atoast{color:#fff;font-weight:600}
+#adm #login{position:fixed;inset:0;z-index:55;display:flex;align-items:center;justify-content:center;overflow:auto;background:rgb(var(--bg))}
+#adm #login.hidden{display:none}
 body.adm{padding-bottom:0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 :focus-visible{outline:2px solid rgb(var(--ac));outline-offset:2px}
@@ -188,8 +190,8 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 <main id="adm" class="hidden">
 <div id="login" class="grid min-h-screen place-items-center p-4"><div class="w-full max-w-sm space-y-3 rounded-2xl border border-bd bg-s3 p-6">
 <h1 class="text-2xl font-bold">🎮 Plebeu Games · Admin</h1>
-<input id="aem" type="email" placeholder="E-mail" autocomplete="username"><input id="pw" type="password" placeholder="Senha" autocomplete="current-password">
-<button id="go" class="b w-full">Entrar</button><p id="err" class="text-sm text-red-400"></p><a href="#/" class="block text-center text-sm text-mut">← Voltar à loja</a></div></div>
+<input id="aem" type="email" placeholder="E-mail" autocomplete="username"><input id="pw" type="password" placeholder="Senha" autocomplete="current-password"><label class="flex items-center gap-2 text-xs text-mut"><input id="showpw" type="checkbox" style="width:auto"> Mostrar senha</label>
+<button id="go" class="b w-full">Entrar</button><p id="err" class="text-sm text-red-400"></p><a href="#/" class="block text-center text-sm text-mut">← Voltar à loja</a><p id="proj" class="text-center text-xs text-mut"></p></div></div>
 
 <div id="app" class="hidden mx-auto max-w-7xl p-4">
 <header class="mb-4 flex flex-wrap items-center gap-2"><h1 class="mr-auto text-xl font-bold">🎮 Admin Plebeu Games</h1>
@@ -233,6 +235,7 @@ let tab='res',stores=[],cats=[],PI=[];   /* PI = fotos do produto em edição: {
 /* ---------- login ---------- */
 async function enter(){
  if(!sb){$('#err').textContent='Supabase não configurado neste arquivo.';return}
+ try{$('#proj').textContent='Projeto Supabase: '+new URL(SB_URL).hostname.split('.')[0]}catch(e){}
  const{data:{session}}=await sb.auth.getSession();if(!session)return;
  const{data:ok}=await sb.rpc('is_admin');
  if(!ok){await sb.auth.signOut();$('#err').textContent='Esta conta não tem permissão de administrador.';return}
@@ -240,9 +243,18 @@ async function enter(){
  [{data:stores},{data:cats}]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position')]);
  stores=stores||[];cats=cats||[];await lockInfo();nav();show();
 }
-$('#go').onclick=async()=>{$('#err').textContent='';
+$('#go').onclick=async()=>{$('#err').textContent='';$('#go').disabled=true;
  const{error}=await sb.auth.signInWithPassword({email:$('#aem').value.trim(),password:$('#pw').value});
- if(error)return $('#err').textContent='E-mail ou senha incorretos.';enter()};
+ if(error){const m=String(error.message||'').toLowerCase(),c=error.code||'';console.warn('login:',error);
+  $('#err').innerHTML=(/invalid login credentials/.test(m)||c==='invalid_credentials'?'E-mail ou senha incorretos.'
+   :/not confirmed/.test(m)||c==='email_not_confirmed'?'Este e-mail ainda não foi confirmado no Supabase. Rode o reparar_admin.sql ou use Confirm email em Authentication → Users.'
+   :error.status===429||/rate limit|too many|over_request/.test(m)?'Muitas tentativas. Aguarde alguns minutos e tente de novo.'
+   :/api key|apikey|jwt|invalid.*key/.test(m)?'A chave do Supabase (SB_KEY) deste site foi recusada.'
+   :/disabled|not allowed|provider/.test(m)?'O login por e-mail está desativado no Supabase (Authentication → Sign In / Providers → Email).'
+   :/fetch|network|failed|load/.test(m)||!error.status?'Sem conexão com o Supabase. Verifique a internet e o endereço do projeto.'
+   :'Não foi possível entrar.')+`<br><small class="text-mut">detalhe técnico: ${esc(error.message||c||'sem detalhe')}</small>`;$('#go').disabled=false;return}
+ $('#go').disabled=false;enter()};
+$('#showpw').onchange=e=>{$('#pw').type=e.target.checked?'text':'password'};
 $('#pw').onkeydown=e=>{if(e.key==='Enter')$('#go').click()};
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
 $('#chpw').onclick=()=>chPw();
@@ -591,7 +603,7 @@ async function load(){
  S.prods=[D(1,'PlayStation 4 Slim 1TB desbloqueado + 7 jogos','consoles','🎮',1756.14,0,5,1,42),D(2,'Call of Duty Modern Warfare – PS4','jogos','💿',155.56,0,9,1,18),D(3,'Base para notebook com cooler','informatica','❄️',48.89,0,9,1,31),D(4,'Headset gamer RGB com microfone','perifericos','🎧',189.9,229.9,8,1,12),D(5,'Controle PS4 sem fio','consoles','🕹️',169.9,0,8,1,27),D(6,'SSD 480GB SATA III','informatica','💾',229.9,0,8,0,15)];
  S.rev=[{customer_name:'Cliente exemplo',rating:5,body:'Texto de exemplo. As avaliações reais vêm da tabela reviews.'}];
 }
-const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0];
+const st=()=>S.stores.find(s=>s.id===S.store)||S.stores[0]||{id:'',name:'',kind:'',whatsapp:''};
 const qty=p=>{const k=p.id+'|'+st().id;return k in S.stock?S.stock[k]:(S.demo?9:0)};
 const pix=p=>p.pix_price!=null&&p.pix_price!==''?Math.round(+p.pix_price*100)/100:Math.round(p.price*(1-(p.pix_discount||0)/100)*100)/100;   /* preço no Pix: valor exato do admin (pix_price); sem ele, usa o desconto % antigo */
 const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy" decoding="async" class="h-full w-full object-contain p-4">`:`<span>${esc(p.emoji||'🎮')}</span>`;
