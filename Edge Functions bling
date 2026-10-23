@@ -1,0 +1,433 @@
+// =====================================================================
+//  Plebeu Games × Bling (API v3) — Supabase Edge Function  "bling"
+//
+//  O QUE FAZ
+//   • Pedido pago no site  -> vira Pedido de Venda no Bling (cliente + itens + frete + desconto)
+//   • Estoque do Bling     -> atualiza o estoque de cada loja no site (webhook + conferência a cada 10 min)
+//   • Importa produtos do Bling (inativos, para você revisar) e liga site <-> Bling pelo SKU
+//
+//  COMO ATIVAR (resumo)
+//   1) Edge Functions > Deploy a new function > nome: bling > cole este arquivo > Deploy.
+//      Depois, em Settings da função, DESLIGUE "Verify JWT".
+//   2) Site > #/admin > aba Bling: cole o Client ID e o Client Secret, clique em Conectar e autorize no Bling.
+//      (Alternativa: guardar BLING_CLIENT_ID / BLING_CLIENT_SECRET em Edge Functions > Secrets; se existirem, valem mais.)
+//   3) No app do Bling cadastre o link de redirecionamento e o webhook = URL desta função
+//      (webhook é opcional: sem ele o estoque é conferido sozinho a cada 5 minutos).
+// =====================================================================
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+const SB_URL = Deno.env.get("SUPABASE_URL")!;
+const ANON = Deno.env.get("SUPABASE_ANON_KEY")!;
+const SRV = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const ENV_CID = Deno.env.get("BLING_CLIENT_ID") ?? "";
+const ENV_CSEC = Deno.env.get("BLING_CLIENT_SECRET") ?? "";
+const ENV_SITE = (Deno.env.get("SITE_URL") ?? "").replace(/\/$/, "");
+const API = "https://api.bling.com.br/Api/v3";
+const AUTH_URL = "https://www.bling.com.br/Api/v3/oauth/authorize";
+const TOKEN_URL = "https://www.bling.com.br/Api/v3/oauth/token";
+const db = createClient(SB_URL, SRV, { auth: { persistSession: false } });
+// Credenciais: Secrets do Supabase (se existirem) ou o que foi colado no painel (tabela bling_tokens, só a função lê)
+async function creds(): Promise<{ id: string; secret: string }> {
+  if (ENV_CID && ENV_CSEC) return { id: ENV_CID, secret: ENV_CSEC };
+  const { data } = await db.from("bling_tokens").select("client_id,client_secret").eq("id", 1).maybeSingle();
+  return { id: data?.client_id ?? "", secret: data?.client_secret ?? "" };
+}
+const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type" };
+const json = (d: unknown, status = 200) => new Response(JSON.stringify(d), { status, headers: { ...CORS, "Content-Type": "application/json" } });
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const chunks = <T>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length / n) }, (_, i) => a.slice(i * n, i * n + n));
+const enc = new TextEncoder();
+// deno-lint-ignore no-explicit-any
+type Any = any;
+
+// ------------------------- configuração e token -------------------------
+const settings = async (): Promise<Any> => (await db.from("bling_settings").select("*").eq("id", 1).single()).data;
+
+async function tokenRequest(params: Record<string, string>) {
+  const c = await creds();
+  return await fetch(TOKEN_URL, {
+    method: "POST",
+    headers: { Authorization: "Basic " + btoa(`${c.id}:${c.secret}`), "Content-Type": "application/x-www-form-urlencoded", Accept: "1.0", "enable-jwt": "1" },
+    body: new URLSearchParams(params),
+  });
+}
+async function saveToken(j: Any) {
+  await db.from("bling_tokens").upsert({
+    id: 1, access_token: j.access_token, refresh_token: j.refresh_token,
+    expires_at: new Date(Date.now() + (Number(j.expires_in) || 21600) * 1000).toISOString(),
+    refresh_fail_at: null, last_error: null, refreshing_at: null,
+  });
+  return j.access_token as string;
+}
+async function refresh(): Promise<string> {
+  const { data: t } = await db.from("bling_tokens").select("*").eq("id", 1).maybeSingle();
+  if (!t?.refresh_token) throw new Error("Bling não conectado. Conecte em Admin > Bling.");
+  // depois de uma falha, pausa 10 min: o Bling bloqueia o IP por 60 min se o endpoint de token for chamado demais
+  if (t.refresh_fail_at && Date.now() - new Date(t.refresh_fail_at).getTime() < 10 * 60_000)
+    throw new Error(`Acesso ao Bling em pausa após falha (${t.last_error ?? "erro"}). Reconecte em Admin > Bling.`);
+  // trava: só uma renovação por vez (o refresh_token troca a cada uso; duas ao mesmo tempo derrubam a conexão)
+  const stale = new Date(Date.now() - 60_000).toISOString();
+  const { data: got } = await db.from("bling_tokens").update({ refreshing_at: new Date().toISOString() })
+    .eq("id", 1).or(`refreshing_at.is.null,refreshing_at.lt.${stale}`).select("id");
+  if (!got?.length) {
+    await sleep(3000);
+    const { data: t2 } = await db.from("bling_tokens").select("*").eq("id", 1).maybeSingle();
+    if (t2?.access_token && t2.expires_at && new Date(t2.expires_at).getTime() - Date.now() > 60_000) return t2.access_token;
+    throw new Error("Renovação do acesso ao Bling em andamento; a tarefa será tentada de novo.");
+  }
+  try {
+    const r = await tokenRequest({ grant_type: "refresh_token", refresh_token: t.refresh_token });
+    if (!r.ok) {
+      const msg = `Bling recusou a renovação do acesso (HTTP ${r.status})`;
+      await db.from("bling_tokens").update({ refresh_fail_at: new Date().toISOString(), last_error: msg }).eq("id", 1);
+      throw new Error(msg + ". Reconecte em Admin > Bling.");
+    }
+    return await saveToken(await r.json());
+  } finally {
+    await db.from("bling_tokens").update({ refreshing_at: null }).eq("id", 1);
+  }
+}
+async function token(): Promise<string> {
+  const { data: t } = await db.from("bling_tokens").select("*").eq("id", 1).maybeSingle();
+  if (!t?.refresh_token) throw new Error("Bling não conectado. Conecte em Admin > Bling.");
+  if (t.access_token && t.expires_at && new Date(t.expires_at).getTime() - Date.now() > 120_000) return t.access_token;
+  return await refresh();
+}
+
+// ------------------------- cliente HTTP (3 req/s do Bling) -------------------------
+let last = 0;
+async function bling(path: string, init: RequestInit = {}, tries = 0): Promise<Any> {
+  const wait = 360 - (Date.now() - last);
+  if (wait > 0) await sleep(wait);
+  last = Date.now();
+  const r = await fetch(API + path, {
+    ...init,
+    headers: { Authorization: `Bearer ${await token()}`, "enable-jwt": "1", Accept: "application/json", "Content-Type": "application/json", ...(init.headers ?? {}) },
+  });
+  if (r.status === 429 && tries < 3) { await sleep(1500 * (tries + 1)); return bling(path, init, tries + 1); }
+  if (r.status === 401 && tries < 1) { await refresh(); return bling(path, init, tries + 1); }
+  const txt = await r.text();
+  let j: Any = null;
+  try { j = txt ? JSON.parse(txt) : null; } catch { /* corpo não-JSON */ }
+  if (!r.ok) {
+    const e = j?.error, f = (e?.fields ?? []).map((x: Any) => x.msg).filter(Boolean).join("; ");
+    throw new Error(`Bling ${r.status} ${init.method ?? "GET"} ${path.split("?")[0]}: ${[e?.description ?? e?.message ?? txt.slice(0, 160), f].filter(Boolean).join(" — ")}`);
+  }
+  return j;
+}
+
+// ------------------------- produtos (site <-> Bling pelo SKU) -------------------------
+async function linkProducts() {
+  const { data } = await db.from("products").select("id,sku").is("bling_id", null).not("sku", "is", null);
+  for (const ch of chunks(data ?? [], 50)) {
+    const r = await bling(`/produtos?limite=100&` + ch.map((p: Any) => `codigos[]=${encodeURIComponent(p.sku)}`).join("&"));
+    for (const b of r?.data ?? []) {
+      const p = ch.find((x: Any) => String(x.sku).toLowerCase() === String(b.codigo).toLowerCase());
+      if (p) await db.from("products").update({ bling_id: b.id }).eq("id", p.id);
+    }
+  }
+}
+const slugify = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+async function copyImage(url: string | undefined, id: number): Promise<string | null> {
+  if (!url) return null;
+  try { // guarda a foto no Storage do site: o link do Bling pode expirar
+    const r = await fetch(url);
+    if (!r.ok) return url;
+    const ct = r.headers.get("content-type") ?? "image/jpeg";
+    const path = `bling/${id}.${ct.includes("png") ? "png" : ct.includes("webp") ? "webp" : "jpg"}`;
+    const { error } = await db.storage.from("products").upload(path, await r.arrayBuffer(), { contentType: ct, upsert: true });
+    return error ? url : db.storage.from("products").getPublicUrl(path).data.publicUrl;
+  } catch { return url; }
+}
+
+// Traz os produtos do Bling sem duplicar (casa por bling_id e por SKU). Preserva tudo que já existe no site.
+async function importProducts(publish: boolean, t0: number) {
+  let created = 0, linked = 0, updated = 0, partial = false;
+  const cfg = await settings();
+  const { data: mine } = await db.from("products").select("id,sku,bling_id,price,pix_price");
+  const bySku = new Map((mine ?? []).filter((p: Any) => p.sku).map((p: Any) => [String(p.sku).toLowerCase(), p]));
+  const byBid = new Map((mine ?? []).filter((p: Any) => p.bling_id).map((p: Any) => [Number(p.bling_id), p]));
+  for (let page = 1; page <= 100 && !partial; page++) {
+    const list: Any[] = (await bling(`/produtos?pagina=${page}&limite=100`))?.data ?? [];
+    for (const b of list) {
+      if (Date.now() - t0 > 70_000) { partial = true; break; }
+      if (!b.codigo) continue;
+      const own = (byBid.get(Number(b.id)) ?? bySku.get(String(b.codigo).toLowerCase())) as Any;
+      if (own) {
+        const patch: Any = {};
+        if (!own.bling_id) { patch.bling_id = b.id; linked++; }
+        const preco = Number(b.preco);
+        if (cfg?.sync_price && preco > 0 && Number(own.price) !== preco) {
+          patch.price = preco; updated++;
+          if (own.pix_price != null && Number(own.pix_price) > preco) patch.pix_price = preco;
+        }
+        if (Object.keys(patch).length) await db.from("products").update(patch).eq("id", own.id);
+        continue;
+      }
+      const { error } = await db.from("products").insert({
+        name: b.nome, slug: `${slugify(b.nome) || "produto"}-${Math.random().toString(36).slice(2, 6)}`, sku: b.codigo, bling_id: b.id,
+        price: Number(b.preco) || 0, image_url: await copyImage(b.imagemURL, b.id),
+        active: publish && String(b.situacao ?? "A").toUpperCase().startsWith("A"),
+      });
+      if (!error) created++;
+    }
+    if (list.length < 100) break;
+  }
+  return { created, linked, updated, partial };
+}
+
+// ------------------------- estoque: Bling -> site -------------------------
+async function syncStock(ids: number[]) {
+  let n = 0;
+  for (const ch of chunks([...new Set(ids)], 50)) {
+    const r = await bling(`/estoques/saldos?` + ch.map((i) => `idsProdutos[]=${i}`).join("&"));
+    for (const row of r?.data ?? []) {
+      const deps = (row.depositos ?? []).map((d: Any) => ({ id: d.id, fisico: d.saldoFisico, virtual: d.saldoVirtual }));
+      const { error } = await db.rpc("bling_apply_stock", { p_bling_id: row.produto?.id, p_deps: deps });
+      if (error) throw new Error(error.message);
+      n++;
+    }
+  }
+  return n;
+}
+async function syncAllStock() {
+  await linkProducts();
+  const { data } = await db.from("products").select("bling_id").not("bling_id", "is", null);
+  const n = await syncStock((data ?? []).map((p: Any) => Number(p.bling_id)));
+  await db.from("bling_settings").update({ last_stock_sync: new Date().toISOString() }).eq("id", 1);
+  return n;
+}
+
+// ------------------------- pedido: site -> Bling -------------------------
+async function resolveProduct(id: string) {
+  const { data: p } = await db.from("products").select("id,name,sku,bling_id").eq("id", id).single();
+  if (!p?.sku) throw new Error(`Produto "${p?.name ?? id}" sem SKU. Preencha o SKU (= código no Bling) em Admin > Produtos.`);
+  if (!p.bling_id) {
+    const r = await bling(`/produtos?codigos[]=${encodeURIComponent(p.sku)}`);
+    const b = (r?.data ?? [])[0];
+    if (!b) throw new Error(`SKU "${p.sku}" não encontrado no Bling (produto "${p.name}").`);
+    p.bling_id = b.id;
+    await db.from("products").update({ bling_id: b.id }).eq("id", p.id);
+  }
+  return { sku: p.sku as string, bid: Number(p.bling_id) };
+}
+async function ensureContact(o: Any): Promise<number> {
+  const phone = String(o.customer_phone).replace(/\D/g, "");
+  try {
+    const r = await bling(`/contatos?limite=20&pesquisa=${encodeURIComponent(o.customer_name)}`);
+    const hit = (r?.data ?? []).find((c: Any) => [c.telefone, c.celular].some((x) => String(x ?? "").replace(/\D/g, "").endsWith(phone.slice(-8))));
+    if (hit) return hit.id;
+  } catch { /* não achou: cria */ }
+  const c = await bling("/contatos", { method: "POST", body: JSON.stringify({ nome: o.customer_name, tipo: "F", situacao: "A", celular: phone, telefone: phone }) });
+  return c.data.id;
+}
+async function pushOrder(num: number) {
+  const { data: o } = await db.from("orders").select("*").eq("order_number", num).single();
+  if (!o || o.bling_order_id || o.status === "cancelado") return;
+  const cfg = await settings();
+  try {
+    const tag = `SITE-${num}`;
+    let blingId: number | undefined;
+    try { blingId = (await bling(`/pedidos/vendas?limite=1&numerosLojas[]=${tag}`))?.data?.[0]?.id; } catch { /* filtro indisponível: segue */ } // idempotência
+    const lines: { bid: number; qty: number; unit: number }[] = [];
+    if (!blingId) {
+      const itens = [];
+      for (const it of o.items ?? []) {
+        const { sku, bid } = await resolveProduct(it.id);
+        lines.push({ bid, qty: Number(it.qty), unit: Number(it.unit) });
+        itens.push({ codigo: sku, descricao: it.name, unidade: "UN", quantidade: Number(it.qty), valor: Number(it.unit), produto: { id: bid } });
+      }
+      const day = new Date(Date.now() - (o.store_id === "pv" ? 4 : 5) * 3600_000).toISOString().slice(0, 10);
+      const body: Any = {
+        numeroLoja: tag, data: day, dataSaida: day, contato: { id: await ensureContact(o) }, itens,
+        desconto: { valor: Number(o.discount ?? 0), unidade: "REAL" }, transporte: { frete: Number(o.delivery_fee ?? 0) },
+        observacoes: `Pedido do site #${num} · ${o.payment === "pix" ? "Pix" : "Cartão"} · ${o.delivery_type === "entrega" ? "Entrega: " + o.address : "Retirada na loja"}`,
+        observacoesInternas: `WhatsApp ${o.customer_phone} · loja ${o.store_id}`,
+      };
+      if (cfg.situacao_id) body.situacao = { id: Number(cfg.situacao_id) };
+      if (cfg.loja_id) body.loja = { id: Number(cfg.loja_id) };
+      const forma = o.payment === "pix" ? cfg.forma_pagamento_pix : cfg.forma_pagamento_cartao;
+      if (forma) body.parcelas = [{ dataVencimento: day, valor: Number(o.total), formaPagamento: { id: Number(forma) } }];
+      blingId = (await bling("/pedidos/vendas", { method: "POST", body: JSON.stringify(body) })).data.id;
+    }
+    await db.from("orders").update({ bling_order_id: blingId, bling_pushed_at: new Date().toISOString(), bling_error: null }).eq("order_number", num);
+
+    // modo "o site lança a saída no depósito da loja"
+    if (cfg.stock_movement && !o.bling_stock_posted) {
+      const { data: st } = await db.from("stores").select("bling_deposito_id").eq("id", o.store_id).single();
+      if (!st?.bling_deposito_id) throw new Error(`Loja "${o.store_id}" sem ID de depósito do Bling (Admin > Bling).`);
+      const src = lines.length ? lines : await Promise.all((o.items ?? []).map(async (it: Any) => ({ bid: (await resolveProduct(it.id)).bid, qty: Number(it.qty), unit: Number(it.unit) })));
+      for (const l of src) {
+        await bling("/estoques", { method: "POST", body: JSON.stringify({ produto: { id: l.bid }, deposito: { id: Number(st.bling_deposito_id) }, operacao: "S", quantidade: l.qty, preco: l.unit, observacoes: `Pedido do site #${num}` }) });
+      }
+      await db.from("orders").update({ bling_stock_posted: true }).eq("order_number", num);
+    }
+    const ids = (o.items ?? []).map((it: Any) => it.id);
+    const { data: ps } = await db.from("products").select("bling_id").in("id", ids).not("bling_id", "is", null);
+    if (cfg.sync_stock && ps?.length) await syncStock(ps.map((p: Any) => Number(p.bling_id)));
+  } catch (e) {
+    await db.from("orders").update({ bling_error: String((e as Error).message).slice(0, 400) }).eq("order_number", num);
+    throw e;
+  }
+}
+
+// ------------------------- fila -------------------------
+async function processQueue() {
+  const t0 = Date.now(), out = { done: 0, failed: 0 };
+  while (Date.now() - t0 < 100_000) {
+    const { data: jobs } = await db.rpc("bling_claim_jobs", { p_n: 25 });
+    if (!jobs?.length) break;
+    const stock = jobs.filter((j: Any) => j.kind === "stock");
+    if (stock.length) {
+      let err: string | null = null;
+      try { await syncStock(stock.map((j: Any) => Number(j.ref))); } catch (e) { err = (e as Error).message; }
+      for (const j of stock) await db.rpc("bling_job_finish", { p_id: j.id, p_err: err });
+      err ? out.failed += stock.length : out.done += stock.length;
+    }
+    for (const j of jobs.filter((x: Any) => x.kind !== "stock")) {
+      try {
+        if (j.kind === "push_order") await pushOrder(Number(j.ref));
+        else if (j.kind === "stock_all") await syncAllStock();
+        await db.rpc("bling_job_finish", { p_id: j.id, p_err: null });
+        out.done++;
+      } catch (e) {
+        await db.rpc("bling_job_finish", { p_id: j.id, p_err: (e as Error).message });
+        out.failed++;
+      }
+    }
+  }
+  return { ok: true, ...out };
+}
+const enqueue = (kind: string, ref: string) => db.from("bling_queue").insert({ kind, ref }).then(() => {}, () => {}); // duplicado = ignora
+
+// ------------------------- webhook do Bling -------------------------
+async function validSig(raw: string, header: string) {
+  const { secret } = await creds();
+  if (!secret) return false;
+  const key = await crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const hex = [...new Uint8Array(await crypto.subtle.sign("HMAC", key, enc.encode(raw)))].map((b) => b.toString(16).padStart(2, "0")).join("");
+  const got = header.replace(/^sha256=/i, "").trim().toLowerCase();
+  if (got.length !== hex.length) return false;
+  let diff = 0;
+  for (let i = 0; i < hex.length; i++) diff |= hex.charCodeAt(i) ^ got.charCodeAt(i);
+  return diff === 0;
+}
+async function webhook(raw: string, sig: string) {
+  if (!(await validSig(raw, sig))) return json({ error: "assinatura inválida" }, 401);
+  const ev = JSON.parse(raw);
+  if (ev.eventId) {
+    const { error } = await db.from("bling_events").insert({ event_id: String(ev.eventId), event: ev.event });
+    if (error) return json({ ok: true, duplicado: true }); // o Bling repete eventos: responder 2xx sempre
+  }
+  const cfg = await settings();
+  if (!cfg?.enabled) return json({ ok: true, ignorado: "integração desligada" });
+  const [res] = String(ev.event ?? "").split(".");
+  const d = ev.data ?? {};
+  if ((res === "stock" || res === "virtual_stock") && cfg.sync_stock) {
+    const id = d.produto?.id ?? d.idProduto ?? (typeof d.produto === "number" ? d.produto : undefined);
+    if (id) await enqueue("stock", String(id)); else await enqueue("stock_all", "all");
+  } else if (res === "product" && d.id) {
+    if (d.codigo) await db.from("products").update({ bling_id: d.id }).eq("sku", String(d.codigo)).is("bling_id", null);
+    if (cfg.sync_stock) await enqueue("stock", String(d.id));
+  }
+  // @ts-ignore EdgeRuntime existe no Supabase; processa depois de responder (o Bling exige resposta em até 5 s)
+  EdgeRuntime.waitUntil(processQueue().catch(() => {}));
+  return json({ ok: true });
+}
+
+// ------------------------- OAuth e ações do painel -------------------------
+async function oauthCallback(url: URL) {
+  const code = url.searchParams.get("code") ?? "", state = url.searchParams.get("state") ?? "";
+  const { data: t } = await db.from("bling_tokens").select("oauth_state,oauth_state_at").eq("id", 1).maybeSingle();
+  const fresh = t?.oauth_state_at && Date.now() - new Date(t.oauth_state_at).getTime() < 15 * 60_000;
+  if (!code || !t?.oauth_state || t.oauth_state !== state || !fresh) return new Response("Link de autorização inválido ou expirado. Volte ao painel e clique em Conectar de novo.", { status: 400 });
+  const r = await tokenRequest({ grant_type: "authorization_code", code });
+  if (!r.ok) return new Response(`O Bling recusou a autorização (${r.status}). Confira Client ID/Secret e o link de redirecionamento.`, { status: 400 });
+  await saveToken(await r.json());
+  await db.from("bling_tokens").update({ oauth_state: null, connected_at: new Date().toISOString() }).eq("id", 1);
+  const site = String((await settings())?.site_url || ENV_SITE).replace(/\/$/, "");
+  if (!site) return new Response("Conectado ao Bling! Pode fechar esta aba e voltar ao painel do site (#/admin).", { status: 200 });
+  return Response.redirect(`${site}/#/admin`, 302);
+}
+async function isAdmin(req: Request) {
+  const jwt = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+  if (!jwt) return false;
+  const c = createClient(SB_URL, ANON, { global: { headers: { Authorization: `Bearer ${jwt}` } }, auth: { persistSession: false } });
+  return (await c.rpc("is_admin")).data === true;
+}
+async function adminAction(b: Any) {
+  // o banco precisa chamar ESTA função (e não a de outro projeto): corrige sozinho se estiver diferente
+  const want = `${SB_URL}/functions/v1`;
+  if ((await settings())?.functions_url !== want) await db.from("bling_settings").update({ functions_url: want }).eq("id", 1);
+  switch (b.action) {
+    case "save_credentials": {
+      const id = String(b.client_id ?? "").trim(), secret = String(b.client_secret ?? "").trim();
+      if (id.length < 8 || secret.length < 8) throw new Error("Cole o Client ID e o Client Secret completos.");
+      await db.from("bling_tokens").upsert({ id: 1, client_id: id, client_secret: secret, access_token: null, refresh_token: null, expires_at: null, connected_at: null, refresh_fail_at: null, last_error: null });
+      return { ok: true };
+    }
+    case "connect": {
+      const c = await creds();
+      if (!c.id || !c.secret) throw new Error("Salve o Client ID e o Client Secret primeiro.");
+      try { // o endereço do site é guardado sozinho: é para onde voltamos depois da autorização
+        const u = new URL(String(b.return_url));
+        await db.from("bling_settings").update({ site_url: (u.origin + u.pathname).replace(/index\.html$/i, "").replace(/\/$/, "") }).eq("id", 1);
+      } catch { /* sem URL */ }
+      const state = crypto.randomUUID();
+      await db.from("bling_tokens").upsert({ id: 1, oauth_state: state, oauth_state_at: new Date().toISOString() });
+      return { ok: true, url: `${AUTH_URL}?response_type=code&client_id=${encodeURIComponent(c.id)}&state=${state}` };
+    }
+    case "disconnect":
+      await db.from("bling_tokens").update({ access_token: null, refresh_token: null, expires_at: null, connected_at: null }).eq("id", 1);
+      return { ok: true };
+    case "test": { const r = await bling("/produtos?limite=1"); return { ok: true, amostra: r?.data?.[0]?.nome ?? "(sem produtos)" }; }
+    case "list_depositos": {
+      const r = await bling("/depositos?limite=100");
+      return { ok: true, depositos: (r?.data ?? []).map((x: Any) => ({ id: x.id, nome: x.descricao ?? x.nome ?? `Depósito ${x.id}`, padrao: !!x.padrao })) };
+    }
+    case "probe": { // mostra a resposta CRUA do Bling para 2 produtos (não grava nada)
+      const prods = await bling("/produtos?limite=2");
+      const ids = (prods?.data ?? []).map((p: Any) => p.id);
+      const saldos = ids.length ? await bling("/estoques/saldos?" + ids.map((i: number) => `idsProdutos[]=${i}`).join("&")) : null;
+      const deps = await bling("/depositos?limite=100");
+      return { ok: true, produtos: prods?.data, saldos: saldos?.data, depositos: deps?.data };
+    }
+    case "import_all": {
+      const t0 = Date.now();
+      const imp = await importProducts(!!b.publish, t0);
+      const { count } = await db.from("stores").select("id", { count: "exact", head: true }).not("bling_deposito_id", "is", null);
+      const stock = !imp.partial && (count ?? 0) > 0 ? await syncAllStock() : 0;
+      return { ok: true, ...imp, stock, sem_deposito: (count ?? 0) === 0 };
+    }
+    case "sync_stock": await enqueue("stock_all", "all"); return await processQueue();
+    case "retry_errors":
+      await db.from("bling_queue").update({ status: "pending", attempts: 0, run_at: new Date().toISOString() }).eq("status", "error");
+      return await processQueue();
+    case "process": return await processQueue();
+    default: throw new Error("ação desconhecida");
+  }
+}
+
+// ------------------------- entrada -------------------------
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+  const url = new URL(req.url);
+  let isWebhook = false;
+  try {
+    if (req.method === "GET") return url.searchParams.get("code") ? await oauthCallback(url) : json({ ok: true, service: "plebeu-bling" });
+    const raw = await req.text();
+    const sig = req.headers.get("x-bling-signature-256");
+    if (sig) { isWebhook = true; return await webhook(raw, sig); }
+    const cron = req.headers.get("x-cron-secret");
+    if (cron) {
+      if (cron !== (await settings())?.cron_secret) return json({ ok: false, error: "forbidden" }, 403);
+      return json(await processQueue());
+    }
+    if (!(await isAdmin(req))) return json({ ok: false, error: "forbidden" }, 403);
+    return json(await adminAction(raw ? JSON.parse(raw) : {}));
+  } catch (e) {
+    // webhook: 500 faz o Bling tentar de novo; painel: 200 + ok:false para a mensagem chegar na tela
+    return json({ ok: false, error: String((e as Error).message ?? e) }, isWebhook ? 500 : 200);
+  }
+});
