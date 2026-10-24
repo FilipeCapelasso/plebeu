@@ -222,6 +222,8 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 
 <script>
 /* ===== ÁREA ADMIN (#/admin): isolada em ADM para não colidir com a loja ===== */
+/* Supabase devolve no máx. 1000 linhas por consulta: pgq busca todas as páginas. mk = () => consulta (com order estável) */
+const pgq=async mk=>{const out=[];for(let i=0;i<50000;i+=1000){const r=await mk().range(i,i+999);if(r.error)return{data:null,error:r.error};out.push(...(r.data||[]));if((r.data||[]).length<1000)break}return{data:out,error:null}};
 const ADM=(()=>{
 const $=s=>document.querySelector('#adm '+s);
 const R=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),D=d=>d?new Date(d).toLocaleString('pt-BR'):'—';
@@ -294,6 +296,58 @@ async function res(){
   <section class="g rounded-2xl p-4"><h2 class="font-bold">Pendências do catálogo</h2><ul class="mt-3 space-y-2">${alerts||'<li class="text-sm text-acc">✔ Catálogo em ordem.</li>'}</ul></section></div>
  <h2 class="mb-2 mt-5 font-bold">Mais vendidos (${n} dias)</h2>${tbl(['Produto','Unidades','Receita'],(d.top||[]).map(x=>`<tr><td>${esc(x.nome)}</td><td class="font-bold">${x.qtd}</td><td>${R(x.receita)}</td></tr>`).join(''))}`}
 
+/* ---------- importar catálogo (arquivo .json gerado a partir da loja antiga) ---------- */
+let IMPSTOP=false;
+function impOpen(){
+ $('#mc').innerHTML=`<h2 class="text-lg font-bold">📥 Importar catálogo</h2>
+ <p class="mt-1 text-sm text-mut">Escolha o arquivo <b>produtos_loja_integrada.json</b>. Produtos com o mesmo SKU que já existem <b>não são duplicados nem alterados</b> (só completam foto, descrição e categoria que estiverem vazias). Pode repetir sem medo.</p>
+ <label class="mt-3 block text-xs text-mut">Arquivo<input id="im_f" type="file" accept=".json,application/json"></label>
+ <label class="mt-3 block text-xs text-mut">Produtos novos<select id="im_a"><option value="1">Entram ATIVOS (como estão na loja antiga)</option><option value="">Entram INATIVOS (eu reviso e publico)</option></select></label>
+ <label class="mt-3 flex items-center gap-2 text-sm"><input id="im_c" type="checkbox" checked> Copiar a foto principal para o meu armazenamento <span class="text-xs text-mut">(recomendado: não depende mais da loja antiga)</span></label>
+ <label class="mt-2 flex items-center gap-2 text-sm"><input id="im_g" type="checkbox"> Copiar também as fotos extras <span class="text-xs text-mut">(mais lento)</span></label>
+ <pre id="im_o" class="mt-3 hidden max-h-60 overflow-auto whitespace-pre-wrap rounded-lg bg-s2 p-3 text-xs"></pre><div id="im_b" class="mt-2 hidden h-2 overflow-hidden rounded-full bg-s2"><div id="im_bar" class="h-2 rounded-full bg-pri" style="width:0"></div></div>
+ <div class="mt-4 flex justify-end gap-2"><button id="im_s" class="g hidden rounded-lg px-4 py-2" onclick="ADM.impStop()">Parar</button><button id="im_x" class="g rounded-lg px-4 py-2" onclick="ADM.closeM()">Fechar</button><button id="im_go" class="b" onclick="ADM.impRun()">Importar</button></div>`;
+ $('#modal').classList.remove('hidden')}
+function impStop(){IMPSTOP=true;$('#im_o').textContent+='\nParando… (termina o lote atual)'}
+async function impRun(){
+ const f=$('#im_f').files[0];if(!f)return toast('Escolha o arquivo .json.');
+ let data;try{data=JSON.parse(await f.text());if(!Array.isArray(data.products))throw 0}catch(e){return toast('Arquivo inválido.')}
+ const act=!!$('#im_a').value,copy=$('#im_c').checked,gal=$('#im_g').checked,out=$('#im_o');IMPSTOP=false;
+ $('#im_go').disabled=true;$('#im_f').disabled=true;out.classList.remove('hidden');$('#im_b').classList.remove('hidden');$('#im_s').classList.remove('hidden');
+ const log=t=>{out.textContent+=t+'\n';out.scrollTop=out.scrollHeight},bar=v=>{$('#im_bar').style.width=Math.round(v*100)+'%'};
+ try{
+  out.textContent='';log('Lendo o que já existe no site…');
+  const[{data:ex,error:e1},{data:cs}]=await Promise.all([pgq(()=>sb.from('products').select('id,sku,slug,image_url,description,category_slug,gallery,old_price').order('id')),sb.from('categories').select('slug')]);
+  if(e1)throw new Error(e1.message);
+  const have=new Set((cs||[]).map(c=>c.slug)),newCats=(data.cats||[]).filter(c=>!have.has(c.slug));
+  if(newCats.length){const{error}=await sb.from('categories').insert(newCats);log(error?'⚠ Categorias: '+error.message:'Categorias criadas: '+newCats.map(c=>c.name).join(', '))}
+  const bySku=new Map(ex.filter(x=>x.sku).map(x=>[String(x.sku).toLowerCase(),x])),slugs=new Set(ex.map(x=>x.slug));
+  const todo=data.products,N=todo.length;let ok=0,fill=0,skip=0,bad=0,done=0,imgFail=0;
+  const upImg=async(u,key)=>{if(!copy||!u)return u;try{const r=await fetch(u);if(!r.ok)throw 0;const b=await r.blob(),ct=b.type||'image/jpeg',ext=ct.includes('png')?'png':ct.includes('webp')?'webp':'jpg',path=`import/${key}.${ext}`;
+    const{error}=await sb.storage.from('products').upload(path,b,{contentType:ct,upsert:true});if(error)throw error;return sb.storage.from('products').getPublicUrl(path).data.publicUrl}catch(e){imgFail++;return u}};
+  const pool=async(items,n,fn)=>{let i=0;await Promise.all(Array.from({length:n},async()=>{while(i<items.length&&!IMPSTOP){const k=i++;await fn(items[k],k)}}))};
+  const fresh=[];
+  for(const p of todo){const cur=bySku.get(String(p.sku).toLowerCase());
+   if(!cur){fresh.push(p);continue}
+   const patch={};if(!cur.image_url&&p.images[0])patch.image_url=p.images[0];if(!cur.description&&p.description)patch.description=p.description;if(!cur.category_slug&&p.category)patch.category_slug=p.category;if(!cur.old_price&&p.old_price)patch.old_price=p.old_price;
+   if(Object.keys(patch).length){const{error}=await sb.from('products').update(patch).eq('id',cur.id);error?bad++:fill++}else skip++}
+  log(`Já existem no site: ${fill+skip} (completados: ${fill}). Novos para criar: ${fresh.length}.`);
+  const rows=[];
+  await pool(fresh,4,async(p,k)=>{
+   const imgs=p.images||[],main=await upImg(imgs[0],`${p.li_id||p.sku}-0`),extra=[];
+   if(gal)for(let j=1;j<Math.min(imgs.length,6);j++)extra.push(await upImg(imgs[j],`${p.li_id||p.sku}-${j}`));else extra.push(...imgs.slice(1,6));
+   let slug=p.slug,n=2;while(slugs.has(slug))slug=`${p.slug}-${n++}`;slugs.add(slug);
+   rows.push({name:p.name,slug,sku:String(p.sku),price:p.price,pix_price:p.pix_price,pix_discount:0,old_price:p.old_price,description:p.description,category_slug:p.category,emoji:p.emoji,
+    image_url:main||null,gallery:extra,max_installments:p.installments||5,active:act&&p.active,featured:false});
+   done++;if(done%10===0){bar(done/Math.max(1,fresh.length)*.7);log(`Preparando… ${done}/${fresh.length}`)}});
+  log(`Gravando ${rows.length} produtos…`);
+  for(let i=0;i<rows.length&&!IMPSTOP;i+=50){const lote=rows.slice(i,i+50),{error}=await sb.from('products').insert(lote);
+   if(!error)ok+=lote.length;else for(const r of lote){const{error:e2}=await sb.from('products').insert(r);if(e2){bad++;log(`⚠ ${r.sku} ${r.name.slice(0,40)}: ${e2.message}`)}else ok++}
+   bar(.7+Math.min(1,(i+50)/Math.max(1,rows.length))*.3)}
+  bar(1);log(`\n✔ Concluído: ${ok} criados · ${fill} completados · ${skip} já estavam iguais · ${bad} com erro${imgFail?` · ${imgFail} foto(s) mantidas no link original`:''}${IMPSTOP?' · (parado pelo usuário: rode de novo para continuar)':''}`);
+  log('Estoque: conecte o Bling (aba Bling) — o saldo de cada loja chega sozinho pelo SKU. Sem Bling, defina o estoque na lista de produtos.')
+ }catch(e){log('✖ Erro: '+(e.message||e))}
+ $('#im_s').classList.add('hidden');$('#im_go').disabled=false;$('#im_f').disabled=false;if(tab==='prod')prod()}
 /* ---------- produtos ---------- */
 let PD={p:[],s:[]},PF='todos',PQ='',PSEL=new Set(),PSHOW=60;
 const stk=id=>PD.s.filter(x=>x.product_id===id),qOf=(id,st)=>(PD.s.find(x=>x.product_id===id&&x.store_id===st)||{}).qty??0;
@@ -302,9 +356,9 @@ const PFLT={todos:()=>true,ativos:x=>x.active,inativos:x=>!x.active,semfoto:x=>x
 const PCH=[['todos','Todos'],['ativos','Ativos'],['inativos','Inativos'],['semfoto','Sem foto'],['semcat','Sem categoria'],['semsku','Sem SKU'],['semestoque','Sem estoque'],['baixo','Estoque baixo'],['bling','Do Bling'],['site','Só do site']];
 const pcur=()=>{const q=PQ.trim().toLowerCase(),f=PFLT[PF]||PFLT.todos;return PD.p.filter(x=>f(x)&&(!q||(x.name+' '+(x.sku||'')+' '+(x.brand||'')).toLowerCase().includes(q)))};
 async function prod(){
- const[{data:p},{data:s}]=await Promise.all([sb.from('products').select('*').order('created_at',{ascending:false}),sb.from('product_stock').select('*')]);
+ const[{data:p},{data:s}]=await Promise.all([pgq(()=>sb.from('products').select('*').order('created_at',{ascending:false}).order('id')),pgq(()=>sb.from('product_stock').select('*').order('product_id').order('store_id'))]);
  PD={p:p||[],s:s||[]};PSEL.clear();
- $('#main').innerHTML=`<div class="mb-3 flex flex-wrap items-center gap-2"><input id="f" placeholder="Buscar por nome, SKU ou marca…" class="max-w-xs" value="${esc(PQ)}"><button class="b" onclick="ADM.edit()">+ Novo produto</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expP()">Exportar CSV</button></div><div id="ap_chips" class="mb-3 flex flex-wrap gap-2"></div><div id="ap_bulk"></div><div id="ap_list"></div>`;
+ $('#main').innerHTML=`<div class="mb-3 flex flex-wrap items-center gap-2"><input id="f" placeholder="Buscar por nome, SKU ou marca…" class="max-w-xs" value="${esc(PQ)}"><button class="b" onclick="ADM.edit()">+ Novo produto</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expP()">Exportar CSV</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.impOpen()">📥 Importar catálogo (arquivo)</button></div><div id="ap_chips" class="mb-3 flex flex-wrap gap-2"></div><div id="ap_bulk"></div><div id="ap_list"></div>`;
  $('#f').oninput=e=>{PQ=e.target.value;PSHOW=60;prodList()};prodList()}
 function prodList(){
  const L=pcur(),sel=PSEL.size,row=x=>`<tr class="${x.active?'':'opacity-60'}"><td><input type="checkbox" ${PSEL.has(x.id)?'checked':''} onchange="ADM.psel('${x.id}',this.checked)"></td>
@@ -422,7 +476,7 @@ function expO(){csv('pedidos',['Pedido','Data','Loja','Cliente','WhatsApp','Entr
 let CD=[],CUR=null;
 const waNum=ph=>{const d=String(ph||'').replace(/\D/g,'');return d.length<=11?'55'+d:d};
 async function cli(){
- const{data:c,error}=await sb.from('admin_accounts').select('*').order('last_activity',{ascending:false});CD=c||[];
+ const{data:c,error}=await pgq(()=>sb.from('admin_accounts').select('*').order('last_activity',{ascending:false}).order('phone'));CD=c||[];
  if(error)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Atualize o banco para ver as contas.</p><p class="mt-1 text-mut">Rode o arquivo sql.txt (banco completo) no SQL Editor do Supabase e recarregue. ${esc(error.message)}</p></div>`;
  $('#main').innerHTML=`<div class="mb-3 flex flex-wrap gap-2"><input id="ac_q" placeholder="Buscar por nome, WhatsApp ou e-mail…" class="max-w-xs"><select id="ac_f" class="max-w-48"><option value="">Todas as contas</option><option value="buy">Já compraram</option><option value="look">Só olharam (sem compra)</option></select><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expC()">Exportar CSV</button></div><p class="mb-3 text-xs text-mut">Toda pessoa que preenche <b>nome e WhatsApp</b> (no perfil, no carrinho ou ao comprar) aparece aqui. E-mail e endereço são opcionais.</p><div id="ac_list"></div>`;
  $('#ac_q').oninput=cliList;$('#ac_f').onchange=cliList;cliList()}
@@ -462,7 +516,7 @@ async function cliDet(ph){
 
 /* ---------- visualizações ---------- */
 async function vis(){
- const{data:v}=await sb.from('admin_product_views').select('*').order('views',{ascending:false});
+ const{data:v}=await pgq(()=>sb.from('admin_product_views').select('*').order('views',{ascending:false}).order('product_id'));
  $('#main').innerHTML=tbl(['Produto','Visualizações','Visitantes únicos','Última'],(v||[]).map(x=>`<tr><td>${esc(x.name)}</td><td class="font-bold text-acc">${x.views}</td><td>${x.visitors}</td><td>${D(x.last_view)}</td></tr>`).join(''))+`<p class="mt-2 text-xs text-mut">Conta 1 visualização por visitante a cada 30 minutos em cada produto.</p>`}
 
 /* ---------- cupons ---------- */
@@ -610,7 +664,7 @@ async function bl(){
   <div class="mt-4 text-right"><button class="b" onclick="ADM.saveBl()">Salvar regras</button></div></details></div>`;
  if(fresh&&BLPOLL<30){BLPOLL++;setTimeout(()=>{if(tab==='bl')bl()},5000)}}
 
-return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,cliMsg,cliWa,cliCopy,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveConnect,copy,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl,savePw,saveSet,saveStore,addCat,catPos,delCat,addRev,delRev};
+return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,cliMsg,cliWa,cliCopy,impOpen,impRun,impStop,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveConnect,copy,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl,savePw,saveSet,saveStore,addCat,catPos,delCat,addRev,delRev};
 })();
 </script>
 <script>
@@ -644,7 +698,7 @@ function ld(p){let e=document.getElementById('ld');if(!e){e=document.createEleme
   offers:{'@type':'Offer',priceCurrency:'BRL',price:String(p.price),url:location.href.split('#')[0]+'#/p/'+p.slug,availability:'https://schema.org/'+(n>0?'InStock':'OutOfStock'),itemCondition:'https://schema.org/NewCondition'}}).replace(/</g,'\u003c')}
 async function load(){
  if(sb)try{
-  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),sb.from('products').select('*').eq('active',true).order('created_at'),sb.from('product_stock').select('*'),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
+  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),pgq(()=>sb.from('products').select('*').eq('active',true).order('created_at').order('id')),pgq(()=>sb.from('product_stock').select('*').order('product_id').order('store_id')),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
   if(a.error||b.error||c.error)throw 0;
   Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});S.lt=Date.now();$('#offl').classList.add('hidden');S.stock={};(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
   if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
