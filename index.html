@@ -10,6 +10,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Plebeu Games","description":"Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho.","areaServed":["Rio Branco, AC","Porto Velho, RO"],"paymentAccepted":"Pix, Cartão de crédito","currenciesAccepted":"BRL"}</script>
 <script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m!=='dark')d.classList.add('light');d.dataset.ac=a||'oceano'}catch(e){document.documentElement.classList.add('light');document.documentElement.dataset.ac='oceano'}</script>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://xescguuoutqzqiwevlcb.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.awsli.com.br">
 <meta property="og:title" content="Plebeu Games | Sua loja gamer no Acre e Rondônia">
 <meta property="og:description" content="Compre até as 15h e receba no mesmo dia em Rio Branco e Porto Velho.">
 <script src="config.js"></script>
@@ -162,10 +164,11 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
    <h2 id="gt" class="font-display text-4xl font-bold">Destaques da semana</h2>
    <div class="flex items-center gap-3 text-sm">
     <label class="flex items-center gap-2 text-mut"><input id="onlys" type="checkbox" class="h-4 w-4 accent-pri">Só com estoque</label>
-    <select id="sort" class="h-10 px-3" aria-label="Ordenar"><option value="rel">Relevância</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option><option value="az">A–Z</option></select>
+    <select id="sort" class="h-10 px-3" aria-label="Ordenar"><option value="rel">Relevância</option><option value="new">Novidades</option><option value="off">Maiores descontos</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option><option value="az">A–Z</option></select>
    </div>
   </div>
   <div id="grid" class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5 min-[1700px]:grid-cols-6"></div>
+  <div id="more" class="mt-8 flex flex-col items-center gap-2"></div>
  </section>
 
  <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2 py-12">
@@ -215,6 +218,7 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
  <a href="#/" class="py-3 text-center">🏠<br>Início</a><a href="#vitrine" class="py-3 text-center">🕹️<br>Produtos</a>
  <button id="mfav" class="py-3">♥<br>Favoritos</button><button id="mcart" class="py-3">🛒<br>Carrinho</button><a href="#/perfil" class="py-3 text-center">👤<br>Perfil</a>
 </nav>
+<button id="up" aria-label="Voltar ao topo" class="fixed bottom-36 right-4 z-30 hidden h-11 w-11 rounded-full border border-bd bg-s3 text-lg shadow-lg">↑</button>
 <a id="wa" target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-20 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-2xl shadow-lg md:bottom-5">💬</a>
 
 <div id="pay" class="fixed inset-0 z-[70] hidden grid place-items-center overflow-auto bg-black/80 p-4" role="dialog" aria-modal="true" aria-label="Pagamento"><div id="payc" class="w-full max-w-md rounded-3xl border border-bd bg-s3 p-6 text-center shadow-2xl"></div></div>
@@ -473,39 +477,43 @@ async function setSt(id,v){
 function expO(){csv('pedidos',['Pedido','Data','Loja','Cliente','WhatsApp','Entrega','Endereço','Itens','Subtotal','Desconto','Frete','Total','Cupom','Pagamento','Status pagamento','Status','Bling'],ocur().map(x=>[x.order_number,D(x.created_at),sn(x.store_id),x.customer_name,x.customer_phone,x.delivery_type,x.address,(x.items||[]).map(i=>`${i.qty}x ${i.name}`).join(' | '),x.subtotal,x.discount,x.delivery_fee,x.total,x.coupon_code,x.payment,x.payment_status,x.status,x.bling_order_id]))}
 
 /* ---------- contas ---------- */
-let CD=[],CUR=null;
+let CD=[],CUR=null,ALW=new Set();
 const waNum=ph=>{const d=String(ph||'').replace(/\D/g,'');return d.length<=11?'55'+d:d};
 async function cli(){
  const{data:c,error}=await pgq(()=>sb.from('admin_accounts').select('*').order('last_activity',{ascending:false}).order('phone'));CD=c||[];
+ if(!error){const{data:al}=await sb.from('admin_stock_alerts').select('phone').gt('qty',0);ALW=new Set((al||[]).map(x=>x.phone))}
  if(error)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Atualize o banco para ver as contas.</p><p class="mt-1 text-mut">Rode o arquivo sql.txt (banco completo) no SQL Editor do Supabase e recarregue. ${esc(error.message)}</p></div>`;
- $('#main').innerHTML=`<div class="mb-3 flex flex-wrap gap-2"><input id="ac_q" placeholder="Buscar por nome, WhatsApp ou e-mail…" class="max-w-xs"><select id="ac_f" class="max-w-48"><option value="">Todas as contas</option><option value="buy">Já compraram</option><option value="look">Só olharam (sem compra)</option></select><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expC()">Exportar CSV</button></div><p class="mb-3 text-xs text-mut">Toda pessoa que preenche <b>nome e WhatsApp</b> (no perfil, no carrinho ou ao comprar) aparece aqui. E-mail e endereço são opcionais.</p><div id="ac_list"></div>`;
+ $('#main').innerHTML=`<div class="mb-3 flex flex-wrap gap-2"><input id="ac_q" placeholder="Buscar por nome, WhatsApp ou e-mail…" class="max-w-xs"><select id="ac_f" class="max-w-48"><option value="">Todas as contas</option><option value="buy">Já compraram</option><option value="look">Só olharam (sem compra)</option><option value="alert">🔔 Esperando produto que já chegou</option></select><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expC()">Exportar CSV</button></div><p class="mb-3 text-xs text-mut">Toda pessoa que preenche <b>nome e WhatsApp</b> (no perfil, no carrinho ou ao comprar) aparece aqui. E-mail e endereço são opcionais.</p><div id="ac_list"></div>`;
  $('#ac_q').oninput=cliList;$('#ac_f').onchange=cliList;cliList()}
 function cliList(){const q=($('#ac_q').value||'').toLowerCase(),f=$('#ac_f').value,
- L=CD.filter(x=>(!q||((x.name||'')+' '+(x.phone||'')+' '+(x.email||'')).toLowerCase().includes(q))&&(!f||(f==='buy'?x.orders>0:x.orders===0)));
- $('#ac_list').innerHTML=tbl(['Conta','WhatsApp','Pedidos','Total gasto','Produtos vistos','Cadastro','Última atividade',''],L.map(x=>`<tr><td><b>${esc(x.name)}</b>${x.email||x.address?`<br><span class="text-xs text-mut">${esc([x.email,x.address].filter(Boolean).join(' · '))}</span>`:''}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${x.views}</td><td class="text-xs">${D(x.created_at)}</td><td class="text-xs">${D(x.last_activity)}</td>
+ L=CD.filter(x=>(!q||((x.name||'')+' '+(x.phone||'')+' '+(x.email||'')).toLowerCase().includes(q))&&(!f||(f==='buy'?x.orders>0:f==='look'?x.orders===0:ALW.has(x.phone))));
+ $('#ac_list').innerHTML=tbl(['Conta','WhatsApp','Pedidos','Total gasto','Produtos vistos','Cadastro','Última atividade',''],L.map(x=>`<tr><td><b>${esc(x.name)}</b>${ALW.has(x.phone)?' <span title="Pediu aviso de produto que já chegou">🔔</span>':''}${x.email||x.address?`<br><span class="text-xs text-mut">${esc([x.email,x.address].filter(Boolean).join(' · '))}</span>`:''}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${x.views}</td><td class="text-xs">${D(x.created_at)}</td><td class="text-xs">${D(x.last_activity)}</td>
  <td><button class="g rounded-lg px-2 py-1" onclick="ADM.cliDet('${esc(x.phone)}')">Perfil</button></td></tr>`).join(''))+`<p class="mt-2 text-xs text-mut">${L.length} conta(s)</p>`}
 function expC(){csv('contas',['Nome','WhatsApp','E-mail','Endereço','Pedidos','Total gasto','Produtos vistos','Cadastro','Última atividade'],CD.map(x=>[x.name,x.phone,x.email,x.address,x.orders,x.spent,x.views,D(x.created_at),D(x.last_activity)]))}
 function cliText(p){const a=CUR.a,nm=String(a.name||'').trim().split(/\s+/)[0]||'', site=location.origin+location.pathname;
  if(!p)return `Oi, ${nm}! 👋 Aqui é da Plebeu Games. Passando para avisar que temos novidades e ofertas no Pix. Quer dar uma olhada? ${site}`;
+ if(p.alert)return `Oi, ${nm}! 👋 Aqui é da Plebeu Games. Boa notícia: o ${p.product} que você pediu para avisarmos chegou! Ele sai por ${R(pxOf(p))} no Pix (ou ${R(p.price)} em até ${p.max_installments||5}x sem juros). Quer que eu separe o seu? ${site}#/p/${p.slug}`;
  return `Oi, ${nm}! 👋 Aqui é da Plebeu Games. Vi que você curtiu o ${p.product}. Ele ${CUR.inStock(p.product_id)?'está em estoque e ':''}sai por ${R(pxOf(p))} no Pix (ou ${R(p.price)} em até ${p.max_installments||5}x sem juros). Quer que eu separe o seu? ${site}#/p/${p.slug}`}
 function cliMsg(){const el=$('#cm_p');$('#cm_t').value=cliText(el?CUR.cand[+el.value]:null)}
 function cliWa(){const t=$('#cm_t').value.trim();if(!t)return toast('Escreva a mensagem.');window.open('https://wa.me/'+waNum(CUR.a.phone)+'?text='+encodeURIComponent(t),'_blank','noopener')}
 function cliCopy(){copy($('#cm_t').value)}
 async function cliDet(ph){
  const a=CD.find(x=>x.phone===ph);if(!a)return;
- const[{data:o},{data:v}]=await Promise.all([sb.from('orders').select('order_number,created_at,total,status,items').in('customer_phone',[ph,'55'+ph]).order('created_at',{ascending:false}),sb.from('admin_account_views').select('*').eq('phone',ph).order('views',{ascending:false})]);
+ const[{data:o},{data:v},{data:al}]=await Promise.all([sb.from('orders').select('order_number,created_at,total,status,items').in('customer_phone',[ph,'55'+ph]).order('created_at',{ascending:false}),sb.from('admin_account_views').select('*').eq('phone',ph).order('views',{ascending:false}),sb.from('admin_stock_alerts').select('*').eq('phone',ph).order('created_at',{ascending:false})]);
  const vs=v||[],bought=new Set((o||[]).filter(x=>x.status!=='cancelado').flatMap(x=>(x.items||[]).map(i=>String(i.id))));
  const{data:stk}=vs.length?await sb.from('product_stock').select('product_id,qty').in('product_id',vs.map(x=>x.product_id)):{data:[]};
- CUR={a,vs,cand:vs.filter(x=>x.active&&!bought.has(String(x.product_id))),inStock:id=>(stk||[]).some(r=>r.product_id===id&&r.qty>0)};
+ const arr=(al||[]).filter(x=>x.qty>0&&x.active&&!bought.has(String(x.product_id))).map(x=>({...x,views:0,alert:1})),aid=new Set(arr.map(x=>x.product_id));
+ CUR={a,vs,al:al||[],cand:[...arr,...vs.filter(x=>x.active&&!bought.has(String(x.product_id))&&!aid.has(x.product_id))],inStock:id=>(stk||[]).some(r=>r.product_id===id&&r.qty>0)||aid.has(id)};
  const K=(t,val)=>`<div class="g rounded-xl p-3 text-center"><b class="text-lg text-acc">${val}</b><br><span class="text-xs text-mut">${t}</span></div>`;
  $('#mc').innerHTML=`<h2 class="text-lg font-bold">${esc(a.name)}</h2>
  <p class="mt-1 text-sm text-mut">📱 ${esc(a.phone)}${a.email?' · ✉️ '+esc(a.email):''}${a.address?'<br>📍 '+esc(a.address):''}<br>Conta criada em ${D(a.created_at)}</p>
  <div class="mt-3 grid grid-cols-3 gap-2">${K('pedidos',a.orders)}${K('total gasto',R(a.spent))}${K('produtos vistos',vs.length)}</div>
+ ${CUR.al.length?`<h3 class="mb-1 mt-4 font-semibold">🔔 Pediu aviso quando chegar</h3>`+tbl(['Produto','Loja','Pedido em','Situação'],CUR.al.map(x=>`<tr><td>${esc(x.product)}</td><td>${esc(x.store||'')}</td><td class="text-xs">${D(x.created_at)}</td><td class="text-xs ${x.qty>0?'font-bold text-acc':'text-mut'}">${x.qty>0?'✅ já chegou ('+x.qty+' un.)':'ainda sem estoque'}</td></tr>`).join('')):''}
  <h3 class="mb-1 mt-4 font-semibold">Produtos que olhou</h3>`+
  tbl(['Produto','Vezes','Última vez',''],vs.map(x=>`<tr><td>${esc(x.product)}${x.active?'':' <span class="text-xs text-mut">(inativo)</span>'}</td><td class="font-bold">${x.views}</td><td class="text-xs">${D(x.last_view)}</td><td class="text-xs">${bought.has(String(x.product_id))?'✅ já comprou':''}</td></tr>`).join(''))+
  `<p class="mt-1 text-xs text-mut">Conta as visitas no mesmo aparelho/navegador em que a pessoa preencheu os dados (visitas repetidas em menos de 30 min contam uma vez).</p>
  <h3 class="mb-1 mt-4 font-semibold">💬 Mensagem de incentivo (WhatsApp)</h3>
- ${CUR.cand.length?`<label class="block text-xs text-mut">Produto da mensagem (já vem o mais visto que ela ainda não comprou)<select id="cm_p" onchange="ADM.cliMsg()">${CUR.cand.map((x,i)=>`<option value="${i}">${esc(x.product)} · ${x.views}x</option>`).join('')}</select></label>`:'<p class="text-xs text-mut">Nenhum produto ativo para sugerir (ela ainda não olhou nada, ou já comprou tudo que olhou). A mensagem abaixo é genérica.</p>'}
+ ${CUR.cand.length?`<label class="block text-xs text-mut">Produto da mensagem (já vem o mais visto que ela ainda não comprou)<select id="cm_p" onchange="ADM.cliMsg()">${CUR.cand.map((x,i)=>`<option value="${i}">${x.alert?'🔔 ':''}${esc(x.product)} · ${x.alert?'chegou':x.views+'x'}</option>`).join('')}</select></label>`:'<p class="text-xs text-mut">Nenhum produto ativo para sugerir (ela ainda não olhou nada, ou já comprou tudo que olhou). A mensagem abaixo é genérica.</p>'}
  <textarea id="cm_t" rows="5" class="mt-2 w-full"></textarea>
  <div class="mt-2 flex flex-wrap gap-2"><button class="b" onclick="ADM.cliWa()">Enviar pelo WhatsApp</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.cliCopy()">Copiar texto</button></div>
  <p class="mt-1 text-xs text-mut">Abre o WhatsApp já com o texto; você pode editar antes de enviar.</p>
@@ -679,6 +687,7 @@ const $=s=>document.querySelector(s),R=v=>Number(v).toLocaleString('pt-BR',{styl
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const VID=(()=>{let v=ls.get('vid',null);if(!v){v=(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).replace(/[^\w-]/g,'');ls.set('vid',v)}return v})();
+const PG=30,PCOLS='id,slug,name,price,created_at,brand,category_slug,emoji,image_url,gallery,old_price,pix_discount,pix_price,max_installments,featured,active,sold_count,sku';
 const S={stores:[],cats:[],prods:[],stock:{},rev:[],demo:false,store:ls.get('store','rb'),cat:'',q:'',sort:'rel',only:false,fav:false,pt:'pg',ords:[],cart:ls.get('cart',[]),favs:ls.get('favs',[]),pay:'pix',ship:'entrega',cp:null,f:Object.assign({nm:'',ph:'',ad:'',em:''},ls.get('prof',{}))};
 
 const D=(i,n,c,e,p,o,d,f,s)=>({id:'d'+i,slug:'demo-'+i,name:n,category_slug:c,emoji:e,price:p,old_price:o,pix_discount:d,max_installments:5,featured:f,sold_count:s,features:['Produto de demonstração'],description:'Conecte o Supabase para exibir o catálogo real da loja.'});
@@ -698,7 +707,7 @@ function ld(p){let e=document.getElementById('ld');if(!e){e=document.createEleme
   offers:{'@type':'Offer',priceCurrency:'BRL',price:String(p.price),url:location.href.split('#')[0]+'#/p/'+p.slug,availability:'https://schema.org/'+(n>0?'InStock':'OutOfStock'),itemCondition:'https://schema.org/NewCondition'}}).replace(/</g,'\u003c')}
 async function load(){
  if(sb)try{
-  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),pgq(()=>sb.from('products').select('*').eq('active',true).order('created_at').order('id')),pgq(()=>sb.from('product_stock').select('*').order('product_id').order('store_id')),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
+  const[a,b,c,d,r,cf]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position'),pgq(()=>sb.from('products').select(PCOLS).eq('active',true).order('created_at').order('id')),pgq(()=>sb.from('product_stock').select('*').order('product_id').order('store_id')),sb.from('reviews').select('*').order('created_at',{ascending:false}).limit(12),sb.from('store_settings').select('*').eq('id',1).maybeSingle()]);
   if(a.error||b.error||c.error)throw 0;
   Object.assign(S,{stores:a.data,cats:b.data,prods:c.data,rev:r.data||[]});S.lt=Date.now();$('#offl').classList.add('hidden');S.stock={};(d.data||[]).forEach(x=>S.stock[x.product_id+'|'+x.store_id]=x.qty);
   if(cf&&cf.data)Object.assign(FRETE,{taxa:+cf.data.delivery_fee,gratis:+cf.data.free_shipping_from,corte:+cf.data.cutoff_hour});
@@ -722,10 +731,18 @@ const pic=p=>p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}" lo
 const off=p=>p.old_price?Math.round((1-p.price/p.old_price)*100):0;
 
 const nf=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const sidx=p=>p._s===undefined?(p._s=nf(p.name+' '+(p.brand||'')+' '+(p.sku||''))):p._s,tmx=p=>p._t===undefined?(p._t=Date.parse(p.created_at)||0):p._t;
+const wset=s=>new Set(nf(s).split(/[^a-z0-9]+/).filter(w=>w.length>2));
+/* produtos parecidos: mesma categoria, mais palavras em comum (ex.: mesmo console), com estoque primeiro */
+function relOf(p){const a=wset(p.name);return S.prods.filter(x=>x.id!==p.id&&x.category_slug===p.category_slug&&qty(x)>0).map(x=>{let n=0;wset(x.name).forEach(w=>{if(a.has(w))n++});return[n,x]}).sort((u,v)=>v[0]-u[0]||(v[1].sold_count||0)-(u[1].sold_count||0)).slice(0,6).map(r=>r[1])}
 function list(){
- let l=S.prods.filter(p=>(!S.cat||p.category_slug===S.cat)&&(!S.fav||S.favs.includes(p.id))&&(!S.only||qty(p)>0)&&(!S.q||nf(p.name+' '+(p.brand||'')+' '+(p.sku||'')).includes(nf(S.q))));
- const o={lo:(a,b)=>pix(a)-pix(b),hi:(a,b)=>pix(b)-pix(a),az:(a,b)=>a.name.localeCompare(b.name)}[S.sort];
- return o?l.sort(o):l.sort((a,b)=>(b.featured?1:0)-(a.featured?1:0)||(b.sold_count||0)-(a.sold_count||0));
+ const tk=nf(S.q).split(/\s+/).filter(Boolean),ofr=S.cat==='__off';
+ const l=S.prods.filter(p=>(!S.cat||(ofr?p.old_price>p.price:p.category_slug===S.cat))&&(!S.fav||S.favs.includes(p.id))&&(!S.only||qty(p)>0)&&(!tk.length||tk.every(w=>sidx(p).includes(w))));
+ const ins=(a,b)=>(qty(b)>0)-(qty(a)>0),   /* quem tem estoque vem primeiro, em qualquer ordenação */
+  o={lo:(a,b)=>ins(a,b)||pix(a)-pix(b),hi:(a,b)=>ins(a,b)||pix(b)-pix(a),az:(a,b)=>a.name.localeCompare(b.name),
+     'new':(a,b)=>ins(a,b)||tmx(b)-tmx(a),off:(a,b)=>ins(a,b)||off(b)-off(a)||tmx(b)-tmx(a)}[S.sort]
+   ||((a,b)=>ins(a,b)||(b.featured?1:0)-(a.featured?1:0)||(b.sold_count||0)-(a.sold_count||0)||off(b)-off(a)||tmx(b)-tmx(a));
+ return l.sort(o);
 }
 const card=p=>{const n=qty(p),o=off(p);
  return `<article class="ch relative flex flex-col overflow-hidden rounded-2xl border border-bd bg-s3">
@@ -739,20 +756,43 @@ const card=p=>{const n=qty(p),o=off(p);
  <p class="text-xs font-bold ${n?'text-acc':'text-red-400'}">${n?'Em estoque em '+esc(st().name):'Sem estoque em '+esc(st().name)}</p>
  <button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="mt-auto h-11 rounded-xl bg-pri text-sm font-bold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:bg-bd disabled:text-mut">${n?'Adicionar ao carrinho':'Indisponível'}</button></div></article>`};
 
+function more(t,v){const m=$('#more');if(!m)return;if(S.io)S.io.disconnect();
+ m.innerHTML=t>v?`<p class="text-sm text-mut">Exibindo ${v} de ${t} produtos</p><button data-a="more" class="h-11 rounded-xl border border-pri px-8 font-bold hover:bg-pri/20">Mostrar mais</button>`:(t>PG?`<p class="text-sm text-mut">Você viu todos os ${t} produtos.</p>`:'');
+ const b=m.querySelector('button');
+ if(b&&'IntersectionObserver' in window){S.io=S.io||new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){S.lim=(S.lim||PG)+PG;render()}},{rootMargin:'700px'});S.io.observe(b)}}
 function render(){
- const l=list(),c=S.cats.find(x=>x.slug===S.cat);
- $('#grid').innerHTML=l.length?l.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
- {const sg=[S.cat,S.q,S.sort,S.only,S.fav,S.store].join('|');if(sg!==S.sg){S.sg=sg;[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'})}}
- $('#nav').innerHTML=[['','Tudo','🔥']].concat(S.cats.map(x=>[x.slug,x.name,x.emoji])).map(([s,n,e])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)}</button>`).join('');
- $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:c?c.name:'Destaques da semana';
+ const l=list(),c=S.cats.find(x=>x.slug===S.cat),sg=[S.cat,S.q,S.sort,S.only,S.fav,S.store].join('|'),ch=sg!==S.sg;
+ if(ch){S.sg=sg;S.lim=PG}
+ const vis=l.slice(0,S.lim||PG);
+ $('#grid').innerHTML=vis.length?vis.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
+ if(ch)[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'});
+ more(l.length,vis.length);
+ const nOff=S.prods.filter(p=>p.old_price>p.price).length,cnt={};S.prods.forEach(p=>{cnt[p.category_slug]=(cnt[p.category_slug]||0)+1});
+ $('#nav').innerHTML=[['','Tudo','🔥',S.prods.length]].concat(nOff?[['__off','Ofertas','🏷️',nOff]]:[],S.cats.map(x=>[x.slug,x.name,x.emoji,cnt[x.slug]||0])).filter(x=>x[3]>0||S.cat===x[0]||!S.prods.length)
+  .map(([s,n,e,k])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)} <span class="text-xs opacity-70">${k||''}</span></button>`).join('');
+ $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:S.cat==='__off'?'Ofertas':c?c.name:'Destaques da semana';
  renderCart();
 }
+/* ---------- avise-me quando chegar ---------- */
+const alertBox=p=>`<div class="rounded-2xl border border-bd bg-s3 p-4 text-sm"><p class="font-semibold">🔔 Avise-me quando chegar</p><p class="mt-1 text-mut">Sem estoque em ${esc(st().name)}. Deixe seu WhatsApp e avisamos quando voltar.</p><div class="mt-3 grid gap-2 sm:grid-cols-2"><input id="al_n" placeholder="Seu nome" autocomplete="name" value="${esc(S.f.nm)}" class="h-11 px-3"><input id="al_p" placeholder="WhatsApp com DDD" inputmode="tel" autocomplete="tel" value="${esc(S.f.ph)}" class="h-11 px-3"></div><button data-a="alert" data-id="${p.id}" class="mt-2 h-11 w-full rounded-xl bg-pri font-bold text-white">Quero ser avisado</button></div>`;
+async function alertReq(id,btn){const n=($('#al_n').value||'').trim(),ph=($('#al_p').value||'').replace(/\D/g,'');
+ if(n.length<2||ph.length<10)return toast('Informe seu nome e WhatsApp com DDD.');
+ if(!sb||S.demo)return toast('Disponível só na loja online.');
+ btn.disabled=true;const{error}=await sb.rpc('request_alert',{p_product:id,p_store:st().id,p_name:n,p_phone:ph,p_visitor:VID});btn.disabled=false;
+ if(error)return toast('Não foi possível agora. Tente de novo.');
+ if(!S.f.nm)S.f.nm=n;if(!S.f.ph)S.f.ph=ph;ls.set('prof',S.f);
+ btn.closest('div').innerHTML='<p class="font-semibold">✅ Pronto! Avisaremos no seu WhatsApp quando chegar.</p>'}
 /* ---------- página do produto ---------- */
 let gi=0;
 function pdp(slug){
  {const _p=S.prods.find(x=>x.slug===slug);if(sb&&!S.demo&&_p&&S.vw!==slug){S.vw=slug;sb.rpc('track_view',{p_product:_p.id,p_visitor:VID}).then(()=>{},()=>{})}}
  const p=S.prods.find(x=>x.slug===slug);if(!p){location.hash='#/';return}
- const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=S.prods.filter(x=>x.category_slug===p.category_slug&&x.id!==p.id).slice(0,6);
+ /* a lista da loja não traz a descrição (deixa tudo bem mais leve): busca só a do produto aberto */
+ S.det=S.det||{};if(S.det[p.id])Object.assign(p,S.det[p.id]);
+ else if(p.description===undefined&&sb&&!S.demo&&S.dq!==p.id){S.dq=p.id;sb.from('products').select('description,features').eq('id',p.id).maybeSingle().then(({data})=>{S.dq=0;S.det[p.id]={description:(data&&data.description)||'',features:(data&&data.features)||[]};const m=location.hash.match(/^#\/p\/(.+)$/);if(m&&decodeURIComponent(m[1])===p.slug)pdp(p.slug)},()=>{S.dq=0})}
+ if(!S.demo)ls.set('recent',[p.id,...ls.get('recent',[]).filter(i=>i!==p.id)].slice(0,12));
+ const rcv=ls.get('recent',[]).filter(i=>i!==p.id).map(i=>S.prods.find(x=>x.id===i)).filter(Boolean).slice(0,6);
+ const n=qty(p),o=off(p),imgs=[p.image_url,...(p.gallery||[])].filter(Boolean),rel=relOf(p);
  document.title=p.name+' | Plebeu Games';ld(p);
  $('#pdp').innerHTML=`<a href="#/" class="text-sm text-mut hover:text-white">← Voltar para a loja</a>
  <div class="mt-5 grid gap-8 lg:grid-cols-[minmax(0,680px)_minmax(0,1fr)] lg:gap-12">
@@ -765,11 +805,15 @@ function pdp(slug){
    <div class="space-y-1.5 rounded-2xl border border-bd p-4 text-sm">${S.stores.map(s=>{const k=p.id+'|'+s.id,q=k in S.stock?S.stock[k]:(S.demo?9:0);return `<p>${q?'✅':'⛔'} <b>${esc(s.name)}</b> <span class="text-mut">— ${q?(q<4?'últimas '+q+' unidades':'disponível'):'sem estoque'}</span></p>`}).join('')}</div>
    <div class="flex gap-3"><button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="h-12 flex-1 rounded-xl border border-pri font-bold hover:bg-pri/20 disabled:opacity-40">Adicionar</button>
    <button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-12 flex-1 rounded-xl bg-pri font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível em '+esc(st().name)}</button><button data-share="${esc(p.slug)}" class="h-12 rounded-xl border border-bd px-4 font-bold hover:border-pri" aria-label="Compartilhar produto">↗</button></div>
+   ${n?'':alertBox(p)}<a href="https://wa.me/${esc(st().whatsapp)}?text=${encodeURIComponent('Oi! Tenho uma dúvida sobre: '+p.name+' '+location.href.split('#')[0]+'#/p/'+p.slug)}" target="_blank" rel="noopener" class="inline-block text-sm text-mut underline hover:text-white">💬 Tirar dúvida pelo WhatsApp</a>
    <div class="rounded-2xl border border-bd p-4"><p class="mb-2 text-sm font-semibold">Calcular entrega</p><div class="flex gap-2"><input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite seu CEP" class="h-11 min-w-0 flex-1 px-3"><button data-a="cep" class="h-11 rounded-xl bg-s2 px-5 text-sm font-bold ring-1 ring-bd hover:ring-pri">Calcular</button></div><p id="cepr" class="mt-2 text-sm text-mut"></p></div>
   </div></div>
-  <div class="mt-10 grid gap-8 md:grid-cols-2"><div><h2 class="mb-3 font-display text-3xl font-bold">Descrição</h2><p class="text-mut">${esc(p.description)}</p></div>
+  <div class="mt-10 grid gap-8 md:grid-cols-2"><div><h2 class="mb-3 font-display text-3xl font-bold">Descrição</h2><p class="whitespace-pre-line text-mut">${p.description===undefined?'<span class="sk block h-4 w-3/4 rounded"></span>':esc(p.description)}</p></div>
   ${(p.features||[]).length?`<div><h2 class="mb-3 font-display text-3xl font-bold">Destaques</h2><ul class="space-y-2 text-mut">${p.features.map(f=>`<li>✔ ${esc(f)}</li>`).join('')}</ul></div>`:''}</div>
-  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rel.map(card).join('')}</div>`:''}`;
+  ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rel.map(card).join('')}</div>`:''}
+  ${rcv.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Vistos recentemente</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rcv.map(card).join('')}</div>`:''}
+  <div class="h-20 md:hidden"></div>
+  <div class="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-bd bg-s3/95 px-4 pt-2.5 backdrop-blur md:hidden" style="padding-bottom:calc(.625rem + env(safe-area-inset-bottom,0px))"><div class="min-w-0 flex-1"><p class="font-display text-2xl font-bold leading-none text-acc">${R(pix(p))}</p><p class="text-[11px] text-mut">no Pix</p></div><button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-11 rounded-xl bg-pri px-6 font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível'}</button></div>`;
 }
 async function cep(){
  const v=$('#cep').value.replace(/\D/g,''),o=$('#cepr');if(v.length!==8)return o.textContent='Digite os 8 números do CEP.';
@@ -1106,6 +1150,8 @@ document.addEventListener('click',e=>{
  else if(a==='fav'){S.favs=S.favs.includes(id)?S.favs.filter(x=>x!==id):S.favs.concat(id);save();render()}
  else if(a==='cat'){S.cat=id;S.fav=false;if(location.hash)location.hash='#/';render();$('#vitrine').scrollIntoView()}
  else if(a==='inc')add(id);
+ else if(a==='more'){S.lim=(S.lim||PG)+PG;render()}
+ else if(a==='alert')alertReq(id,t);
  else if(a==='dec'){const it=S.cart.find(x=>x.id===id);it.n--;if(it.n<1)S.cart=S.cart.filter(x=>x!==it);save();renderCart()}
  else if(a==='rm'){S.cart=S.cart.filter(x=>x.id!==id);save();renderCart()}
  else if(a==='coupon')coupon();else if(a==='order')order();else if(a==='cep')cep();
@@ -1123,11 +1169,14 @@ function acct(){if(!sb||S.demo)return;const nm=(S.f.nm||'').trim(),ph=(S.f.ph||'
  sb.rpc('save_account',{p_name:nm,p_phone:ph,p_email:(S.f.em||'').trim()||null,p_address:(S.f.ad||'').trim()||null,p_visitor:VID}).then(r=>{if(r&&r.error)S.as=''},()=>{S.as=''})}
 setTimeout(acct,3000);
 document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em',pnm:'nm',pph:'ph',pad:'ad',pem:'em'}[e.target.id];if(m){S.f[m]=e.target.value;ls.set('prof',S.f);clearTimeout(S.act);S.act=setTimeout(acct,1500)}});
-$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const r=S.q?S.prods.filter(p=>nf(p.name+' '+(p.sku||'')).includes(nf(S.q))).slice(0,5):[];
- $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center justify-between gap-3 px-4 py-2.5 text-sm hover:bg-bd"><span class="truncate">${esc(p.emoji||'🎮')} ${esc(p.name)}</span><b class="text-acc">${R(pix(p))}</b></a>`).join('');
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const tk=nf(S.q).split(/\s+/).filter(Boolean);
+ const r=tk.length?S.prods.filter(p=>tk.every(w=>sidx(p).includes(w))).sort((a,b)=>(qty(b)>0)-(qty(a)>0)||(nf(a.name).startsWith(tk[0])?0:1)-(nf(b.name).startsWith(tk[0])?0:1)).slice(0,6):[];
+ $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-bd">${p.image_url?`<img src="${esc(p.image_url)}" alt="" loading="lazy" class="h-9 w-9 shrink-0 rounded-lg object-contain">`:`<span class="grid h-9 w-9 shrink-0 place-items-center">${esc(p.emoji||'🎮')}</span>`}<span class="min-w-0 flex-1 truncate">${esc(p.name)}</span><b class="shrink-0 text-acc">${R(pix(p))}</b></a>`).join('');
  $('#sug').classList.toggle('hidden',!r.length);if(!location.hash.startsWith('#/p/'))render()});
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){location.hash='#/';$('#sug').classList.add('hidden');render();$('#vitrine').scrollIntoView()}});
-$('#sort').onchange=e=>{S.sort=e.target.value;render()};$('#onlys').onchange=e=>{S.only=e.target.checked;render()};
+$('#sort').onchange=e=>{S.sort=e.target.value;render()};
+{const up=$('#up');addEventListener('scroll',()=>up.classList.toggle('hidden',scrollY<900),{passive:true});up.onclick=()=>scrollTo({top:0,behavior:'smooth'})}
+$('#onlys').onchange=e=>{S.only=e.target.checked;render()};
 $('#store').onchange=e=>{S.store=e.target.value;ls.set('store',S.store);shell();render();route();toast('Estoque de '+st().name)};
 $('#cartb').onclick=$('#mcart').onclick=()=>{location.hash='#/carrinho'};
 $('#favb').onclick=$('#mfav').onclick=()=>{S.fav=!S.fav;S.cat='';location.hash='#/';render();$('#vitrine').scrollIntoView()};
@@ -1135,7 +1184,7 @@ addEventListener('hashchange',route);
 $('#grid').innerHTML='<div class="sk h-80 rounded-2xl"></div>'.repeat(12);
 const CA=sb?ls.get('cache',null):null;
 if(CA&&CA.stores&&CA.stores.length){Object.assign(S,CA);S.store=st().id;shell();render();route()}
-load().then(()=>{if(refs().length)loadOrders().then(bdg);if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods,stock:S.stock,rev:S.rev});
+load().then(()=>{if(refs().length)loadOrders().then(bdg);if(sb&&!S.demo&&S.stores.length)ls.set('cache',{stores:S.stores,cats:S.cats,prods:S.prods.map(({_s,_t,description,features,...r})=>r),stock:S.stock,rev:S.rev});
  S.store=st().id;shell();render();CA?(location.hash.startsWith('#/p/')&&pdp(decodeURIComponent(location.hash.slice(4)))):route();setInterval(tick,1000);
  const q=new URLSearchParams(location.search),r=q.get('pedido')&&q.get('t')?{num:+q.get('pedido'),tok:q.get('t')}:null;
  if(sb&&!S.demo&&r&&r.num&&r.tok){if(q.get('pedido'))history.replaceState(null,'',location.pathname+location.hash);addRef(r.num,r.tok);openPay(r.num,r.tok,true,false)}
