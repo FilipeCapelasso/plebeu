@@ -607,7 +607,11 @@ async function blAct(a,msg,extra){
  else if(a==='import_all'||a==='auto_setup'){
   if(d.depositos)DEPS=d.depositos;
   OUT=(a==='auto_setup'?`Conexão OK (exemplo: ${d.amostra}).\n`+((d.mapped||[]).length?'Lojas ligadas: '+d.mapped.join(' · ')+'\n':'')+((d.missing||[]).length?'⚠ Sem depósito: '+d.missing.join(', ')+' → escolha em "Ajustar depósitos manualmente" e sincronize de novo.\n':''):'')
-   +`Novos: ${d.created} · ligados pelo SKU: ${d.linked} · preços atualizados: ${d.updated} · estoque sincronizado em ${d.stock||0} produtos.`+(d.partial?'\n⚠ Parou pelo limite de tempo: clique de novo para continuar de onde parou.':'')+(d.sem_deposito?'\n⚠ Nenhum depósito ligado a uma loja: ajuste os depósitos e sincronize de novo.':'')}
+   +`Novos: ${d.created} · ligados pelo SKU: ${d.linked} · preços atualizados: ${d.updated} · estoque sincronizado em ${d.stock||0} produtos.`+(d.partial?'\n⚠ Parou pelo limite de tempo: clique de novo para continuar de onde parou.':'')+(d.sem_deposito?'\n⚠ Nenhum depósito ligado a uma loja: ajuste os depósitos e sincronize de novo.':'')
+   +((d.formas||[]).length?'\nFormas de pagamento ligadas: '+d.formas.join(' · '):'')
+   +((d.formas_faltando||[]).length?'\n⚠ Não achei no Bling a forma de pagamento: '+d.formas_faltando.join(', ')+' (cadastre no Bling em Configurações > Formas de pagamento e clique de novo).':'')
+   +(d.estoque_zerado?'\n⚠ O estoque no Bling está zerado: mantive o estoque do site e deixei DESLIGADO "Receber estoque do Bling". Cadastre o estoque no Bling e ligue em Regras avançadas.':'')
+   +(d.auto_ativado?'\n✔ Pronto: a partir de agora cada pedido PAGO no site é lançado no Bling automaticamente.':'')}
  else toast(a==='test'?'Conexão OK. Exemplo: '+d.amostra:'Concluído');
  await lockInfo();bl()}
 async function saveConnect(){const id=$('#b_cid').value.trim(),sc=$('#b_csec').value.trim();
@@ -624,7 +628,14 @@ async function saveBl(){
  const{error}=await sb.from('bling_settings').update({enabled:$('#b_enabled').checked,push_orders:$('#b_push_orders').checked,sync_stock:$('#b_sync_stock').checked,sync_price:$('#b_sync_price').checked,
   bling_reserves_stock:m!=='late',stock_movement:m==='mov',safety_stock:n('safety_stock')||0,situacao_id:n('situacao_id'),loja_id:n('loja_id'),forma_pagamento_pix:n('forma_pagamento_pix'),forma_pagamento_cartao:n('forma_pagamento_cartao')}).eq('id',1);
  toast(error?'Erro: '+error.message:'Regras salvas');if(!error){await lockInfo();bl()}}
-let BLPOLL=0;
+let BLPOLL=0,MPS=null;
+async function mpCheck(){
+ MPS={loading:1};
+ try{const{data,error}=await sb.functions.invoke('mercadopago',{body:{action:'check'}});
+  MPS=(error||!data)?{err:'A função "mercadopago" ainda não está publicada no Supabase (Edge Functions).'}:(data.ok===false?{err:data.error||'Falha ao testar.'}:data)}
+ catch(e){MPS={err:'Sem resposta da função "mercadopago".'}}
+ if(tab==='bl')bl()}
+function mpTest(){MPS=null;toast('Testando o Mercado Pago…');bl()}
 async function bl(){
  const[{data:s,error},{data:st},{data:cf},{data:dg}]=await Promise.all([sb.rpc('bling_status'),sb.from('stores').select('*'),sb.from('admin_bling_stock').select('*').limit(10),sb.rpc('plb_diagnostics')]);stores=st||stores;
  try{const w=SB_URL+'/functions/v1';if(s&&s.settings&&s.settings.functions_url!==w)sb.from('bling_settings').update({functions_url:w}).eq('id',1).then(()=>{})}catch(e){}
@@ -642,7 +653,14 @@ async function bl(){
   errs=[s.token_error,s.setup_error].filter(Boolean).map(e=>`<p class="mt-2 rounded-lg bg-red-500/10 p-2 text-xs text-red-400">${esc(e)}</p>`).join(''),
   depSel=t=>{const cur=t.bling_deposito_id,ops=[...DEPS];if(cur&&!ops.find(x=>x.id==cur))ops.unshift({id:cur,nome:'Depósito '+cur});
    return `<label class="text-xs text-mut">${esc(t.name)}<select data-dep="${esc(t.id)}" class="min-w-56"><option value="">— não sincronizar —</option>${ops.map(x=>`<option value="${x.id}" ${x.id==cur?'selected':''}>${esc(x.nome)}${x.padrao?' (padrão)':''}</option>`).join('')}</select></label>`};
- $('#main').innerHTML=`<div class="g mb-4 rounded-2xl p-4"><div class="flex flex-wrap items-center justify-between gap-2"><b>🔗 Integração com o Bling</b><span class="text-sm ${done===4?'text-acc':'text-amber-400'}">${done===4?'✔ tudo pronto: estoque e pedidos sincronizados':done+' de 4 etapas concluídas'}</span></div><div class="mt-2 h-2 overflow-hidden rounded-full bg-s2"><div class="h-2 rounded-full bg-pri" style="width:${done*25}%"></div></div></div>
+ const m=MPS||{loading:1},blOn=!!(s.connected&&c.push_orders),
+  mpLine=m.loading?'<span class="text-mut">⏳ Verificando o Mercado Pago…</span>':m.err?`<span class="text-red-400">✖ ${esc(m.err)}</span>`:!m.configured?'<span class="text-red-400">✖ Mercado Pago ainda não configurado.</span>':m.invalid?`<span class="text-red-400">✖ A chave do Mercado Pago foi recusada: ${esc(m.error||'')}</span>`:`<span class="text-acc">✔ Mercado Pago conectado</span> · conta <b>${esc(m.conta&&(m.conta.apelido||m.conta.email)||m.conta&&m.conta.id||'')}</b> · ${m.mode==='teste'?'<b class="text-amber-400">MODO TESTE (não cobra de verdade)</b>':'produção (cobra de verdade)'}`,
+  mpHelp=(m.err||m.configured===false||m.invalid)?`<ol class="mt-2 list-decimal space-y-1 pl-5 text-xs text-mut"><li>No Mercado Pago, copie o <b>Access Token</b> de produção (Credenciais).</li><li>Supabase → Edge Functions → <b>Secrets</b> → nome <b>MP_ACCESS_TOKEN</b>, valor = o Access Token.</li><li>Supabase → Edge Functions → publique a função <b>mercadopago</b> (Verify JWT desligado) e clique em Testar de novo.</li></ol>`:'';
+ $('#main').innerHTML=`<section class="g mb-4 rounded-2xl p-4"><div class="flex flex-wrap items-center justify-between gap-2"><h2 class="font-bold">💳 Pagamentos do site (Pix e cartão)</h2><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.mpTest()">Testar Mercado Pago</button></div>
+ <p class="mt-2 text-sm">${mpLine}</p>${mpHelp}
+ <p class="mt-2 text-sm ${blOn?'text-acc':'text-mut'}">${blOn?'✔ Bling conectado: cada pedido <b>pago</b> no site é lançado sozinho no Bling (com a forma de pagamento Pix/Cartão) e o estoque passa a vir do Bling.':'Hoje o cliente paga no site pelo Mercado Pago e o estoque é o do próprio site. Ao concluir o assistente do Bling abaixo, os pedidos pagos passam a ser lançados no Bling automaticamente.'}</p>
+ <p class="mt-1 text-xs text-mut">O Bling não cobra o cliente: ele recebe a venda já paga (pedido, forma de pagamento, nota fiscal e estoque). Quem cobra Pix e cartão é sempre o Mercado Pago.</p></section>
+ <div class="g mb-4 rounded-2xl p-4"><div class="flex flex-wrap items-center justify-between gap-2"><b>🔗 Integração com o Bling</b><span class="text-sm ${done===4?'text-acc':'text-amber-400'}">${done===4?'✔ tudo pronto: estoque e pedidos sincronizados':done+' de 4 etapas concluídas'}</span></div><div class="mt-2 h-2 overflow-hidden rounded-full bg-s2"><div class="h-2 rounded-full bg-pri" style="width:${done*25}%"></div></div></div>
  <div class="grid gap-4 lg:grid-cols-2">
  ${card(1,'Criar o aplicativo no Bling',s.has_credentials,`<p class="mt-1 text-sm text-mut">No <a class="text-acc underline" target="_blank" rel="noopener" href="https://developer.bling.com.br/">portal de desenvolvedores do Bling</a>, crie um aplicativo e copie estes dados para o cadastro dele:</p>
   ${copyBox('Link de redirecionamento (obrigatório, tem que ficar idêntico)',FN)}${copyBox('Webhook (opcional: sem ele o estoque se atualiza sozinho a cada 5 min)',FN)}
@@ -661,13 +679,14 @@ async function bl(){
  ${dg?card('i','Diagnóstico do sistema',dg.pg_cron&&dg.pg_net&&(dg.cron_jobs||[]).length>=3,`<ul class="mt-2 space-y-1 text-sm"><li>${dg.pg_cron?'✔':'✖'} pg_cron (tarefas agendadas)</li><li>${dg.pg_net?'✔':'✖'} pg_net (avisos instantâneos ao Bling)</li><li>${(dg.cron_jobs||[]).length} tarefas agendadas</li><li>${s.functions_url===SB_URL+'/functions/v1'?'✔':'⚠'} Endereço das funções: ${esc(s.functions_url||'não definido (abra esta aba logado para corrigir)')}</li><li>${(dg.triggers_de_terceiros||[]).length?'⚠ Triggers de terceiros em pedidos/estoque: '+esc(dg.triggers_de_terceiros.join(', ')):'✔ Nenhum trigger de terceiros em pedidos/estoque'}</li></ul>${!dg.pg_cron||!dg.pg_net?'<p class="mt-2 text-xs text-amber-400">Ative pg_cron e pg_net em Database → Extensions e rode o SQL de novo.</p>':''}`,'lg:col-span-2'):''}
  <section class="g rounded-2xl p-4 lg:col-span-2"><h2 class="font-bold">Conferência (últimos produtos sincronizados)</h2>${(cf||[]).length?tbl(['Produto','Loja','Saldo no Bling','Estoque no site','Atualizado'],cf.map(x=>`<tr><td>${esc(x.product)}<br><span class="text-xs text-mut">SKU ${esc(x.sku)} · Bling #${esc(x.bling_id)}</span></td><td>${esc(x.store)}</td><td>${x.bling_qty??'—'}</td><td>${x.qty}</td><td class="text-xs">${D(x.updated_at)}</td></tr>`).join('')):'<p class="mt-1 text-sm text-mut">Nada sincronizado ainda.</p>'}</section>
  <details class="g rounded-2xl p-4 lg:col-span-2"><summary class="cursor-pointer font-bold">Regras avançadas</summary><div class="mt-3 grid gap-3 md:grid-cols-2">
-  <div class="space-y-2">${chk('enabled','<b>Integração ligada</b>')}${chk('sync_stock','Receber estoque do Bling (trava a edição manual dos produtos ligados)')}${chk('sync_price','O preço do Bling atualiza o preço do site')}${chk('push_orders','Enviar pedidos <b>pagos</b> do site ao Bling (ligue só depois de testar)')}</div>
+  <div class="space-y-2">${chk('enabled','<b>Integração ligada</b>')}${chk('sync_stock','Receber estoque do Bling (trava a edição manual dos produtos ligados)')}${chk('sync_price','O preço do Bling atualiza o preço do site')}${chk('push_orders','Enviar pedidos <b>pagos</b> do site ao Bling (liga sozinho ao concluir o assistente; desmarque para pausar)')}</div>
   <label class="block text-xs text-mut">Como o estoque dos pedidos do site é baixado no Bling<select id="b_mode"><option value="auto" ${mode==='auto'?'selected':''}>O Bling baixa sozinho ao receber o pedido</option><option value="mov" ${mode==='mov'?'selected':''}>O site lança a saída no depósito da loja</option><option value="late" ${mode==='late'?'selected':''}>Só quando o pedido for atendido no Bling</option></select></label>
   ${num('safety_stock','Estoque de segurança (mostra no site o saldo menos N)')}${num('situacao_id','ID da situação inicial do pedido (opcional)')}${num('loja_id','ID do canal de venda no Bling (opcional)')}${num('forma_pagamento_pix','ID da forma de pagamento Pix (opcional)')}${num('forma_pagamento_cartao','ID da forma de pagamento Cartão (opcional)')}</div>
   <div class="mt-4 text-right"><button class="b" onclick="ADM.saveBl()">Salvar regras</button></div></details></div>`;
+ if(MPS===null)mpCheck();
  if(fresh&&BLPOLL<30){BLPOLL++;setTimeout(()=>{if(tab==='bl')bl()},5000)}}
 
-return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,cliMsg,cliWa,cliCopy,impOpen,impRun,impStop,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveConnect,copy,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl,savePw,saveSet,saveStore,addCat,catPos,delCat,addRev,delRev};
+return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,cliMsg,cliWa,cliCopy,impOpen,impRun,impStop,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveConnect,mpTest,copy,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl,savePw,saveSet,saveStore,addCat,catPos,delCat,addRev,delRev};
 })();
 </script>
 <script>
