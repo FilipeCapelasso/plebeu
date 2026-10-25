@@ -127,14 +127,20 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 .stp i{flex:1;height:2px;min-width:1rem;background:rgb(var(--bd))}
 @media(max-width:480px){.stp{flex-wrap:nowrap;gap:.3rem;font-size:.7rem}.stp i{min-width:.3rem}.stp .s{gap:.25rem;white-space:nowrap}.stp b{width:1.45rem;height:1.45rem}}
 .foot-b{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .8rem;border:1px solid rgb(var(--bd));border-radius:999px;background:rgb(var(--s3));font-size:.78rem;font-weight:600;color:rgb(var(--fg))}
-.foot-l a{display:block;padding:.2rem 0}.foot-l a:hover{color:rgb(var(--ac))}
+.foot-l a{display:block;padding:.2rem 0}
+/* fundo animado: camada fixa que cobre a tela inteira, atrás de todo o site (grade + brilhos + bolinhas) */
+#fx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:radial-gradient(60% 70% at 85% 0,rgb(var(--pr)/.20),transparent 62%),radial-gradient(50% 60% at 0 100%,rgb(var(--ac)/.12),transparent 62%),radial-gradient(40% 45% at 50% 55%,rgb(var(--pr)/.06),transparent 70%)}
+#fx .hgrid{position:absolute;inset:0;-webkit-mask-image:radial-gradient(ellipse at 60% 35%,#000 15%,transparent 80%);mask-image:radial-gradient(ellipse at 60% 35%,#000 15%,transparent 80%)}
+#fx canvas{position:absolute;inset:0;width:100%;height:100%}
+#home>section.hbg{background:none}
+body.adm #fx{display:none!important}.foot-l a:hover{color:rgb(var(--ac))}
 #pdp .grid>*,#crt .grid>*{min-width:0}
 #pdp .mt-3.flex.gap-2{overflow-x:auto;scrollbar-width:thin;padding-bottom:.25rem}#pdp .mt-3.flex.gap-2>*{flex:0 0 auto}
 @media(max-width:639px){.cats-g{display:flex;overflow-x:auto;gap:.7rem;padding-bottom:.6rem;scroll-snap-type:x proximity;margin-inline:-.25rem;padding-inline:.25rem}.cat-t{flex:0 0 7.4rem;padding:.8rem .5rem;scroll-snap-align:start}.cat-t .ic{width:2.9rem;height:2.9rem;font-size:1.5rem}}
 @media(max-width:767px){body.pdpm #wa{bottom:8.8rem}body.pdpm #up{bottom:12.6rem}body.crtm #wa{bottom:8.8rem}body.crtm #up{bottom:12.6rem}}
 </style>
 </head>
-<body><a href="#vitrine" class="skip">Ir para os produtos</a><noscript><p style="padding:1rem;text-align:center">Ative o JavaScript para ver a loja.</p></noscript>
+<body><div id="fx" aria-hidden="true"><div class="hgrid"></div><canvas id="pc"></canvas></div><a href="#vitrine" class="skip">Ir para os produtos</a><noscript><p style="padding:1rem;text-align:center">Ative o JavaScript para ver a loja.</p></noscript>
 
 <header id="hdr" class="glass sticky top-0 z-30 border-b border-bd">
  <div id="hrow" class="mx-auto flex max-w-[1920px] flex-wrap items-center gap-3 px-4 py-3">
@@ -160,8 +166,7 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 <div id="offl" class="hidden bg-red-500/10 px-4 py-3 text-center text-sm" role="alert">Não conseguimos carregar o catálogo agora. <button id="offr" class="font-bold underline">Tentar de novo</button></div>
 
 <main id="home">
- <section class="hbg relative overflow-hidden border-b border-bd"><div class="hgrid absolute inset-0"></div>
-  <canvas id="pc" class="absolute inset-0 h-full w-full"></canvas>
+ <section class="hbg relative overflow-hidden border-b border-bd">
   <div class="relative mx-auto grid max-w-[1920px] items-center gap-10 px-4 py-14 md:grid-cols-[1.15fr_.85fr] md:py-20">
    <div class="hin">
     <span class="inline-block rounded-full border border-bd bg-s3 px-3 py-1 text-xs font-semibold text-acc">Rio Branco (AC) e Porto Velho (RO)</span>
@@ -185,7 +190,7 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
   </div>
  </section>
 
- <section class="border-b border-bd bg-s2"><div class="mx-auto grid max-w-[1920px] grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
+ <section class="border-b border-bd bg-s2/70"><div class="mx-auto grid max-w-[1920px] grid-cols-2 gap-4 px-4 py-6 md:grid-cols-4">
   <div class="text-sm text-mut"><b class="block text-white">⚡ Entrega no mesmo dia</b>Rio Branco e Porto Velho</div>
   <div class="text-sm text-mut"><b class="block text-white">💠 Desconto no Pix</b>Preço menor, na hora</div>
   <div class="text-sm text-mut"><b class="block text-white">🛡️ Garantia da loja</b>Suporte direto no WhatsApp</div>
@@ -206,7 +211,7 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
   <div id="more" class="mt-8 flex flex-col items-center gap-2"></div>
  </section>
 
- <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2 py-12">
+ <section id="dep" class="hidden overflow-hidden border-y border-bd bg-s2/70 py-12">
   <h2 class="mb-6 text-center font-display text-4xl font-bold">Quem comprou <span class="gt">aprova</span></h2>
   <div id="mq" class="mq flex gap-4"></div>
  </section>
@@ -241,7 +246,7 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 <div id="atoast" class="fixed bottom-4 left-1/2 z-[60] hidden -translate-x-1/2 rounded-xl bg-pri px-4 py-2 font-semibold"></div>
 </main>
 
-<footer class="border-t border-bd bg-s2 text-sm text-mut">
+<footer class="border-t border-bd bg-s2/85 text-sm text-mut">
  <div class="mx-auto grid max-w-[1920px] gap-10 px-4 py-12 md:grid-cols-2 lg:grid-cols-4">
   <div><b class="font-display text-3xl gt">Plebeu Games</b><p class="mt-2 max-w-xs">Sua loja gamer em Rio Branco (AC) e Porto Velho (RO): consoles, jogos, periféricos e informática com garantia da loja.</p>
    <div class="mt-4 flex flex-wrap gap-2"><a href="https://www.facebook.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Facebook da Plebeu Games" class="foot-b hover:border-pri">Facebook</a><a href="https://www.instagram.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Plebeu Games" class="foot-b hover:border-pri">Instagram</a></div></div>
@@ -1125,10 +1130,14 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-th],[data-
 /* fecha o painel de tema ao tocar/clicar fora (pointerdown funciona também no celular) e com Esc */
 document.addEventListener('pointerdown',e=>{const p=$('#thm');if(p&&!p.classList.contains('hidden')&&!e.target.closest('#thm,#thb'))p.classList.add('hidden')},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#thm').classList.add('hidden')});
-(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w,h,P,on=1,raf;
- const rs=()=>{w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;P=Array.from({length:Math.min(90,w/16|0)},()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}))};rs();addEventListener('resize',rs);
- const f=()=>{if(!on)return;x.clearRect(0,0,w,h);x.fillStyle=window.PC;P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});raf=requestAnimationFrame(f)};
- new IntersectionObserver(([e])=>{if(e.isIntersecting&&!on){on=1;f()}else if(!e.isIntersecting){on=0;cancelAnimationFrame(raf)}}).observe(c);f()})();
+(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#pc'),x=c.getContext('2d');let w=0,h=0,P=[],raf=0;
+ /* bolinhas sobem por toda a altura da tela, em qualquer parte do site; a cor segue o tema (window.PC) */
+ const mk=()=>({x:Math.random()*w,y:Math.random()*h,v:Math.random()*.4+.1,r:Math.random()*1.6+.4}),
+ rs=()=>{const W=c.offsetWidth,H=c.offsetHeight;if(!W||!H)return;w=c.width=W;h=c.height=H;P=Array.from({length:Math.max(18,Math.min(140,(w*h/16000)|0))},mk)},
+ f=()=>{x.clearRect(0,0,w,h);x.fillStyle=window.PC||'rgba(37,99,235,.6)';P.forEach(p=>{p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()});raf=requestAnimationFrame(f)},
+ run=()=>{cancelAnimationFrame(raf);if(document.hidden||document.body.classList.contains('adm'))return;if(!w||c.offsetWidth!==w||c.offsetHeight!==h)rs();if(w)f()};
+ let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{w=0;run()},150)});
+ document.addEventListener('visibilitychange',run);addEventListener('hashchange',run);run()})();
 /* ---------- perfil do cliente ---------- */
 const refs=()=>ls.get('orders',[]);
 function addRef(n,t){ls.set('orders',[{n,t,at:Date.now()},...refs().filter(x=>x.n!==n)].slice(0,30))}
