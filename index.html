@@ -6,6 +6,10 @@
 <title>Plebeu Games | Sua loja gamer no Acre e Rondônia</title>
 <meta name="description" content="Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho. Pix com desconto e até 5x sem juros.">
 <meta name="theme-color" content="#f4f5fa">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Plebeu Games">
 <meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Plebeu Games"><meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Plebeu Games","description":"Consoles, jogos, periféricos e informática com entrega no mesmo dia em Rio Branco e Porto Velho.","areaServed":["Rio Branco, AC","Porto Velho, RO"],"paymentAccepted":"Pix, Cartão de crédito","currenciesAccepted":"BRL"}</script>
 <script>try{var d=document.documentElement,m=JSON.parse(localStorage.getItem('mode')),a=JSON.parse(localStorage.getItem('ac'));if(m!=='dark')d.classList.add('light');d.dataset.ac=a||'oceano'}catch(e){document.documentElement.classList.add('light');document.documentElement.dataset.ac='oceano'}</script>
@@ -90,6 +94,8 @@ html.light .bg-acc.text-black{color:#fff}
 #adm .b{border-radius:10px;padding:.5rem .9rem;font-weight:700;background:rgb(var(--pr));color:#fff}
 #adm .g{background:rgb(var(--s3));border:1px solid rgb(var(--bd))}
 #adm .tab.on{background:rgb(var(--pr));color:#fff}
+#adm .flash td,#adm tr.flash{animation:flashbg 3.5s ease-out}
+@keyframes flashbg{from{background:rgb(var(--ac)/.38)}to{background:transparent}}
 html.adm-big{font-size:17px}
 @media(min-width:768px){html.adm-big{font-size:19px}}
 #adm th{padding:.85rem 1rem;font-size:.95rem}
@@ -104,6 +110,28 @@ body.adm{padding-bottom:0}
 :focus-visible{outline:2px solid rgb(var(--ac));outline-offset:2px}
 .skip{position:absolute;left:-999px;top:0;z-index:100;background:rgb(var(--pr));color:#fff;padding:.6rem 1rem;border-radius:0 0 10px 0}.skip:focus{left:0}
 body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:none!important}
+
+/* ---------- vitrine: categorias, faixas de produtos, etapas do checkout, rodapé ---------- */
+.cats-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.6rem,1fr));gap:.9rem}
+.cat-t{display:flex;flex-direction:column;align-items:center;gap:.55rem;padding:1.1rem .7rem;border:1px solid rgb(var(--bd));border-radius:1.1rem;background:rgb(var(--s3));text-align:center;font-weight:700;font-size:.9rem;transition:transform .25s,box-shadow .25s,border-color .25s}
+.cat-t:hover{transform:translateY(-4px);border-color:rgb(var(--pr)/.6);box-shadow:0 14px 34px -14px rgb(var(--pr)/.5)}
+.cat-t .ic{display:grid;place-items:center;width:3.5rem;height:3.5rem;border-radius:1rem;font-size:1.8rem;background:linear-gradient(135deg,rgb(var(--pr)/.22),rgb(var(--ac)/.22))}
+.cat-t small{font-weight:500;color:rgb(var(--mut));font-size:.75rem}
+.hs-row{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x proximity;padding:.25rem .25rem 1rem;margin-inline:-.25rem;scrollbar-width:thin}
+.hs-row>article{flex:0 0 clamp(11rem,44vw,15.5rem);scroll-snap-align:start}
+.sh{display:flex;align-items:center;gap:.7rem}.sh::before{content:"";width:5px;height:1.8rem;border-radius:5px;background:linear-gradient(rgb(var(--pr)),rgb(var(--ac)))}
+.stp{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:rgb(var(--mut));flex-wrap:wrap}
+.stp .s{display:flex;align-items:center;gap:.4rem}
+.stp b{display:grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:999px;border:1px solid rgb(var(--bd));font-size:.75rem}
+.stp .on{color:rgb(var(--fg));font-weight:700}.stp .on b{background:rgb(var(--pr));border-color:transparent;color:#fff}
+.stp i{flex:1;height:2px;min-width:1rem;background:rgb(var(--bd))}
+@media(max-width:480px){.stp{flex-wrap:nowrap;gap:.3rem;font-size:.7rem}.stp i{min-width:.3rem}.stp .s{gap:.25rem;white-space:nowrap}.stp b{width:1.45rem;height:1.45rem}}
+.foot-b{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .8rem;border:1px solid rgb(var(--bd));border-radius:999px;background:rgb(var(--s3));font-size:.78rem;font-weight:600;color:rgb(var(--fg))}
+.foot-l a{display:block;padding:.2rem 0}.foot-l a:hover{color:rgb(var(--ac))}
+#pdp .grid>*,#crt .grid>*{min-width:0}
+#pdp .mt-3.flex.gap-2{overflow-x:auto;scrollbar-width:thin;padding-bottom:.25rem}#pdp .mt-3.flex.gap-2>*{flex:0 0 auto}
+@media(max-width:639px){.cats-g{display:flex;overflow-x:auto;gap:.7rem;padding-bottom:.6rem;scroll-snap-type:x proximity;margin-inline:-.25rem;padding-inline:.25rem}.cat-t{flex:0 0 7.4rem;padding:.8rem .5rem;scroll-snap-align:start}.cat-t .ic{width:2.9rem;height:2.9rem;font-size:1.5rem}}
+@media(max-width:767px){body.pdpm #wa{bottom:8.8rem}body.pdpm #up{bottom:12.6rem}body.crtm #wa{bottom:8.8rem}body.crtm #up{bottom:12.6rem}}
 </style>
 </head>
 <body><a href="#vitrine" class="skip">Ir para os produtos</a><noscript><p style="padding:1rem;text-align:center">Ative o JavaScript para ver a loja.</p></noscript>
@@ -165,6 +193,8 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
   <div class="text-sm text-mut"><b class="block text-white">🏬 Retire na loja</b>Sem pagar frete</div>
  </div></section>
 
+ <section id="hsec" class="mx-auto hidden max-w-[1920px] px-4 pt-12"></section>
+
  <section id="vitrine" class="mx-auto max-w-[1920px] px-4 py-12">
   <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
    <h2 id="gt" class="font-display text-4xl font-bold">Destaques da semana</h2>
@@ -205,20 +235,22 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 
 <div id="app" class="hidden w-full px-4 py-5 md:px-8 xl:px-12">
 <header class="mb-6 flex flex-wrap items-center gap-3"><h1 class="mr-auto text-2xl font-bold">🎮 Admin Plebeu Games</h1>
-<nav id="tabs" class="flex flex-wrap gap-2"></nav><button id="chpw" class="g rounded-lg px-4 py-2.5 text-base">Senha</button><button id="out" class="g rounded-lg px-4 py-2.5 text-base">Sair</button></header>
+<nav id="tabs" class="flex flex-wrap gap-2"></nav><span id="live" class="rounded-full border border-bd px-3 py-1.5 text-sm text-mut" title="Atualização em tempo real">○ Conectando…</span><button id="snd" class="g rounded-lg px-4 py-2.5 text-base" title="Som de aviso (liga/desliga)">🔔</button><button id="chpw" class="g rounded-lg px-4 py-2.5 text-base">Senha</button><button id="out" class="g rounded-lg px-4 py-2.5 text-base">Sair</button></header>
 <main id="main"></main></div>
 
 <div id="modal" class="fixed inset-0 z-50 hidden overflow-auto bg-black/80 p-4"><div id="mc" class="mx-auto w-full max-w-5xl rounded-2xl border border-bd bg-s3 p-6"></div></div>
 <div id="atoast" class="fixed bottom-4 left-1/2 z-[60] hidden -translate-x-1/2 rounded-xl bg-pri px-4 py-2 font-semibold"></div>
 </main>
 
-<footer class="border-t border-bd bg-s2 py-10 text-sm text-mut"><div class="mx-auto flex max-w-[1920px] flex-wrap justify-between gap-6 px-4">
- <div><b class="font-display text-2xl gt">Plebeu Games</b><p class="mt-1">Loja gamer em Rio Branco (AC) e Porto Velho (RO).</p></div>
- <div id="fst" class="space-y-1"></div>
- <div><b class="text-fg">Institucional</b><nav id="finfo" class="mt-2" aria-label="Institucional"></nav></div>
-</div>
-<div class="mx-auto mt-8 max-w-[1920px] px-4 text-center"><p class="font-display text-lg font-bold text-fg">Siga-nos nas redes sociais</p><div class="mt-3 flex justify-center gap-3"><a href="https://www.facebook.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Facebook da Plebeu Games" class="flex items-center gap-2 rounded-xl border border-bd bg-s3 px-4 py-2.5 font-semibold text-fg hover:border-pri"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a><a href="https://www.instagram.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Plebeu Games" class="flex items-center gap-2 rounded-xl border border-bd bg-s3 px-4 py-2.5 font-semibold text-fg hover:border-pri"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram</a></div></div>
-<p class="mx-auto mt-8 max-w-[1920px] border-t border-bd px-4 pt-6 text-center text-xs">R. O. Lima - CNPJ: 28.668.658/0001-95 © Todos os direitos reservados. 2026 · <a href="#admin" class="hover:underline">Área da loja</a></p></footer>
+<footer class="border-t border-bd bg-s2 text-sm text-mut">
+ <div class="mx-auto grid max-w-[1920px] gap-10 px-4 py-12 md:grid-cols-2 lg:grid-cols-4">
+  <div><b class="font-display text-3xl gt">Plebeu Games</b><p class="mt-2 max-w-xs">Sua loja gamer em Rio Branco (AC) e Porto Velho (RO): consoles, jogos, periféricos e informática com garantia da loja.</p>
+   <div class="mt-4 flex flex-wrap gap-2"><a href="https://www.facebook.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Facebook da Plebeu Games" class="foot-b hover:border-pri">Facebook</a><a href="https://www.instagram.com/plebeugames" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Plebeu Games" class="foot-b hover:border-pri">Instagram</a></div></div>
+  <div><b class="text-fg">Nossas lojas</b><div id="fst" class="mt-3 space-y-3"></div></div>
+  <div><b class="text-fg">Institucional</b><nav id="finfo" class="foot-l mt-3" aria-label="Institucional"></nav></div>
+  <div><b class="text-fg">Compra segura</b><div class="mt-3 flex flex-wrap gap-2"><span class="foot-b">💠 Pix com desconto</span><span class="foot-b">💳 Cartão em até 5x</span><span class="foot-b">🔒 Mercado Pago</span><span class="foot-b">⚡ Entrega no mesmo dia</span></div><p class="mt-3 text-xs">O pagamento é processado pelo Mercado Pago. A Plebeu Games não armazena dados do seu cartão.</p></div>
+ </div>
+ <p class="mx-auto max-w-[1920px] border-t border-bd px-4 py-6 text-center text-xs">R. O. Lima - CNPJ: 28.668.658/0001-95 © Todos os direitos reservados. 2026 · <a href="#admin" class="hover:underline">Área da loja</a></p></footer>
 
 <nav class="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-bd text-xs md:hidden">
  <a href="#/" class="py-3 text-center">🏠<br>Início</a><a href="#vitrine" class="py-3 text-center">🕹️<br>Produtos</a>
@@ -254,7 +286,7 @@ async function enter(){
  if(!ok){await sb.auth.signOut();$('#err').textContent='Esta conta não tem permissão de administrador.';return}
  $('#login').classList.add('hidden');$('#app').classList.remove('hidden');idleOn();
  [{data:stores},{data:cats}]=await Promise.all([sb.from('stores').select('*'),sb.from('categories').select('*').order('position')]);
- stores=stores||[];cats=cats||[];await lockInfo();try{const t=sessionStorage.getItem('plb_tab');if(t){sessionStorage.removeItem('plb_tab');if(TABS.some(x=>x[0]===t))tab=t}}catch(e){}nav();show();
+ stores=stores||[];cats=cats||[];await lockInfo();try{const t=sessionStorage.getItem('plb_tab');if(t){sessionStorage.removeItem('plb_tab');if(TABS.some(x=>x[0]===t))tab=t}}catch(e){}nav();show();live();
 }
 $('#go').onclick=async()=>{$('#err').textContent='';$('#go').disabled=true;
  const{error}=await sb.auth.signInWithPassword({email:$('#aem').value.trim(),password:$('#pw').value});
@@ -271,8 +303,47 @@ $('#showpw').onchange=e=>{$('#pw').type=e.target.checked?'text':'password'};
 $('#pw').onkeydown=e=>{if(e.key==='Enter')$('#go').click()};
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
 $('#chpw').onclick=()=>chPw();
-function nav(){$('#tabs').innerHTML=TABS.map(([k,n])=>`<button data-t="${k}" class="tab g rounded-lg px-4 py-2.5 text-base ${k===tab?'on':''}">${n}</button>`).join('')}
-$('#tabs').onclick=e=>{const t=e.target.dataset.t;if(t){tab=t;nav();show()}};
+function nav(){$('#tabs').innerHTML=TABS.map(([k,n])=>`<button data-t="${k}" class="tab g rounded-lg px-4 py-2.5 text-base ${k===tab?'on':''}">${n}${UNSEEN[k]?` <b class="ml-1 rounded-full bg-acc px-2 text-xs text-black">${UNSEEN[k]}</b>`:''}</button>`).join('')}
+$('#tabs').onclick=e=>{const b=e.target.closest('[data-t]'),t=b&&b.dataset.t;if(t){tab=t;if(UNSEEN[t]){UNSEEN[t]=0;titleUi()}nav();show()}};
+/* ---------- AO VIVO: pedidos, pagamentos e contas aparecem sozinhos (Supabase Realtime) ---------- */
+let RT=null,LIVEOK=false,UNSEEN={ped:0,cli:0},PAID=new Set(),FLASH=new Set(),FLASHC=new Set(),AC=null,TQ=[],TQB=false,RTT=null,POLL=0,
+ SND=(()=>{try{return localStorage.getItem('plb_snd')!=='0'}catch(e){return true}})();
+const beep=(f=[880,1175])=>{if(!SND)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();f.forEach((fr,i)=>{const t=AC.currentTime+i*.16,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=fr;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.22);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+.25)})}catch(e){}};
+const sndUi=()=>{const b=$('#snd');if(b)b.textContent=SND?'🔔':'🔕'};
+const liveUi=()=>{const l=$('#live');if(!l)return;l.textContent=LIVEOK?'● Ao vivo':'○ Reconectando…';l.className='rounded-full border px-3 py-1.5 text-sm '+(LIVEOK?'border-acc text-acc':'border-bd text-mut')};
+const titleUi=()=>{const n=(UNSEEN.ped||0)+(UNSEEN.cli||0);document.title=(n?`(${n}) `:'')+'Admin Plebeu Games'};
+const qtoast=m=>{TQ.push(m);if(TQB)return;TQB=true;const nx=()=>{const x=TQ.shift();if(!x){TQB=false;return}toast(x);setTimeout(nx,2900)};nx()};
+async function pedRefresh(){const{data:o,error}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(500);if(error||!o)return;OD=o;OD.forEach(x=>{if(x.payment_status==='approved')PAID.add(x.id)});if(document.querySelector('#adm #ao_list'))ordList()}
+async function cliRefresh(){const{data:c,error}=await pgq(()=>sb.from('admin_accounts').select('*').order('last_activity',{ascending:false}).order('phone'));if(error||!c)return;CD=c;const{data:al}=await sb.from('admin_stock_alerts').select('phone').gt('qty',0);ALW=new Set((al||[]).map(x=>x.phone));if(document.querySelector('#adm #ac_list'))cliList()}
+/* atualiza a aba aberta sem apagar busca/filtro e sem atrapalhar quem está editando */
+function liveRefresh(){clearTimeout(RTT);RTT=setTimeout(async()=>{
+ if(!$('#app')||$('#app').classList.contains('hidden'))return;
+ const a=document.activeElement,edit=a&&$('#main').contains(a)&&(a.tagName==='SELECT'||(a.tagName==='INPUT'&&a.type==='number'));
+ if(!$('#modal').classList.contains('hidden')||edit)return void(RTT=setTimeout(liveRefresh,4000));
+ try{if(tab==='ped')await pedRefresh();else if(tab==='cli')await cliRefresh();else if(tab==='res')await res()}catch(e){}},500)}
+function onOrd(p){
+ const n=p.new||{},t=p.eventType,fresh=Date.now()-Date.parse(n.created_at||0)<3*864e5;
+ if(t==='INSERT'){if(tab!=='ped')UNSEEN.ped++;FLASH.add(n.order_number);qtoast(`🛒 Novo pedido #${n.order_number} · ${R(n.total)} · ${n.customer_name||''}`);beep([660,880])}
+ else if(t==='UPDATE'&&n.payment_status==='approved'&&!PAID.has(n.id)&&fresh){PAID.add(n.id);if(tab!=='ped')UNSEEN.ped++;FLASH.add(n.order_number);qtoast(`💰 Pedido #${n.order_number} PAGO · ${R(n.total)}`);beep([880,1175,1568])}
+ else if(t==='UPDATE'&&n.order_number)FLASH.add(n.order_number);
+ titleUi();nav();liveRefresh()}
+function onAcc(p){const n=p.new||{};
+ if(p.eventType==='INSERT'){if(tab!=='cli')UNSEEN.cli++;FLASHC.add(n.phone);qtoast(`👤 Nova conta: ${n.name||''} · ${n.phone||''}`);beep([660,880]);titleUi();nav()}
+ liveRefresh()}
+function onAlert(p){if(p.eventType!=='INSERT')return;if(tab!=='cli')UNSEEN.cli++;qtoast('🔔 Novo pedido de aviso de estoque');beep([740,988]);titleUi();nav();liveRefresh()}
+function live(){
+ sndUi();if(!sb||RT)return;
+ sb.from('orders').select('id').eq('payment_status','approved').order('created_at',{ascending:false}).limit(300).then(({data})=>(data||[]).forEach(x=>PAID.add(x.id)),()=>{});
+ RT=sb.channel('adm-live')
+  .on('postgres_changes',{event:'*',schema:'public',table:'orders'},onOrd)
+  .on('postgres_changes',{event:'*',schema:'public',table:'accounts'},onAcc)
+  .on('postgres_changes',{event:'INSERT',schema:'public',table:'stock_alerts'},onAlert)
+  .subscribe(st=>{LIVEOK=st==='SUBSCRIBED';liveUi();if(LIVEOK)liveRefresh()});
+ liveUi();
+ /* reforço: se a conexão cair, a lista continua se atualizando sozinha; com a conexão ok, Contas/Resumo (visualizações) atualizam a cada 20 s */
+ setInterval(()=>{if(document.hidden)return;POLL++;if(!LIVEOK||tab==='cli'||tab==='res'||POLL%3===0)liveRefresh()},20000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveRefresh()});
+ $('#snd').onclick=()=>{SND=!SND;try{localStorage.setItem('plb_snd',SND?'1':'0')}catch(e){}sndUi();if(SND)beep([880]);toast(SND?'Som de aviso ligado':'Som de aviso desligado')}}
 const show=()=>({res,prod,ped,cli,vis,cup,cfg,bl}[tab])();
 const card=(t,v)=>`<div class="g rounded-2xl p-4"><p class="text-sm text-mut">${t}</p><p class="text-2xl font-bold text-acc">${v}</p></div>`;
 const tbl=(h,rows)=>`<div class="g overflow-x-auto rounded-2xl"><table class="w-full text-sm"><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows||`<tr><td colspan="${h.length}" class="text-mut">Nada por aqui ainda.</td></tr>`}</table></div>`;
@@ -479,13 +550,13 @@ const OLATE=x=>['pago','confirmado'].includes(x.status)&&Date.now()-new Date(x.c
   return 'https://wa.me/55'+String(x.customer_phone).replace(/\D/g,'').replace(/^55/,'')+'?text='+encodeURIComponent(t)};
 const ocur=()=>{const q=OQ.trim().toLowerCase().replace(/^#/,''),f=OFLT[OF]||OFLT.todos;return OD.filter(x=>f(x)&&(!q||(x.order_number+' '+x.customer_name+' '+x.customer_phone).toLowerCase().includes(q)))};
 async function ped(){
- const{data:o}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(500);OD=o||[];
+ const{data:o}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(500);OD=o||[];OD.forEach(x=>{if(x.payment_status==='approved')PAID.add(x.id)});
  $('#main').innerHTML=`<div class="mb-3 flex flex-wrap items-center gap-2"><input id="ao_q" placeholder="Buscar nº, nome ou WhatsApp…" class="max-w-lg" value="${esc(OQ)}"><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expO()">Exportar CSV</button></div><div id="ao_chips" class="mb-3 flex flex-wrap gap-2"></div><div id="ao_list"></div>`;
  $('#ao_q').oninput=e=>{OQ=e.target.value;ordList()};ordList()}
 function ordList(){
- const L=ocur();$('#ao_chips').innerHTML=OCH.map(([k,l])=>`<button class="tab g rounded-full px-3 py-1 text-xs ${k===OF?'on':''}" onclick="ADM.ofl('${k}')">${l} <span class="opacity-70">${OD.filter(OFLT[k]).length}</span></button>`).join('');
+ const L=ocur();setTimeout(()=>FLASH.clear(),4000);$('#ao_chips').innerHTML=OCH.map(([k,l])=>`<button class="tab g rounded-full px-3 py-1 text-xs ${k===OF?'on':''}" onclick="ADM.ofl('${k}')">${l} <span class="opacity-70">${OD.filter(OFLT[k]).length}</span></button>`).join('');
  const tot=L.filter(x=>x.status!=='cancelado').reduce((t,x)=>t+ +x.total,0);
- $('#ao_list').innerHTML=tbl(['#','Data','Cliente','Itens','Total','Pagamento','Status','Bling'],L.map(x=>`<tr class="${OLATE(x)?'bg-red-500/5':''}"><td>${x.order_number}</td><td>${D(x.created_at)}<br><span class="text-xs text-mut">${esc(sn(x.store_id))}</span>${OLATE(x)?'<br><span class="text-xs font-bold text-red-400">⏰ +24 h</span>':''}</td>
+ $('#ao_list').innerHTML=tbl(['#','Data','Cliente','Itens','Total','Pagamento','Status','Bling'],L.map(x=>`<tr class="${OLATE(x)?'bg-red-500/5':''} ${FLASH.has(x.order_number)?'flash':''}"><td>${x.order_number}</td><td>${D(x.created_at)}<br><span class="text-xs text-mut">${esc(sn(x.store_id))}</span>${OLATE(x)?'<br><span class="text-xs font-bold text-red-400">⏰ +24 h</span>':''}</td>
  <td>${esc(x.customer_name)}<br><a class="text-xs text-acc" target="_blank" rel="noopener noreferrer" href="${WA(x)}" title="Avisar o cliente pelo WhatsApp">💬 ${esc(x.customer_phone)}</a><br><span class="text-xs text-mut">${x.delivery_type==='entrega'?esc(x.address):'Retirada'}</span></td>
  <td class="text-xs">${(x.items||[]).map(i=>`${+i.qty}x ${esc(i.name)}`).join('<br>')}</td><td>${R(x.total)}${x.coupon_code?`<br><span class="text-xs text-mut">cupom ${esc(x.coupon_code)}</span>`:''}</td>
  <td class="text-xs">${esc(x.payment)} · ${esc(x.payment_status)}</td>
@@ -507,9 +578,9 @@ async function cli(){
  if(error)return $('#main').innerHTML=`<div class="g rounded-2xl p-4 text-sm"><p class="font-bold text-red-400">Atualize o banco para ver as contas.</p><p class="mt-1 text-mut">Rode o arquivo sql.txt (banco completo) no SQL Editor do Supabase e recarregue. ${esc(error.message)}</p></div>`;
  $('#main').innerHTML=`<div class="mb-3 flex flex-wrap gap-2"><input id="ac_q" placeholder="Buscar por nome, WhatsApp ou e-mail…" class="max-w-lg"><select id="ac_f" class="max-w-72"><option value="">Todas as contas</option><option value="buy">Já compraram</option><option value="look">Só olharam (sem compra)</option><option value="alert">🔔 Esperando produto que já chegou</option></select><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expC()">Exportar CSV</button></div><p class="mb-3 text-xs text-mut">Toda pessoa que preenche <b>nome e WhatsApp</b> (no perfil, no carrinho ou ao comprar) aparece aqui. E-mail e endereço são opcionais. <b>Clique no nome</b> para abrir o perfil.</p><div id="ac_list"></div>`;
  $('#ac_q').oninput=cliList;$('#ac_f').onchange=cliList;cliList()}
-function cliList(){const q=($('#ac_q').value||'').toLowerCase(),f=$('#ac_f').value,
+function cliList(){setTimeout(()=>FLASHC.clear(),4000);const q=($('#ac_q').value||'').toLowerCase(),f=$('#ac_f').value,
  L=CD.filter(x=>(!q||((x.name||'')+' '+(x.phone||'')+' '+(x.email||'')).toLowerCase().includes(q))&&(!f||(f==='buy'?x.orders>0:f==='look'?x.orders===0:ALW.has(x.phone))));
- $('#ac_list').innerHTML=tbl(['Conta','WhatsApp','Pedidos','Total gasto','Produtos vistos','Cadastro','Última atividade'],L.map(x=>`<tr><td><button type="button" class="text-left text-lg font-bold hover:text-acc hover:underline" title="Abrir perfil" onclick="ADM.cliDet('${esc(x.phone)}')">${esc(x.name)}</button>${ALW.has(x.phone)?' <span title="Pediu aviso de produto que já chegou">🔔</span>':''}${x.email||x.address?`<br><span class="text-xs text-mut">${esc([x.email,x.address].filter(Boolean).join(' · '))}</span>`:''}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${x.views}</td><td class="text-xs">${D(x.created_at)}</td><td class="text-xs">${D(x.last_activity)}</td></tr>`).join(''))+`<p class="mt-2 text-xs text-mut">${L.length} conta(s)</p>`}
+ $('#ac_list').innerHTML=tbl(['Conta','WhatsApp','Pedidos','Total gasto','Produtos vistos','Cadastro','Última atividade'],L.map(x=>`<tr class="${FLASHC.has(x.phone)?'flash':''}"><td><button type="button" class="text-left text-lg font-bold hover:text-acc hover:underline" title="Abrir perfil" onclick="ADM.cliDet('${esc(x.phone)}')">${esc(x.name)}</button>${ALW.has(x.phone)?' <span title="Pediu aviso de produto que já chegou">🔔</span>':''}${x.email||x.address?`<br><span class="text-xs text-mut">${esc([x.email,x.address].filter(Boolean).join(' · '))}</span>`:''}</td><td>${esc(x.phone)}</td><td>${x.orders}</td><td>${R(x.spent)}</td><td>${x.views}</td><td class="text-xs">${D(x.created_at)}</td><td class="text-xs">${D(x.last_activity)}</td></tr>`).join(''))+`<p class="mt-2 text-xs text-mut">${L.length} conta(s)</p>`}
 function expC(){csv('contas',['Nome','WhatsApp','E-mail','Endereço','Pedidos','Total gasto','Produtos vistos','Cadastro','Última atividade'],CD.map(x=>[x.name,x.phone,x.email,x.address,x.orders,x.spent,x.views,D(x.created_at),D(x.last_activity)]))}
 function cliText(p){const a=CUR.a,nm=String(a.name||'').trim().split(/\s+/)[0]||'', site=location.origin+location.pathname;
  if(!p)return `Oi, ${nm}! 👋 Aqui é da Plebeu Games. Passando para avisar que temos novidades e ofertas no Pix. Quer dar uma olhada? ${site}`;
@@ -786,6 +857,22 @@ const card=p=>{const n=qty(p),o=off(p);
  <p class="text-xs font-bold ${n?'text-acc':'text-red-400'}">${n?'Em estoque em '+esc(st().name):'Sem estoque em '+esc(st().name)}</p>
  <button data-a="add" data-id="${p.id}" ${n?'':'disabled'} class="mt-auto h-11 rounded-xl bg-pri text-sm font-bold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:bg-bd disabled:text-mut">${n?'Adicionar ao carrinho':'Indisponível'}</button></div></article>`};
 
+/* ---------- home: categorias e faixas (só aparecem sem busca/filtro) ---------- */
+function homeSecs(){
+ const el=$('#hsec');if(!el)return;
+ const home=!S.cat&&!S.q&&!S.fav&&!S.only&&(S.sort||'rel')==='rel'&&S.prods.length>0;
+ if(!home){el.innerHTML='';el.classList.add('hidden');return}
+ el.classList.remove('hidden');
+ const ok=p=>qty(p)>0,cnt={};S.prods.forEach(p=>{cnt[p.category_slug]=(cnt[p.category_slug]||0)+1});
+ const ofr=S.prods.filter(p=>p.old_price>p.price&&ok(p)).sort((a,b)=>off(b)-off(a)).slice(0,14),
+  top=S.prods.filter(p=>ok(p)&&p.sold_count>0).sort((a,b)=>b.sold_count-a.sold_count).slice(0,14),
+  dst=S.prods.filter(p=>ok(p)&&p.featured).slice(0,14),
+  tiles=S.cats.filter(c=>cnt[c.slug]).map(c=>`<button data-a="cat" data-id="${esc(c.slug)}" class="cat-t"><span class="ic">${esc(c.emoji||'🎮')}</span>${esc(c.name)}<small>${cnt[c.slug]} produto${cnt[c.slug]>1?'s':''}</small></button>`).join(''),
+  row=(t,sub,list,key)=>list.length>=3?`<section class="mb-12"><div class="mb-4 flex items-end justify-between gap-3"><div><h2 class="sh font-display text-3xl font-bold md:text-4xl">${t}</h2><p class="mt-1 text-sm text-mut">${sub}</p></div>${key?`<button data-a="cat" data-id="${key}" class="shrink-0 text-sm font-bold text-acc hover:underline">Ver todos →</button>`:''}</div><div class="hs-row">${list.map(card).join('')}</div></section>`:'';
+ el.innerHTML=(tiles?`<section class="mb-12"><h2 class="sh mb-4 font-display text-3xl font-bold md:text-4xl">Compre por categoria</h2><div class="cats-g">${tiles}</div></section>`:'')
+  +row('🏷️ Ofertas imperdíveis','Os maiores descontos do momento, com estoque na sua loja',ofr,'__off')
+  +row('🔥 Mais vendidos','O que os clientes mais levam para casa',top,'')
+  +row('⭐ Destaques da loja','Escolhidos pela nossa equipe',dst,'')}
 function more(t,v){const m=$('#more');if(!m)return;if(S.io)S.io.disconnect();
  m.innerHTML=t>v?`<p class="text-sm text-mut">Exibindo ${v} de ${t} produtos</p><button data-a="more" class="h-11 rounded-xl border border-pri px-8 font-bold hover:bg-pri/20">Mostrar mais</button>`:(t>PG?`<p class="text-sm text-mut">Você viu todos os ${t} produtos.</p>`:'');
  const b=m.querySelector('button');
@@ -796,11 +883,11 @@ function render(){
  const vis=l.slice(0,S.lim||PG);
  $('#grid').innerHTML=vis.length?vis.map(card).join(''):'<p class="col-span-full py-16 text-center text-mut">Nada por aqui ainda. Tente outra busca ou categoria.</p>';
  if(ch)[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'});
- more(l.length,vis.length);
+ more(l.length,vis.length);homeSecs();
  const nOff=S.prods.filter(p=>p.old_price>p.price).length,cnt={};S.prods.forEach(p=>{cnt[p.category_slug]=(cnt[p.category_slug]||0)+1});
  $('#nav').innerHTML=[['','Tudo','🔥',S.prods.length]].concat(nOff?[['__off','Ofertas','🏷️',nOff]]:[],S.cats.map(x=>[x.slug,x.name,x.emoji,cnt[x.slug]||0])).filter(x=>x[3]>0||S.cat===x[0]||!S.prods.length)
   .map(([s,n,e,k])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)} <span class="text-xs opacity-70">${k||''}</span></button>`).join('');
- $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:S.cat==='__off'?'Ofertas':c?c.name:'Destaques da semana';
+ $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:S.cat==='__off'?'Ofertas':c?c.name:'Todos os produtos';
  renderCart();
 }
 /* ---------- avise-me quando chegar ---------- */
@@ -842,8 +929,8 @@ function pdp(slug){
   ${(p.features||[]).length?`<div><h2 class="mb-3 font-display text-3xl font-bold">Destaques</h2><ul class="space-y-2 text-mut">${p.features.map(f=>`<li>✔ ${esc(f)}</li>`).join('')}</ul></div>`:''}</div>
   ${rel.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Você também pode gostar</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rel.map(card).join('')}</div>`:''}
   ${rcv.length?`<h2 class="mb-4 mt-12 font-display text-3xl font-bold">Vistos recentemente</h2><div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">${rcv.map(card).join('')}</div>`:''}
-  <div class="h-20 md:hidden"></div>
-  <div class="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-bd bg-s3/95 px-4 pt-2.5 backdrop-blur md:hidden" style="padding-bottom:calc(.625rem + env(safe-area-inset-bottom,0px))"><div class="min-w-0 flex-1"><p class="font-display text-2xl font-bold leading-none text-acc">${R(pix(p))}</p><p class="text-[11px] text-mut">no Pix</p></div><button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-11 rounded-xl bg-pri px-6 font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível'}</button></div>`;
+  <div class="h-40 md:hidden"></div>
+  <div class="fixed inset-x-0 bottom-[3.6rem] z-30 flex items-center gap-3 border-t border-bd bg-s3/95 px-4 py-2.5 backdrop-blur md:hidden"><div class="min-w-0 flex-1"><p class="font-display text-2xl font-bold leading-none text-acc">${R(pix(p))}</p><p class="text-[11px] text-mut">no Pix</p></div><button data-a="buy" data-id="${p.id}" ${n?'':'disabled'} class="glow h-11 rounded-xl bg-pri px-6 font-bold text-white disabled:opacity-40 disabled:shadow-none">${n?'Comprar agora':'Indisponível'}</button></div>`;
 }
 async function cep(){
  const v=$('#cep').value.replace(/\D/g,''),o=$('#cepr');if(v.length!==8)return o.textContent='Digite os 8 números do CEP.';
@@ -880,11 +967,11 @@ function renderCart(force){
   return `<div class="flex items-center gap-4 border-b border-bd py-5 last:border-0">
   <a href="#/p/${esc(p.slug)}" class="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-s2 text-4xl sm:h-28 sm:w-28">${p.image_url?`<img src="${esc(p.image_url)}" alt="" class="h-full w-full object-contain p-1">`:esc(p.emoji||'🎮')}</a>
   <div class="min-w-0 flex-1"><a href="#/p/${esc(p.slug)}" class="line-clamp-2 font-semibold">${esc(p.name)}</a>
-   <p class="mt-1 text-sm text-mut">${R(u)} cada${m>0&&m<4?` · últimas ${m} un.`:''}</p>
+   <p class="mt-1 text-sm text-mut">${R(u)} cada${m>0&&m<4?` · últimas ${m} un.`:''}</p><p class="font-display text-xl font-bold text-acc sm:hidden">${R(Math.round(u*n*100)/100)}</p>
    <div class="mt-2 flex flex-wrap items-center gap-3"><div class="inline-flex items-center rounded-lg border border-bd"><button data-a="dec" data-id="${p.id}" class="h-9 w-9" aria-label="Diminuir">−</button><span class="w-8 text-center font-bold">${n}</span><button data-a="inc" data-id="${p.id}" class="h-9 w-9" aria-label="Aumentar">+</button></div>
    <button data-a="rm" data-id="${p.id}" class="text-sm text-mut hover:text-red-400" aria-label="Remover">🗑️ Remover</button></div></div>
-  <p class="font-display text-2xl font-bold text-acc">${R(Math.round(u*n*100)/100)}</p></div>`};
- pg.innerHTML=`${back}<h1 class="mt-3 font-display text-4xl font-bold">Seu carrinho <small class="font-sans text-base font-medium text-mut">(${c} ${c>1?'itens':'item'})</small></h1>
+  <p class="hidden font-display text-2xl font-bold text-acc sm:block">${R(Math.round(u*n*100)/100)}</p></div>`};
+ pg.innerHTML=`${back}<div class="stp mt-4"><span class="s on"><b>1</b>Carrinho</span><i></i><span class="s on"><b>2</b>Seus dados</span><i></i><span class="s"><b>3</b>Pagamento</span></div><h1 class="mt-3 font-display text-4xl font-bold">Seu carrinho <small class="font-sans text-base font-medium text-mut">(${c} ${c>1?'itens':'item'})</small></h1>
  <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px]">
   <div class="space-y-6">
    <section class="rounded-2xl border border-bd bg-s3 px-5">${L.map(row).join('')}</section>
@@ -893,7 +980,7 @@ function renderCart(force){
      <label class="text-xs font-semibold text-mut">Nome<input id="nm" placeholder="Seu nome completo" autocomplete="name" value="${esc(F.nm)}" class="mt-1 h-11 w-full px-3"></label>
      <label class="text-xs font-semibold text-mut">WhatsApp<input id="ph" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" value="${esc(F.ph)}" class="mt-1 h-11 w-full px-3"></label>
      <label class="text-xs font-semibold text-mut sm:col-span-2">E-mail (opcional, para o recibo)<input id="em" type="email" placeholder="voce@email.com" autocomplete="email" value="${esc(F.em)}" class="mt-1 h-11 w-full px-3"></label>
-     ${S.ship==='entrega'?`<label class="text-xs font-semibold text-mut sm:col-span-2">Endereço de entrega<input id="ad" placeholder="Rua, número, bairro" autocomplete="street-address" value="${esc(F.ad)}" class="mt-1 h-11 w-full px-3"></label>`:`<p class="text-sm text-mut sm:col-span-2">🏬 Você vai retirar na loja ${esc(sn)}. Combine o horário pelo WhatsApp.</p>`}
+     ${S.ship==='entrega'?`<label class="text-xs font-semibold text-mut">CEP (preenche o endereço)<input id="cepc" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" class="mt-1 h-11 w-full px-3"></label><span class="hidden sm:block"></span><label class="text-xs font-semibold text-mut sm:col-span-2">Endereço de entrega<input id="ad" placeholder="Rua, número, bairro" autocomplete="street-address" value="${esc(F.ad)}" class="mt-1 h-11 w-full px-3"></label>`:`<p class="text-sm text-mut sm:col-span-2">🏬 Você vai retirar na loja ${esc(sn)}. Combine o horário pelo WhatsApp.</p>`}
     </div></section>
   </div>
   <aside class="space-y-4 rounded-2xl border border-bd bg-s3 p-5 lg:sticky lg:top-40 lg:self-start"><h2 class="font-display text-2xl font-bold">Resumo do pedido</h2>
@@ -903,10 +990,18 @@ function renderCart(force){
    <div><p class="mb-2 text-xs font-semibold text-mut">Entrega</p><div class="grid grid-cols-2 gap-2">${opt('ship','entrega','🛵 Entrega',S.ship)}${opt('ship','retirada','🏬 Retirar na loja',S.ship)}</div></div>
    <div class="space-y-1 border-t border-bd pt-4 text-sm text-mut"><p class="flex justify-between"><span>Subtotal</span><span>${R(k.s)}</span></p>${k.d?`<p class="flex justify-between text-acc"><span>Cupom ${esc(S.cp.code)}</span><span>-${R(k.d)}</span></p>`:''}<p class="flex justify-between"><span>Entrega</span><span>${S.ship==='retirada'?'Retirada':k.f?R(k.f):'Grátis'}</span></p>${S.ship==='entrega'&&k.f?`<p class="text-xs">Entrega grátis acima de ${R(FRETE.gratis)}.</p>`:''}</div>
    <p class="flex justify-between font-display text-3xl font-bold"><span>Total</span><span class="text-acc">${R(k.t)}</span></p>
-   <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">${sb?'Pagar agora':'Finalizar pelo WhatsApp'}</button>${sb?'<p class="text-center text-xs text-mut">Pagamento seguro pelo Mercado Pago. O Pix confirma na hora.</p>':''}
+   <button data-a="order" class="glow h-12 w-full rounded-xl bg-pri font-bold text-white">${sb?'Pagar agora':'Finalizar pelo WhatsApp'}</button>${sb?'<div class="grid grid-cols-3 gap-2 text-center text-[11px] text-mut"><span class="rounded-lg border border-bd p-2">🔒<br>Pagamento seguro<br>Mercado Pago</span><span class="rounded-lg border border-bd p-2">💠<br>Pix confirma<br>na hora</span><span class="rounded-lg border border-bd p-2">🛡️<br>Garantia<br>da loja</span></div>':''}
   </aside>
- </div>${recH}`;
+ </div>${recH}
+  <div class="h-28 lg:hidden"></div><div class="glass fixed inset-x-0 bottom-[3.6rem] z-30 flex items-center gap-3 border-t border-bd px-4 py-2.5 md:bottom-0 lg:hidden"><div class="min-w-0 flex-1"><p class="text-[11px] text-mut">Total do pedido</p><p class="font-display text-2xl font-bold leading-none text-acc">${R(k.t)}</p></div><button data-a="order" class="glow h-12 rounded-xl bg-pri px-6 font-bold text-white">${sb?'Pagar agora':'Finalizar'}</button></div>`;
 }
+let cepT;
+function cepFill(v){const d=String(v).replace(/\D/g,'');if(d.length!==8)return;clearTimeout(cepT);
+ cepT=setTimeout(async()=>{try{const j=await (await fetch(`https://viacep.com.br/ws/${d}/json/`)).json();
+  if(j.erro){toast('CEP não encontrado.');return}
+  const a=$('#ad');if(!a)return;const rua=j.logradouro||'',resto=[j.bairro,j.localidade&&j.uf?`${j.localidade}/${j.uf}`:''].filter(Boolean).join(', ');
+  a.value=rua?`${rua}, , ${resto}`:resto;S.f.ad=a.value;ls.set('prof',S.f);a.focus();const pos=rua?rua.length+2:a.value.length;a.setSelectionRange(pos,pos);toast(rua?'Endereço preenchido. Falta só o número.':'Bairro preenchido. Complete a rua e o número.')}
+ catch(e){toast('Não foi possível buscar o CEP agora. Digite o endereço.')}},250)}
 async function coupon(){
  const c=$('#cp').value.trim().toUpperCase();S.cp=null;if(!c)return renderCart();
  if(sb){const{data}=await sb.rpc('validate_coupon',{p_code:c,p_subtotal:sub()});if(data&&data.length)S.cp={code:c,pct:+data[0].percent}}
@@ -990,7 +1085,7 @@ function renderPay(d,ok,dead){
  $('#payc').innerHTML=ok?H('🎉','Parabéns pela sua compra!',`Pagamento confirmado · Pedido #${d.order_number} · ${T}`)+`<div class="mt-4 rounded-xl border border-bd p-3 text-left text-sm text-mut"><ul class="list-disc pl-5">${itens}</ul><p class="mt-2">${ent}</p></div><p class="mt-4 text-sm">Obrigado por comprar na <b>Plebeu Games</b>, ${esc(String(d.customer_name).split(' ')[0])}! Já estamos separando o seu pedido e avisaremos você pelo WhatsApp.</p><p class="mt-2 text-xs text-mut">Ficou com alguma dúvida? É só falar com a gente.</p><a href="${wa}" target="_blank" rel="noopener" class="${B} glow bg-pri text-white">Falar com a loja no WhatsApp</a>`+close
  :dead?H('⌛','Pedido cancelado','O pagamento não foi concluído a tempo e o estoque foi liberado. Faça um novo pedido quando quiser.')+`<button data-a="payclose" class="${B} bg-pri text-white">Voltar à loja</button>`
  :d.payment_status==='rejected'?H('❌','Pagamento recusado',esc(DET(d.status_detail)))+`<button data-a="payretry" class="${B} bg-pri text-white">Tentar de novo</button>`+close
- :d.pix_qr_code?H('💠',`Pague ${T} no Pix`,`Pedido #${d.order_number} · expira em <b id="pxt" data-e="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b>`)+`<img alt="QR Code Pix" class="mx-auto mt-4 h-52 w-52 rounded-xl bg-white p-2" src="data:image/png;base64,${d.pix_qr_base64}"><button data-a="copy" data-u="${esc(d.pix_qr_code)}" class="${B} glow bg-pri text-white">Copiar código Pix</button><p class="mt-3 text-xs text-mut">No app do seu banco, escolha Pix copia e cola. A confirmação aparece aqui sozinha.</p>`+close
+ :d.pix_qr_code?H('💠',`Pague ${T} no Pix`,`Pedido #${d.order_number} · expira em <b id="pxt" data-e="${d.expires_at?new Date(d.expires_at).getTime():''}" class="text-acc">--:--</b>`)+`<img alt="QR Code Pix" class="mx-auto mt-4 h-52 w-52 rounded-xl bg-white p-2" src="data:image/png;base64,${d.pix_qr_base64}"><button data-a="copy" data-u="${esc(d.pix_qr_code)}" class="${B} glow bg-pri text-white">Copiar código Pix</button><ol class="mt-4 space-y-1.5 rounded-xl border border-bd p-3 text-left text-xs text-mut"><li><b class="text-fg">1.</b> Abra o app do seu banco e vá em <b class="text-fg">Pix</b>.</li><li><b class="text-fg">2.</b> Escolha <b class="text-fg">Pix copia e cola</b> (ou leia o QR Code).</li><li><b class="text-fg">3.</b> Confira o valor de <b class="text-fg">${T}</b> e confirme. Esta tela avisa sozinha quando o pagamento chegar.</li></ol>`+close
  :H('⏳','Aguardando confirmação',`Pedido #${d.order_number} · ${T}. Assim que o Mercado Pago confirmar, avisamos aqui.`)+(d.checkout_url?`<a href="${esc(d.checkout_url)}" class="${B} bg-pri text-white">Abrir pagamento</a>`:'')+close;
 }
 function add(id,n=1){const p=S.prods.find(x=>x.id===id),it=S.cart.find(x=>x.id===id),m=qty(p),cur=it?it.n:0;
@@ -1011,7 +1106,7 @@ function shell(){
  $('#store').innerHTML=S.stores.map(x=>`<option value="${x.id}" ${x.id===s.id?'selected':''}>📍 ${esc(x.name)}</option>`).join('');
  $('#top').textContent=`Loja: ${s.name} (${s.kind||'loja'}) • Compre até as ${FRETE.corte}h e receba no mesmo dia`;
  const w=`https://wa.me/${s.whatsapp}`;['#wa','#herowa','#bandwa'].forEach(i=>$(i).href=w);
- $('#fst').innerHTML=S.stores.map(x=>`<p><b class="text-white">${esc(x.name)}</b> — ${esc(x.kind||'')}</p>`).join('');
+ $('#fst').innerHTML=S.stores.map(x=>`<p><b class="text-fg">${esc(x.name)}</b> <span class="text-xs">(${esc(x.kind||'')})</span>${x.whatsapp?`<br><a class="text-acc hover:underline" target="_blank" rel="noopener" href="https://wa.me/${esc(x.whatsapp)}">💬 Falar no WhatsApp</a>`:''}</p>`).join('');
  $('#dep').classList.toggle('hidden',!S.rev.length);
  const rv=S.rev.map(r=>`<figure class="w-80 shrink-0 rounded-2xl border border-bd bg-s3 p-5"><p class="text-yellow-400">${'★'.repeat(r.rating)}</p><blockquote class="my-2 text-sm text-mut">${esc(r.body)}</blockquote><figcaption class="text-sm font-semibold">${esc(r.customer_name)}</figcaption></figure>`).join('');
  $('#mq').innerHTML=rv+rv;tick();
@@ -1168,7 +1263,7 @@ function info(k){const d=INFO[k];if(!d){location.hash='#/';return}
 /* ---------- rotas e eventos ---------- */
 function route(){
  const m=location.hash.match(/^#\/p\/(.+)$/),pd=$('#pdp'),pf=location.hash==='#/perfil',ct=location.hash==='#/carrinho',inf=location.hash.match(/^#\/info\/(.+)$/),ad=/^#\/?admin\/?$/i.test(location.hash);
- if(!m){const l=document.getElementById('ld');if(l)l.remove()}document.body.classList.toggle('adm',ad);document.documentElement.classList.toggle('adm-big',ad);$('#adm').classList.toggle('hidden',!ad);
+ if(!m){const l=document.getElementById('ld');if(l)l.remove()}document.body.classList.toggle('adm',ad);document.body.classList.toggle('pdpm',!!m);document.body.classList.toggle('crtm',ct);document.documentElement.classList.toggle('adm-big',ad);$('#adm').classList.toggle('hidden',!ad);
  $('#home').classList.toggle('hidden',!!m||pf||ct||!!inf||ad);$('#inf').classList.toggle('hidden',!inf);pd.classList.toggle('hidden',!m);$('#prf').classList.toggle('hidden',!pf);$('#crt').classList.toggle('hidden',!ct);
  if(m){pdp(decodeURIComponent(m[1]));scrollTo(0,0);pd.classList.remove('rv');void pd.offsetWidth;pd.classList.add('rv')}else if(pf){document.title='Meu perfil | Plebeu Games';prof();scrollTo(0,0)}else if(ct){document.title='Carrinho | Plebeu Games';renderCart(1);scrollTo(0,0)}else if(inf){info(decodeURIComponent(inf[1]));scrollTo(0,0)}else if(ad){document.title='Admin | Plebeu Games';ADM.enter();scrollTo(0,0)}else document.title='Plebeu Games | Sua loja gamer no Acre e Rondônia';
 }
@@ -1198,7 +1293,7 @@ function acct(){if(!sb||S.demo)return;const nm=(S.f.nm||'').trim(),ph=(S.f.ph||'
  const sig=[nm,ph,S.f.em,S.f.ad].join('|');if(sig===S.as)return;S.as=sig;
  sb.rpc('save_account',{p_name:nm,p_phone:ph,p_email:(S.f.em||'').trim()||null,p_address:(S.f.ad||'').trim()||null,p_visitor:VID}).then(r=>{if(r&&r.error)S.as=''},()=>{S.as=''})}
 setTimeout(acct,3000);
-document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em',pnm:'nm',pph:'ph',pad:'ad',pem:'em'}[e.target.id];if(m){S.f[m]=e.target.value;ls.set('prof',S.f);clearTimeout(S.act);S.act=setTimeout(acct,1500)}});
+document.addEventListener('input',e=>{const m={nm:'nm',ph:'ph',ad:'ad',em:'em',pnm:'nm',pph:'ph',pad:'ad',pem:'em'}[e.target.id];if(m){S.f[m]=e.target.value;ls.set('prof',S.f);clearTimeout(S.act);S.act=setTimeout(acct,1500)}if(e.target.id==='cepc')cepFill(e.target.value);});
 $('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();const tk=nf(S.q).split(/\s+/).filter(Boolean);
  const r=tk.length?S.prods.filter(p=>tk.every(w=>sidx(p).includes(w))).sort((a,b)=>(qty(b)>0)-(qty(a)>0)||(nf(a.name).startsWith(tk[0])?0:1)-(nf(b.name).startsWith(tk[0])?0:1)).slice(0,6):[];
  $('#sug').innerHTML=r.map(p=>`<a href="#/p/${esc(p.slug)}" class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-bd">${p.image_url?`<img src="${esc(p.image_url)}" alt="" loading="lazy" class="h-9 w-9 shrink-0 rounded-lg object-contain">`:`<span class="grid h-9 w-9 shrink-0 place-items-center">${esc(p.emoji||'🎮')}</span>`}<span class="min-w-0 flex-1 truncate">${esc(p.name)}</span><b class="shrink-0 text-acc">${R(pix(p))}</b></a>`).join('');
