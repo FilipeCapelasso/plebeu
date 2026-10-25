@@ -363,11 +363,20 @@ let PD={p:[],s:[]},PF='todos',PQ='',PSEL=new Set(),PSHOW=60;
 const stk=id=>PD.s.filter(x=>x.product_id===id),qOf=(id,st)=>(PD.s.find(x=>x.product_id===id&&x.store_id===st)||{}).qty??0;
 const PFLT={todos:()=>true,ativos:x=>x.active,inativos:x=>!x.active,semfoto:x=>x.active&&!x.image_url,semcat:x=>x.active&&!x.category_slug,semsku:x=>!x.sku,
  semestoque:x=>x.active&&stk(x.id).every(r=>r.qty===0),baixo:x=>x.active&&stk(x.id).some(r=>r.qty>0&&r.qty<=3),bling:x=>!!x.bling_id,site:x=>!x.bling_id};
-const PCH=[['todos','Todos'],['ativos','Ativos'],['inativos','Inativos'],['semfoto','Sem foto'],['semcat','Sem categoria'],['semsku','Sem SKU'],['semestoque','Sem estoque'],['baixo','Estoque baixo'],['bling','Do Bling'],['site','Só do site']];
-const pcur=()=>{const q=PQ.trim().toLowerCase(),f=PFLT[PF]||PFLT.todos;return PD.p.filter(x=>f(x)&&(!q||(x.name+' '+(x.sku||'')+' '+(x.brand||'')).toLowerCase().includes(q)))};
+/* botões principais = categorias do banco; "PC" = categoria Informática. Ofertas = produtos com preço "de" maior que o preço atual */
+PFLT.ofertas=x=>+x.old_price>+x.price;
+const PCAT=[['ofertas','🏷️','Ofertas'],['cat:consoles','🎮','Consoles'],['cat:informatica','💻','PC'],['cat:perifericos','🎧','Periféricos']],
+ PCH=[['semsku','Sem SKU'],['semestoque','Sem estoque'],['baixo','Estoque baixo'],['bling','Do Bling'],['site','Só do site']],
+ PHID={ativos:'Ativos',inativos:'Inativos',semfoto:'Sem foto',semcat:'Sem categoria'},
+ PCOLSA='id,slug,name,sku,brand,category_slug,emoji,image_url,price,pix_price,pix_discount,old_price,max_installments,sold_count,bling_id,active,featured,created_at',
+ pflt=k=>String(k).startsWith('cat:')?(x=>x.category_slug===String(k).slice(4)):(PFLT[k]||PFLT.todos);
+const pcur=()=>{const q=PQ.trim().toLowerCase(),f=pflt(PF);return PD.p.filter(x=>f(x)&&(!q||(x.name+' '+(x.sku||'')+' '+(x.brand||'')).toLowerCase().includes(q)))};
+async function pload(){
+ const[{data:p,error:e1},{data:s,error:e2}]=await Promise.all([pgq(()=>sb.from('products').select(PCOLSA).order('created_at',{ascending:false}).order('id')),pgq(()=>sb.from('product_stock').select('*').order('product_id').order('store_id'))]);
+ if(e1||e2){toast('Erro ao atualizar: '+(e1||e2).message);return false}
+ PD={p:p||[],s:s||[]};return true}
 async function prod(){
- const[{data:p},{data:s}]=await Promise.all([pgq(()=>sb.from('products').select('*').order('created_at',{ascending:false}).order('id')),pgq(()=>sb.from('product_stock').select('*').order('product_id').order('store_id'))]);
- PD={p:p||[],s:s||[]};PSEL.clear();
+ await pload();PSEL.clear();
  $('#main').innerHTML=`<div class="mb-3 flex flex-wrap items-center gap-2"><input id="f" placeholder="Buscar por nome, SKU ou marca…" class="max-w-lg" value="${esc(PQ)}"><button class="b" onclick="ADM.edit()">+ Novo produto</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.expP()">Exportar CSV</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.impOpen()">📥 Importar catálogo (arquivo)</button></div><div id="ap_chips" class="mb-3 flex flex-wrap gap-2"></div><div id="ap_bulk"></div><div id="ap_list"></div>`;
  $('#f').oninput=e=>{PQ=e.target.value;PSHOW=60;prodList()};prodList()}
 function prodList(){
@@ -378,11 +387,18 @@ function prodList(){
  <td>${x.old_price?`de ${R(x.old_price)}`:'—'}<br><span class="text-xs text-mut">${x.max_installments}x sem juros</span></td>
  <td>${stores.map(t=>`<label class="mb-1 flex items-center gap-1 text-xs">${esc(t.name)} <input type="number" min="0" value="${qOf(x.id,t.id)}" class="w-20 !py-1" ${x.bling_id&&LOCK?'disabled title="Estoque controlado pelo Bling"':''} onchange="ADM.setQty('${x.id}','${t.id}',this.value)"></label>`).join('')}</td>
  <td class="whitespace-nowrap"><button class="g rounded-lg px-2 py-1" onclick="ADM.edit('${x.id}')">Editar</button> <button class="g rounded-lg px-2 py-1" onclick="ADM.del('${x.id}')">🗑️</button></td></tr>`;
- $('#ap_chips').innerHTML=PCH.map(([k,l])=>`<button class="tab g rounded-full px-3 py-1 text-xs ${k===PF?'on':''}" onclick="ADM.pf('${k}')">${l} <span class="opacity-70">${PD.p.filter(PFLT[k]).length}</span></button>`).join('');
+ const cnt=k=>PD.p.filter(pflt(k)).length,known=k=>k==='todos'||PCAT.some(c=>c[0]===k)||PCH.some(c=>c[0]===k),
+  slugs=PCAT.map(c=>c[0].slice(4)),outras=cats.filter(c=>!slugs.includes(c.slug)),
+  big=(k,ic,l)=>`<button class="tab g rounded-xl px-5 py-3 text-base font-semibold ${k===PF?'on':''}" onclick="ADM.pf('${k}')">${ic} ${l} <span class="opacity-70">${cnt(k)}</span></button>`,
+  small=(k,l)=>`<button class="tab g rounded-full px-3 py-1.5 text-sm ${k===PF?'on':''}" onclick="ADM.pf('${k}')">${l} <span class="opacity-70">${cnt(k)}</span></button>`;
+ $('#ap_chips').innerHTML=`<div class="flex w-full flex-wrap items-center gap-2">${big('todos','📦','Todos')}${PCAT.map(([k,ic,l])=>big(k,ic,l)).join('')}
+  <select class="w-auto min-w-52 !py-3" onchange="ADM.pf(this.value||'todos')" aria-label="Outras categorias"><option value="">Outras categorias…</option>${outras.map(c=>`<option value="cat:${esc(c.slug)}" ${PF==='cat:'+c.slug?'selected':''}>${esc(c.emoji||'')} ${esc(c.name)} (${cnt('cat:'+c.slug)})</option>`).join('')}</select>
+  <button class="g rounded-xl px-4 py-3 text-base" title="Buscar de novo no banco de dados" onclick="ADM.pf('${esc(PF)}')">↻ Atualizar</button></div>
+  <div class="mt-1 flex w-full flex-wrap items-center gap-2 text-mut"><span class="text-xs">Conferir:</span>${PCH.map(([k,l])=>small(k,l)).join('')}${!known(PF)&&!String(PF).startsWith('cat:')?`<button class="tab g on rounded-full px-3 py-1.5 text-sm" onclick="ADM.pf('todos')">${PHID[PF]||PF} ${cnt(PF)} ✕</button>`:''}${String(PF).startsWith('cat:')&&!known(PF)?`<button class="tab g on rounded-full px-3 py-1.5 text-sm" onclick="ADM.pf('todos')">${esc((cats.find(c=>'cat:'+c.slug===PF)||{}).name||PF)} ${cnt(PF)} ✕</button>`:''}</div>`;
  $('#ap_bulk').innerHTML=sel?`<div class="g mb-3 flex flex-wrap items-center gap-2 rounded-2xl p-3"><b>${sel} selecionado(s)</b><button class="b" onclick="ADM.bulk('active',true)">Ativar</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.bulk('active',false)">Desativar</button><select id="bcat" class="max-w-52"><option value="">Definir categoria…</option>${cats.map(c=>`<option value="${esc(c.slug)}">${esc(c.name)}</option>`).join('')}</select><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.bulk('cat')">Aplicar</button><button class="g rounded-lg px-3 py-2 text-sm" onclick="ADM.psel(null,false)">Limpar seleção</button></div>`:'';
  $('#ap_list').innerHTML=tbl([`<input type="checkbox" title="Selecionar todos os ${L.length} filtrados" ${L.length&&L.every(x=>PSEL.has(x.id))?'checked':''} onchange="ADM.pselAll(this.checked)">`,'','Produto','Preço','Promoção','Estoque',''],L.slice(0,PSHOW).map(row).join(''))+
   `<p class="mt-2 text-xs text-mut">${L.length} produto(s)${L.length>PSHOW?` · mostrando ${PSHOW} <button class="g ml-2 rounded px-2 py-0.5" onclick="ADM.pmore()">Mostrar mais</button>`:''}</p>`}
-const pf=k=>{PF=k;PSHOW=60;PSEL.clear();prodList()},pmore=()=>{PSHOW+=60;prodList()},
+const pf=async k=>{PF=k;PSHOW=60;PSEL.clear();const L=$('#ap_list');if(L)L.style.opacity='.5';await pload();if(L)L.style.opacity='';prodList()},pmore=()=>{PSHOW+=60;prodList()},
  psel=(id,c)=>{if(id===null)PSEL.clear();else c?PSEL.add(id):PSEL.delete(id);prodList()},pselAll=c=>{pcur().forEach(x=>c?PSEL.add(x.id):PSEL.delete(x.id));prodList()};
 async function bulk(op,val){
  let ids=[...PSEL],patch,extra='';if(!ids.length)return;
