@@ -135,11 +135,10 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 </style>
 </head>
 <body><a href="#vitrine" class="skip">Ir para os produtos</a><noscript><p style="padding:1rem;text-align:center">Ative o JavaScript para ver a loja.</p></noscript>
-<div id="top" class="bg-s3 border-b border-bd py-2 text-center text-xs text-mut px-3"></div>
 
 <header id="hdr" class="glass sticky top-0 z-30 border-b border-bd">
  <div id="hrow" class="mx-auto flex max-w-[1920px] flex-wrap items-center gap-3 px-4 py-3">
-  <a href="#/" class="logo font-display text-3xl font-bold leading-none gt">Plebeu<span class="block text-sm tracking-[.35em] text-white">GAMES</span></a>
+  <a href="#/" class="logo font-display text-3xl font-bold leading-none gt sm:text-5xl lg:text-6xl">Plebeu<span class="block text-sm tracking-[.32em] text-white sm:text-xl lg:text-2xl">GAMES</span></a>
   <div class="relative order-last w-full md:order-none md:w-auto md:flex-1">
    <input id="q" type="search" autocomplete="off" placeholder="Busque console, jogo, headset…" aria-label="Buscar" class="h-11 w-full pl-4 pr-4">
    <div id="sug" class="absolute inset-x-0 top-12 z-40 hidden overflow-hidden rounded-xl border border-bd bg-s3 shadow-2xl"></div>
@@ -1104,7 +1103,6 @@ function tick(){
 function shell(){
  const s=st();if(!s)return;
  $('#store').innerHTML=S.stores.map(x=>`<option value="${x.id}" ${x.id===s.id?'selected':''}>📍 ${esc(x.name)}</option>`).join('');
- $('#top').textContent=`Loja: ${s.name} (${s.kind||'loja'}) • Compre até as ${FRETE.corte}h e receba no mesmo dia`;
  const w=`https://wa.me/${s.whatsapp}`;['#wa','#herowa','#bandwa'].forEach(i=>$(i).href=w);
  $('#fst').innerHTML=S.stores.map(x=>`<p><b class="text-fg">${esc(x.name)}</b> <span class="text-xs">(${esc(x.kind||'')})</span>${x.whatsapp?`<br><a class="text-acc hover:underline" target="_blank" rel="noopener" href="https://wa.me/${esc(x.whatsapp)}">💬 Falar no WhatsApp</a>`:''}</p>`).join('');
  $('#dep').classList.toggle('hidden',!S.rev.length);
