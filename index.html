@@ -117,6 +117,8 @@ body.adm #top,body.adm #hdr,body.adm footer,body.adm>nav,body.adm #wa{display:no
 .cat-t:hover{transform:translateY(-4px);border-color:rgb(var(--pr)/.6);box-shadow:0 14px 34px -14px rgb(var(--pr)/.5)}
 .cat-t .ic{display:grid;place-items:center;width:3.5rem;height:3.5rem;border-radius:1rem;font-size:1.8rem;background:linear-gradient(135deg,rgb(var(--pr)/.22),rgb(var(--ac)/.22))}
 .cat-t small{font-weight:500;color:rgb(var(--mut));font-size:.75rem}
+.cat-t.has-img{padding:0 0 .85rem;overflow:hidden;gap:.45rem}.cat-t .ph{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .4s}.cat-t.has-img:hover .ph{transform:scale(1.07)}
+.cat-t.has-img>span.t{padding:0 .5rem}.cat-i{display:inline-block;width:1.35rem;height:1.35rem;border-radius:999px;object-fit:cover;vertical-align:-.3rem;margin-right:.1rem}
 .hs-row{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x proximity;padding:.25rem .25rem 1rem;margin-inline:-.25rem;scrollbar-width:thin}
 .hs-row>article{flex:0 0 clamp(11rem,44vw,15.5rem);scroll-snap-align:start}
 .sh{display:flex;align-items:center;gap:.7rem}.sh::before{content:"";width:5px;height:1.8rem;border-radius:5px;background:linear-gradient(rgb(var(--pr)),rgb(var(--ac)))}
@@ -653,7 +655,7 @@ async function cfg(){
  <section class="g rounded-2xl p-4"><h2 class="font-bold">Entrega</h2><div class="mt-3 grid gap-3 sm:grid-cols-3">${nin('s_fee','Taxa de entrega (R$)',c.delivery_fee)}${nin('s_free','Frete grátis a partir de (R$)',c.free_shipping_from)}<label class="block text-xs text-mut">Horário de corte (0–23 h)<input id="s_cut" type="number" min="0" max="23" value="${esc(c.cutoff_hour??'')}"></label></div><div class="mt-3 text-right"><button class="b" onclick="ADM.saveSet()">Salvar entrega</button></div></section>
  <section class="g rounded-2xl p-4"><h2 class="font-bold">Lojas e WhatsApp</h2><div class="mt-3 space-y-3">${stores.map(t=>`<div class="grid gap-2 sm:grid-cols-[1fr_1fr_auto]"><label class="block text-xs text-mut">Nome<input data-sn="${esc(t.id)}" value="${esc(t.name)}"></label><label class="block text-xs text-mut">WhatsApp (55 + DDD + número)<input data-sw="${esc(t.id)}" value="${esc(t.whatsapp||'')}" inputmode="numeric"></label><button class="b self-end" onclick="ADM.saveStore('${esc(t.id)}')">Salvar</button></div>`).join('')}</div></section>
  <section class="g rounded-2xl p-4"><h2 class="font-bold">Categorias</h2><div class="mt-3 flex flex-wrap items-end gap-2"><label class="text-xs text-mut">Nome<input id="ct_n"></label><label class="text-xs text-mut">Emoji<input id="ct_e" class="w-20" maxlength="4"></label><button class="b" onclick="ADM.addCat()">Adicionar</button></div>
-  <div class="mt-3">${tbl(['Ordem','Categoria','Produtos',''],(ct||[]).map(x=>`<tr><td><input type="number" value="${x.position??0}" class="w-16 !py-1" onchange="ADM.catPos('${esc(x.slug)}',this.value)"></td><td>${esc(x.emoji||'')} ${esc(x.name)}<br><span class="text-xs text-mut">${esc(x.slug)}</span></td><td>${use(x.slug)}</td><td><button class="g rounded-lg px-2 py-1" onclick="ADM.delCat('${esc(x.slug)}')">🗑️</button></td></tr>`).join(''))}</div></section>
+  <div class="mt-3">${tbl(['Ordem','Foto','Categoria','Produtos',''],(ct||[]).map(x=>`<tr><td><input type="number" value="${x.position??0}" class="w-16 !py-1" onchange="ADM.catPos('${esc(x.slug)}',this.value)"></td><td><div class="flex items-center gap-2">${x.image_url?`<img src="${esc(x.image_url)}" alt="" class="h-14 w-14 rounded-xl border border-bd object-cover">`:`<span class="grid h-14 w-14 place-items-center rounded-xl border border-dashed border-bd text-2xl">${esc(x.emoji||'🖼️')}</span>`}<label class="g cursor-pointer rounded-lg px-3 py-2 text-sm">${x.image_url?'Trocar':'Enviar foto'}<input type="file" accept="image/*" class="hidden" onchange="ADM.catImg('${esc(x.slug)}',this)"></label>${x.image_url?`<button class="g rounded-lg px-3 py-2 text-sm" title="Remover foto" onclick="ADM.catImgDel('${esc(x.slug)}')">✕</button>`:''}</div></td><td>${esc(x.emoji||'')} ${esc(x.name)}<br><span class="text-xs text-mut">${esc(x.slug)}</span></td><td>${use(x.slug)}</td><td><button class="g rounded-lg px-2 py-1" onclick="ADM.delCat('${esc(x.slug)}')">🗑️</button></td></tr>`).join(''))}</div></section>
  <section class="g rounded-2xl p-4"><h2 class="font-bold">Avaliações exibidas na loja</h2><div class="mt-3 grid gap-2 sm:grid-cols-[1fr_90px]"><label class="text-xs text-mut">Cliente<input id="rv_n"></label><label class="text-xs text-mut">Nota<select id="rv_r">${[5,4,3,2,1].map(n=>`<option>${n}</option>`).join('')}</select></label></div><label class="mt-2 block text-xs text-mut">Comentário<textarea id="rv_b" rows="2"></textarea></label><div class="mt-2 text-right"><button class="b" onclick="ADM.addRev()">Publicar avaliação</button></div>
   <ul class="mt-3 space-y-2">${(rv||[]).map(r=>`<li class="g flex items-start gap-2 rounded-lg p-2 text-sm"><span class="flex-1"><b>${esc(r.customer_name)}</b> <span class="text-amber-400">${'★'.repeat(+r.rating||0)}</span><br><span class="text-mut">${esc(r.body)}</span></span><button class="g rounded px-2 py-1" onclick="ADM.delRev('${esc(r.id)}')">🗑️</button></li>`).join('')||'<li class="text-sm text-mut">Nenhuma avaliação.</li>'}</ul></section></div>`}
 async function saveSet(){const n=id=>$('#'+id).value.trim()===''?null:+$('#'+id).value;
@@ -664,6 +666,17 @@ async function saveStore(id){const nm=document.querySelector('#adm [data-sn="'+i
 async function addCat(){const n=$('#ct_n').value.trim();if(!n)return toast('Informe o nome da categoria.');
  const{error}=await sb.from('categories').insert({slug:slug(n),name:n,emoji:$('#ct_e').value.trim()||null,position:cats.reduce((m,c)=>Math.max(m,c.position||0),0)+1});
  toast(error?'Erro: '+error.message:'Categoria criada');if(!error){await reloadCats();cfg()}}
+/* foto da categoria: recorta quadrado, reduz para 600 px e guarda no armazenamento (fica leve para o site) */
+async function catImg(slg,inp){const f=inp.files&&inp.files[0];inp.value='';if(!f)return;if(!/^image\//.test(f.type))return toast('Escolha um arquivo de imagem.');
+ toast('Enviando foto…');
+ try{const bm=await createImageBitmap(f),N=600,sc=Math.max(N/bm.width,N/bm.height),cv=document.createElement('canvas');cv.width=cv.height=N;
+  cv.getContext('2d').drawImage(bm,(N-bm.width*sc)/2,(N-bm.height*sc)/2,bm.width*sc,bm.height*sc);
+  const blob=await new Promise(r=>cv.toBlob(r,'image/webp',.85));if(!blob)throw new Error('Não foi possível processar a imagem.');
+  const ext=blob.type.includes('webp')?'webp':blob.type.includes('png')?'png':'jpg',path=`categorias/${slg}-${Date.now()}.${ext}`;
+  const{error}=await sb.storage.from('products').upload(path,blob,{contentType:blob.type,upsert:true});if(error)throw error;
+  const url=sb.storage.from('products').getPublicUrl(path).data.publicUrl,{error:e2}=await sb.from('categories').update({image_url:url}).eq('slug',slg);if(e2)throw e2;
+  toast('Foto da categoria salva');await reloadCats();cfg()}catch(e){toast('Erro: '+(e.message||e))}}
+async function catImgDel(slg){if(!confirm('Remover a foto desta categoria?'))return;const{error}=await sb.from('categories').update({image_url:null}).eq('slug',slg);toast(error?'Erro: '+error.message:'Foto removida');if(!error){await reloadCats();cfg()}}
 async function catPos(s,v){const{error}=await sb.from('categories').update({position:+v||0}).eq('slug',s);toast(error?'Erro: '+error.message:'Ordem salva');if(!error)await reloadCats()}
 async function delCat(s){const{count}=await sb.from('products').select('id',{count:'exact',head:true}).eq('category_slug',s);
  if(count>0)return toast(`Há ${count} produto(s) nesta categoria. Mova-os antes de excluir.`);if(!confirm('Excluir esta categoria?'))return;
@@ -777,7 +790,7 @@ async function bl(){
  if(MPS===null)mpCheck();
  if(fresh&&BLPOLL<30){BLPOLL++;setTimeout(()=>{if(tab==='bl')bl()},5000)}}
 
-return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,cliMsg,cliWa,cliCopy,impOpen,impRun,impStop,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveConnect,mpTest,copy,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl,savePw,saveSet,saveStore,addCat,catPos,delCat,addRev,delRev};
+return{enter,edit,del,setQty,saveP,closeM,pim,pir,setSt,cliDet,cliMsg,cliWa,cliCopy,impOpen,impRun,impStop,catImg,catImgDel,addC,togC,delC,bl,blAct,saveBl,saveCreds,saveConnect,mpTest,copy,saveDeps,reBl,go,pf,pmore,psel,pselAll,bulk,expP,expO,expC,ofl,savePw,saveSet,saveStore,addCat,catPos,delCat,addRev,delRev};
 })();
 </script>
 <script>
@@ -871,7 +884,7 @@ function homeSecs(){
  const ofr=S.prods.filter(p=>p.old_price>p.price&&ok(p)).sort((a,b)=>off(b)-off(a)).slice(0,14),
   top=S.prods.filter(p=>ok(p)&&p.sold_count>0).sort((a,b)=>b.sold_count-a.sold_count).slice(0,14),
   dst=S.prods.filter(p=>ok(p)&&p.featured).slice(0,14),
-  tiles=S.cats.filter(c=>cnt[c.slug]).map(c=>`<button data-a="cat" data-id="${esc(c.slug)}" class="cat-t"><span class="ic">${esc(c.emoji||'🎮')}</span>${esc(c.name)}<small>${cnt[c.slug]} produto${cnt[c.slug]>1?'s':''}</small></button>`).join(''),
+  tiles=S.cats.filter(c=>cnt[c.slug]).map(c=>`<button data-a="cat" data-id="${esc(c.slug)}" class="cat-t${c.image_url?' has-img':''}">${c.image_url?`<img class="ph" src="${esc(c.image_url)}" alt="" loading="lazy" decoding="async">`:`<span class="ic">${esc(c.emoji||'🎮')}</span>`}<span class="t">${esc(c.name)}</span><small>${cnt[c.slug]} produto${cnt[c.slug]>1?'s':''}</small></button>`).join(''),
   row=(t,sub,list,key)=>list.length>=3?`<section class="mb-12"><div class="mb-4 flex items-end justify-between gap-3"><div><h2 class="sh font-display text-3xl font-bold md:text-4xl">${t}</h2><p class="mt-1 text-sm text-mut">${sub}</p></div>${key?`<button data-a="cat" data-id="${key}" class="shrink-0 text-sm font-bold text-acc hover:underline">Ver todos →</button>`:''}</div><div class="hs-row">${list.map(card).join('')}</div></section>`:'';
  el.innerHTML=(tiles?`<section class="mb-12"><h2 class="sh mb-4 font-display text-3xl font-bold md:text-4xl">Compre por categoria</h2><div class="cats-g">${tiles}</div></section>`:'')
   +row('🏷️ Ofertas imperdíveis','Os maiores descontos do momento, com estoque na sua loja',ofr,'__off')
@@ -889,8 +902,8 @@ function render(){
  if(ch)[...$('#grid').children].slice(0,18).forEach((e,i)=>{e.classList.add('rv');e.style.animationDelay=i*35+'ms'});
  more(l.length,vis.length);homeSecs();
  const nOff=S.prods.filter(p=>p.old_price>p.price).length,cnt={};S.prods.forEach(p=>{cnt[p.category_slug]=(cnt[p.category_slug]||0)+1});
- $('#nav').innerHTML=[['','Tudo','🔥',S.prods.length]].concat(nOff?[['__off','Ofertas','🏷️',nOff]]:[],S.cats.map(x=>[x.slug,x.name,x.emoji,cnt[x.slug]||0])).filter(x=>x[3]>0||S.cat===x[0]||!S.prods.length)
-  .map(([s,n,e,k])=>`<button data-a="cat" data-id="${s}" class="whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)} <span class="text-xs opacity-70">${k||''}</span></button>`).join('');
+ $('#nav').innerHTML=[['','Tudo','🔥',S.prods.length]].concat(nOff?[['__off','Ofertas','🏷️',nOff]]:[],S.cats.map(x=>[x.slug,x.name,x.image_url?`<img class="cat-i" src="${esc(x.image_url)}" alt="" loading="lazy">`:x.emoji,cnt[x.slug]||0])).filter(x=>x[3]>0||S.cat===x[0]||!S.prods.length)
+  .map(([s,n,e,k])=>`<button data-a="cat" data-id="${s}" class="shrink-0 whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-semibold ${S.cat===s&&!S.fav?'border-pri bg-pri text-white':'border-bd bg-s3 text-mut hover:text-white'}">${e} ${esc(n)} <span class="text-xs opacity-70">${k||''}</span></button>`).join('');
  $('#gt').textContent=S.fav?'Seus favoritos':S.q?`Resultados para “${S.q}”`:S.cat==='__off'?'Ofertas':c?c.name:'Todos os produtos';
  renderCart();
 }
